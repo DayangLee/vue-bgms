@@ -1,6 +1,6 @@
 # vue-bgms
 
-> A Vue.js project
+> 基于 Vue 和 Element-ui 的后台管理系统
 
 ## Build Setup
 
