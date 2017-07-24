@@ -47,7 +47,7 @@ const user = {
   },
   actions: {
     LoginByAcount({ commit }, userInfo) {
-      const acount = userInfo.username.trim();
+      const acount = userInfo.acount.trim();
       const password = userInfo.password;
       return new Promise((resolve, reject) => {
         loginByAcount(acount, password).then(response => {
