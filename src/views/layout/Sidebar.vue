@@ -1,0 +1,20 @@
+<template>
+  <el-menu mode="vertical" theme="dark" default-active="$route.path">
+    <sidebar-item :routes='permission_routers'></sidebar-item>
+  </el-menu>
+</template>
+<script>
+import { mapGetters } from 'vuex'
+import SiderbarItem from './SidebarItem'
+export default {
+  components: { SiderbarItem },
+  computed: {
+    ...mapGetters(['permission_routers'])
+  }
+}
+</script>
+<style lang="scss" scoped>
+.el-menu {
+  min-height: 100%;
+}
+</style>

@@ -2,11 +2,11 @@
   <div class="login-container">
     <el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left" label-width="0px" class="card-box login-form">
       <h3 class="title">汉王蓝天空感管理平台</h3>
-      <el-form-item prop="username" class="item">
+      <el-form-item prop="acount" class="item">
         <span class="svg-container">
           <icon name="envelope" flip="horizontal"></icon>
         </span>
-        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="邮箱/手机/用户名"></el-input>
+        <el-input name="acount" type="text" v-model="loginForm.acount" autoComplete="on" placeholder="邮箱/手机/用户名"></el-input>
       </el-form-item>
       <el-form-item prop="password" class="item">
         <span class="svg-container">
@@ -19,7 +19,7 @@
           登录
         </el-button>
         <el-button type="primary" style="width:40%;float:right;">
-          忘记密码?(或首次登录)
+          忘记密码?
         </el-button>
       </el-form-item>
   
@@ -28,17 +28,18 @@
       <div class='tips'>user账号: user@hanwang.com.cn</div>
       <div class='tips'>密码随便填</div>
       <!-- <router-link to="/sendpwd" class="forget-pwd">
-                忘记密码?(或首次登录)
-              </router-link> -->
+                    忘记密码?(或首次登录)
+                  </router-link> -->
     </el-form>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'login',
   data() {
-    const validateUsername = (rule, value, callback) => {
+    const validateAcount = (rule, value, callback) => {
       if (!value) {
         return callback(new Error('用户名不能为空'));
       }
@@ -52,12 +53,12 @@ export default {
     };
     return {
       loginForm: {
-        username: 'admin@hanwang.com.cn',
+        acount: 'admin@hanwang.com.cn',
         password: ''
       },
       loginRules: {
-        username: [
-          { required: true, trigger: 'blur', validator: validateUsername }
+        acount: [
+          { required: true, trigger: 'blur', validator: validateAcount }
         ],
         password: [
           { required: true, trigger: 'blur', validator: validatePass }
@@ -66,24 +67,49 @@ export default {
       loading: false
     }
   },
+  computed: {
+    ...mapGetters(['auth_type'])
+  },
   methods: {
     handleLogin() {
+      console.log('1')
+      console.log(this.loading)
       this.$refs.loginForm.validate(valid => {
+        console.log('enter')
         if (valid) {
           this.loading = true;
-          aler('校验成功！');
-          // this.$store.dispatch('LoginByEmail', this.loginForm).then(() => {
-          //   this.loading = false;
-          //   this.$router.push({ path: '/' });
-          // }).catch(err => {
-          //   this.$message.error(err);
-          //   this.loading = false;
-          // });
+          this.$store.dispatch('LoginByAcount', this.loginForm).then(() => {
+            this.loading = false;
+            this.$router.push({ path: '/' });
+            // this.showDialog = true;
+          }).catch(err => {
+            this.$message.error(err);
+            this.loading = false;
+          });
         } else {
-          console.log('登录失败，请检查用户名和密码!!');
+          console.log('error submit!!');
           return false;
         }
       });
+      console.log('2')
+      // this.$refs.loginForm.validate(valid => {
+      //   console.log('enter')
+      //   if (valid) {
+      //     //this.loading = true;
+      //     console.log('hh')
+      //     this.$store.dispatch('LoginByAcount', this.loginForm).then(() => {
+      //       this.loading = false;
+      //       this.$router.push({ path: '/' });
+      //       console.log('xx')
+      //     }).catch(err => {
+      //       this.$message.error(err);
+      //       this.loading = false;
+      //     });
+      //   } else {
+      //     console.log('登录失败，请检查用户名和密码!!');
+      //     return false;
+      //   }
+      // });
     },
   }
 }
@@ -105,7 +131,7 @@ export default {
     width: 500px;
     padding: 35px 35px 15px 35px;
     margin: 120px auto;
-    background-color: white; // border: 2px solid green;
+    background-color: white;
     -moz-box-shadow: 2px 2px 15px rgba(135, 206, 235, 1);
     -webkit-box-shadow: 2px 2px 15px rgba(135, 206, 235, 1);
     box-shadow: 2px 2px 15px rgba(135, 206, 235, 1);
