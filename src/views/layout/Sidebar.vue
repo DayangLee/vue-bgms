@@ -1,6 +1,6 @@
 <template>
   <el-menu mode="vertical" theme="dark" default-active="$route.path">
-    <sidebar-item :routes='permission_routers'></sidebar-item>
+    <SidebarItem :routes='permission_routers'></SidebarItem>
   </el-menu>
 </template>
 <script>

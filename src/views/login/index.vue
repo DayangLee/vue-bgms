@@ -28,20 +28,24 @@
       <div class='tips'>user账号: user@hanwang.com.cn</div>
       <div class='tips'>密码随便填</div>
       <!-- <router-link to="/sendpwd" class="forget-pwd">
-                    忘记密码?(或首次登录)
-                  </router-link> -->
+                        忘记密码?(或首次登录)
+                      </router-link> -->
     </el-form>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { isHwEmail } from '../../utils/validate'
 export default {
   name: 'login',
   data() {
     const validateAcount = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('用户名不能为空'));
+        callback(new Error('用户名不能为空'))
+      } else if (!isHwEmail(value)) {
+        callback(new Error('请输入合法邮箱'))
+      } else {
+        callback()
       }
     };
     const validatePass = (rule, value, callback) => {
@@ -66,9 +70,6 @@ export default {
       },
       loading: false
     }
-  },
-  computed: {
-    ...mapGetters(['auth_type'])
   },
   methods: {
     handleLogin() {
