@@ -8,8 +8,8 @@
   
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
-        <img class="user-avatar" :src="avatar">
-        <i class="el-icon-caret-bottom"></i>
+        <img class="user-avatar" src='../..//assets/images/avater/1.jpg'>
+        <i class="el-icon-caret-bottom" style="color:white;"></i>
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
         <router-link class='inlineBlock' to="/">

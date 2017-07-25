@@ -58,7 +58,7 @@ export default {
     return {
       loginForm: {
         acount: 'admin@hanwang.com.cn',
-        password: ''
+        password: '111111'
       },
       loginRules: {
         acount: [
@@ -72,46 +72,23 @@ export default {
     }
   },
   methods: {
-    handleLogin() {
-      console.log('1')
-      console.log(this.loading)
+    handleLogin () {
       this.$refs.loginForm.validate(valid => {
-        console.log('enter')
-        if (valid) {
+        if ( valid ) {
           this.loading = true;
           this.$store.dispatch('LoginByAcount', this.loginForm).then(() => {
             this.loading = false;
-            this.$router.push({ path: '/' });
-            // this.showDialog = true;
+            this.$router.push( { path: '/dashboard/index' } );
           }).catch(err => {
             this.$message.error(err);
             this.loading = false;
           });
         } else {
-          console.log('error submit!!');
+          console.log('登录失败，请检查用户名和密码!!');
           return false;
         }
       });
-      console.log('2')
-      // this.$refs.loginForm.validate(valid => {
-      //   console.log('enter')
-      //   if (valid) {
-      //     //this.loading = true;
-      //     console.log('hh')
-      //     this.$store.dispatch('LoginByAcount', this.loginForm).then(() => {
-      //       this.loading = false;
-      //       this.$router.push({ path: '/' });
-      //       console.log('xx')
-      //     }).catch(err => {
-      //       this.$message.error(err);
-      //       this.loading = false;
-      //     });
-      //   } else {
-      //     console.log('登录失败，请检查用户名和密码!!');
-      //     return false;
-      //   }
-      // });
-    },
+    }
   }
 }
 </script>

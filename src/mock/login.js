@@ -4,21 +4,21 @@ const userMap = {
   admin: {
     role: 'admin',
     token: 'admin',
-    avatar: '../../assets/images/avater/1.jpg',
+    avater: 'src/assets/images/avater/1.jpg',
     name: '汉王管理员',
     uid: '001'
   },
   agent: {
     role: 'agent',
     token: 'agent',
-    avatar: '../../assets/images/avater/2.jpg',
+    avater: 'src/assets/images/avater/2.jpg',
     name: '代理商',
     uid: '002'
   },
   user: {
     role: 'user',
     token: 'user',
-    avatar: '../../assets/images/avater/3.jpg',
+    avater: 'src/assets/images/avater/3.jpg',
     name: '用户',
     uid: '003'
   }

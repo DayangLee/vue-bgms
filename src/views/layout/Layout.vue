@@ -16,7 +16,7 @@ import Navbar from './Navbar'
 import AppMain from './AppMain'
 
 export default {
-  name: 'layout',
+  name: 'Layout',
   components: {
     Sidebar, Navbar, AppMain
   },
@@ -35,6 +35,7 @@ export default {
   position: relative;
   height: 100%;
   width: 100%;
+  
   &.hideSidebar {
     .sidebar-wrapper {
       transform: translate(-180px, 0);
@@ -52,6 +53,15 @@ export default {
       margin-left: 40px;
     }
   }
+  .sidebar-container {
+    transition: all .28s ease-out;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: -17px;
+    overflow-y: auto;
+  }
   .sidebar-wrapper {
     width: 220px;
     position: fixed;
@@ -62,19 +72,11 @@ export default {
     overflow: hidden;
     transition: all .28s ease-out;
   }
-  .sidebar-container {
-    transition: all .28s ease-out;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: -17px;
-    overflow-y: scroll;
-  }
+  
   .main-container {
     min-height: 100%;
     transition: all .28s ease-out;
-    margin-left: 180px;
+    margin-left: 220px;
   }
 }
 </style>

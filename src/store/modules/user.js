@@ -9,7 +9,7 @@ const user = {
     auth_type: '',
     token: Cookies.get('token'),
     uid: undefined,
-    roles: '',
+    roles: [],
     name: '',
     avater: ''
   },
@@ -52,7 +52,6 @@ const user = {
       return new Promise((resolve, reject) => {
         loginByAcount(acount, password).then(response => {
           const data = response.data;
-          console.log(response)
           Cookies.set('Token', data.token);
           commit('SET_TOKEN', data.token);
           commit('SET_ACOUNT', acount);
