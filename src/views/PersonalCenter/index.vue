@@ -111,10 +111,10 @@
 </template>
 
 <script>
-import { passwordDeal } from '../../filters/index';
-import ImageCropper from '../../components/ImageCropper';
-import PanThumb from '../../components/PanThumb';
-import Image from '../../assets/image/1.jpg';
+import { passwordDeal } from '../../filters/index.js'
+import ImageCropper from '../../components/ImageCropper'
+import PanThumb from '../../components/PanThumb'
+import Image from '../../assets/images/avater/1.jpg'
 export default {
   components: { ImageCropper, PanThumb },
   data() {
@@ -166,7 +166,7 @@ export default {
       infoEdit: false,
       user: {
         name: '张全蛋',
-        imgUrl: '../../assets/image/1.jpg',
+        imgUrl: '../../assets/images/avater/1.jpg',
         email: 'dayanglee2015@163.com',
         phone: '13521347060',
         password: '123456'

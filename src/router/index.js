@@ -10,6 +10,11 @@ import Dashboard from '../views/dashboard/index'
 import DeviceData from '../views/deviceData/index'
 import DeviceManage from '../views/deviceManage/index'
 import DeviceGroupManage from '../views/deviceGroupManage/index'
+import UserManage from '../views/userManage/index'
+import UserGroupManage from '../views/userGroupManage/index'
+import AuthManage from '../views/authManage/index'
+import AcountManage from '../views/acountManage/index'
+import PersonalCenter from '../views/PersonalCenter/index'
 
 Vue.use(Router)
 
@@ -52,10 +57,10 @@ export const constantRouterMap = [
     icon: 'xiala',
     meta: { role: ['admin', 'agent'] },
     children: [
-      { path: 'index', component: Hello, name: '用户管理', icon: 'yonghu' },
-      { path: 'group-manage', component: Hello, name: '用户组管理', icon: 'yonghuzu-shixin' },
-      { path: 'auth-manage', component: Hello, name: '权限管理', icon: 'quanxianguanli' },
-      { path: 'acount-manage', component: Hello, name: '账号管理', icon: 'zhanghaoguanli' }
+      { path: 'index', component: UserManage, name: '用户管理', icon: 'yonghu' },
+      { path: 'group-manage', component: UserGroupManage, name: '用户组管理', icon: 'yonghuzu-shixin' },
+      { path: 'auth-manage', component: AuthManage, name: '权限管理', icon: 'quanxianguanli' },
+      { path: 'acount-manage', component: AcountManage, name: '账号管理', icon: 'zhanghaoguanli' }
     ]
   },
   {
@@ -64,7 +69,7 @@ export const constantRouterMap = [
     redirect: '/person',
     noDropdown: true,
     icon: 'gerenzhongxinicon',
-    children: [{ path: 'index', component: Hello, name: '个人中心' }]
+    children: [{ path: 'index', component: PersonalCenter, name: '个人中心' }]
   },
   { path: '*', redirect: '/404', hidden: true }
 ]

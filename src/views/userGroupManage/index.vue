@@ -83,11 +83,11 @@
             <i class="header-icon el-icon-edit define" @click.stop="handleEdit"></i>
           </template>
           <div v-for="item in groupItem" :key="item" class="text item">
-            <img src="../../assets/deviceManage/id.png">
+            <img src="../../assets/images/device/id.png">
             <span style="margin-left:30px;">{{item.id}}</span>
             <span style="margin-left:30px;">{{item.name}}</span>
-            <img v-if="item.status===1" style="margin-left:30px;" src="../../assets/deviceManage/online.png" class="statusIcon">
-            <img v-else style="margin-left:30px;" src="../../assets/deviceManage/offline.png" class="statusIcon">
+            <img v-if="item.status===1" style="margin-left:30px;" src="../../assets/images/device/online.png" class="statusIcon">
+            <img v-else style="margin-left:30px;" src="../../assets/images/device/offline.png" class="statusIcon">
             <span style="margin-left:10px;">{{item.status===1?'运行中':'关闭'}}</span>
             <i class="header-icon el-icon-delete define1" @click.stop="handleDeleteItem(item.id)"></i>
             <i class="header-icon el-icon-edit define1" @click.stop="handleEditItem(item.id)"></i>
@@ -102,11 +102,11 @@
             <i class="header-icon el-icon-edit define" @click.stop="handleEdit"></i>
           </template>
           <div v-for="item in groupItem" :key="item" class="text item">
-            <img src="../../assets/deviceManage/id.png">
+            <img src="../../assets/images/device/id.png">
             <span style="margin-left:30px;">{{item.id}}</span>
             <span style="margin-left:30px;">{{item.name}}</span>
-            <img v-if="item.status===1" style="margin-left:30px;" src="../../assets/deviceManage/online.png" class="statusIcon">
-            <img v-else style="margin-left:30px;" src="../../assets/deviceManage/offline.png" class="statusIcon">
+            <img v-if="item.status===1" style="margin-left:30px;" src="../../assets/images/device/online.png" class="statusIcon">
+            <img v-else style="margin-left:30px;" src="../../assets/images/device/offline.png" class="statusIcon">
             <span style="margin-left:10px;">{{item.status===1?'运行中':'关闭'}}</span>
             <i class="header-icon el-icon-delete define1" @click.stop="handleDeleteItem(item.id)"></i>
             <i class="header-icon el-icon-edit define1" @click.stop="handleEditItem(item.id)"></i>
@@ -121,11 +121,11 @@
             <i class="header-icon el-icon-edit define" @click.stop="handleEdit"></i>
           </template>
           <div v-for="item in groupItem" :key="item" class="text item">
-            <img src="../../assets/deviceManage/id.png">
+            <img src="../../assets/images/device/id.png">
             <span style="margin-left:30px;">{{item.id}}</span>
             <span style="margin-left:30px;">{{item.name}}</span>
-            <img v-if="item.status===1" style="margin-left:30px;" src="../../assets/deviceManage/online.png" class="statusIcon">
-            <img v-else style="margin-left:30px;" src="../../assets/deviceManage/offline.png" class="statusIcon">
+            <img v-if="item.status===1" style="margin-left:30px;" src="../../assets/images/device/online.png" class="statusIcon">
+            <img v-else style="margin-left:30px;" src="../../assets/images/device/offline.png" class="statusIcon">
             <span style="margin-left:10px;">{{item.status===1?'运行中':'关闭'}}</span>
             <i class="header-icon el-icon-delete define1" @click.stop="handleDeleteItem(item.id)"></i>
             <i class="header-icon el-icon-edit define1" @click.stop="handleEditItem(item.id)"></i>

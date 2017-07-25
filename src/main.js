@@ -14,13 +14,16 @@ import './assets/style/index.scss'
 import './mock/index.js'
 import './components/Icon-svg/index'
 import './assets/iconfont/iconfont'
+import * as filters from './filters/index'// 全局vue filter
 
 Vue.config.productionTip = false
 
 Vue.component('icon', Icon)
 Vue.use(ElementUI)
 
-
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
+});
 function hasPermission(roles, permissionRoles) {
     if (roles.indexOf('admin') >= 0) return true; // admin权限 直接通过
     if (!permissionRoles) return true;
