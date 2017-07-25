@@ -5,7 +5,6 @@ import Login from '../views/login/index'
 // import Err404 from '../views/error/404.vue'
 
 import Layout from '../views/layout/Layout'
-import Hello from '../views/Hello/index'
 import Dashboard from '../views/dashboard/index'
 import DeviceData from '../views/deviceData/index'
 import DeviceManage from '../views/deviceManage/index'
