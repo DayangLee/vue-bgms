@@ -2,16 +2,22 @@ import Mock from 'mockjs'
 import loginAPI from './login'
 import KGMapDataAPI from './KGMap'
 import deviceDataListAPI from './deviceDataList'
+import deviceManageAPI from './deviceManage'
 
 // 登录登出相关
 Mock.mock(/\/loginbyacount/, 'post', loginAPI.loginByAcount)
 Mock.mock(/\/logout/, 'post', loginAPI.logout)
 Mock.mock(/\/user\/info\.*/, 'get', loginAPI.getInfo)
 
-// dashboard KG 分布数据相关
+// dashboard ---- KG 分布数据相关
 Mock.mock(/\/data\/KG/, 'get', KGMapDataAPI.getKGData)
 
-// 设备数据 KG一代、KG二代、新风数据列表相关
+// 设备数据 ---- KG一代、KG二代、新风数据列表相关
 Mock.mock(/\/data\/list/, 'get', deviceDataListAPI.getDeviceDataList)
+
+//设备管理 ---- 设备状态、设备信息、设备数据列表相关
+Mock.mock(/\/device\/manage\/status/, 'get', deviceManageAPI.getDeviceStatus)
+Mock.mock(/\/device\/manage\/info/, 'get', deviceManageAPI.getDeviceInfo)
+Mock.mock(/\/device\/manage\/data/, 'get', deviceManageAPI.getDeviceData)
 
 export default Mock

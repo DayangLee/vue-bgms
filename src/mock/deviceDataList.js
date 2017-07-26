@@ -11,7 +11,7 @@ for (let i = 0; i < count; i++) {
     status: '@integer(0,1)',
     group: '@ctitle(3, 10)',
     location: '@county(true)',
-    user: '@ctitle(3, 10)'
+    user: '@cname()'
   }));
   newWindList.push(Mock.mock({
     deviceName: '@ctitle(5, 10)',
@@ -19,7 +19,7 @@ for (let i = 0; i < count; i++) {
     status: '@integer(0,1)',
     group: '@ctitle(3, 10)',
     location: '@county(true)',
-    user: '@ctitle(3, 10)'
+    user: '@cname()'
   }));
 }
 
