@@ -25,7 +25,8 @@
             <div slot="header" class="clearfix">
               <span style="line-height: 36px;font-size:26px;">污染分布</span>
             </div>
-            <div class="echarts echarts2">
+            <div class="echarts2">
+              <ringChart></ringChart>
               <!-- <IEcharts :option="pie2"></IEcharts> -->
             </div>
           </el-card>
@@ -127,7 +128,8 @@
             <div slot="header" class="clearfix">
               <span style="line-height: 36px;font-size:26px;">污染分布</span>
             </div>
-            <div class="echarts echarts2">
+            <div class="echarts2">
+              <ringChart></ringChart>
               <!-- <IEcharts :option="pie2" ref="polluteRank" width='100%' height='100%'></IEcharts> -->
             </div>
           </el-card>
@@ -228,7 +230,8 @@
             <div slot="header" class="clearfix">
               <span style="line-height: 36px;font-size:26px;">污染分布</span>
             </div>
-            <div class="echarts echarts2">
+            <div class="echarts2">
+              <ringChart></ringChart>
               <!-- <IEcharts :option="pie2"></IEcharts> -->
             </div>
           </el-card>
@@ -315,10 +318,11 @@
 </template>
 
 <script>
-import circleChart from '../../components/CircleChart/index';
+import circleChart from '../../components/CircleChart/index'
+import ringChart from '../../components/RingChart/index'
 export default {
   components: {
-    circleChart
+    circleChart, ringChart
   },
   data: () => ({
     deviceInfoTabs: '1',
@@ -342,64 +346,7 @@ export default {
       group: '北京汉王蓝天',
       location: '北京市昌平区沙河镇沙河路97号新元科技园C座401汉王蓝天',
       user: '小拳拳捶你胸口大坏蛋嘤嘤嘤'
-    }],
-    pie2: {
-      tooltip: {
-        trigger: 'item',
-        formatter: "{b}: {c} ({d}%)"
-      },
-      legend: {
-        orient: 'horizontal',
-        left: 'center',
-        top: 'bottom',
-        height: 80,
-        itemHeight: 20,
-        itemWidth: 50,
-        data: ['优', '良', '轻度污染', '中度污染', '重度污染', '严重污染']
-      },
-      series: [
-        {
-          type: 'pie',
-          center: ['50%', '40%'],
-          radius: ['40%', '60%'],
-          avoidLabelOverlap: false,
-          label: {
-            normal: {
-              show: false,
-              position: 'center'
-            },
-            emphasis: {
-              show: true,
-              textStyle: {
-                fontSize: '28',
-                fontWeight: 'bold'
-              }
-            }
-          },
-          labelLine: {
-            normal: {
-              show: false
-            }
-          },
-          color: ['#01cc00', '#d7c924', '#eb8a15', '#fe0000', '#993365', '#8f4748', '#8f4748'],
-          data: [
-            { value: 335, name: '优' },
-            { value: 310, name: '良' },
-            { value: 234, name: '轻度污染' },
-            { value: 135, name: '中度污染' },
-            { value: 135, name: '重度污染' },
-            { value: 148, name: '严重污染' }
-          ],
-          itemStyle: {
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          }
-        }
-      ]
-    }
+    }]
   }),
   computed: {
   },
@@ -464,6 +411,9 @@ export default {
   .box3 {
     .el-card {
       float: right;
+      table {
+        margin-top: -10px;
+      }
     }
   }
   .el-card {
@@ -479,8 +429,7 @@ export default {
     .echarts1 {
       width: 100%;
       height: 280px;
-      margin-top: -30px;
-      // .vue-echarts {
+      margin-top: -30px; // .vue-echarts {
       //   height: 100%;
       //   width: 100%;
       //   &:first-child {
@@ -492,8 +441,7 @@ export default {
     .echarts2 {
       width: 100%;
       height: 330px;
-      margin-top: -30px;
-      // .vue-echarts {
+      margin-top: -30px; // .vue-echarts {
       //   height: 100%;
       //   width: 100%;
       //   &:first-child {
@@ -509,7 +457,7 @@ export default {
       margin-left: 8%;
       tr {
         height: 60px;
-        line-height: 60px;
+        line-height: 50px;
         td {
           width: 30%;
         }
@@ -527,7 +475,7 @@ export default {
     .el-input.searchDevice1 {
       float: right;
       width: 15%;
-      margin-top: 0.5%;
+      // margin-top: 0.5%;
       z-index: 10;
     }
     .block {
