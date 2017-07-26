@@ -13,8 +13,8 @@
               <span style="line-height: 36px;font-size:26px;">设备在线情况</span>
             </div>
             <div style="width:100%;">
-              <div class="echarts echarts1">
-                <!-- <IEcharts :option="pie1"></IEcharts> -->
+              <div class="echarts1">
+                <circleChart></circleChart>
               </div>
               <div class="text">共{{allcount}}台设备</div>
             </div>
@@ -115,8 +115,8 @@
               <span style="line-height: 36px;font-size:26px;">设备在线情况</span>
             </div>
             <div style="width:100%;">
-              <div class="echarts echarts1">
-                <!-- <IEcharts :option="pie1"></IEcharts> -->
+              <div class="echarts1">
+                <circleChart></circleChart>
               </div>
               <div class="text">共{{allcount}}台设备</div>
             </div>
@@ -216,8 +216,8 @@
               <span style="line-height: 36px;font-size:26px;">设备在线情况</span>
             </div>
             <div style="width:100%;">
-              <div class="echarts echarts1">
-                <!-- <IEcharts :option="pie1"></IEcharts> -->
+              <div class="echarts1">
+                <circleChart></circleChart>
               </div>
               <div class="text">共{{allcount}}台设备</div>
             </div>
@@ -315,11 +315,11 @@
 </template>
 
 <script>
-// import IEcharts from 'vue-echarts-v3/src/full.vue';
+import circleChart from '../../components/CircleChart/index';
 export default {
-  // components: {
-  //   IEcharts
-  // },
+  components: {
+    circleChart
+  },
   data: () => ({
     deviceInfoTabs: '1',
     allcount: 233,
@@ -343,44 +343,6 @@ export default {
       location: '北京市昌平区沙河镇沙河路97号新元科技园C座401汉王蓝天',
       user: '小拳拳捶你胸口大坏蛋嘤嘤嘤'
     }],
-    pie1: {
-      title: {
-        show: false
-      },
-      tooltip: {
-        trigger: 'item',
-        formatter: "{b}: {c} ({d}%)"
-      },
-      legend: {
-        orient: 'horizontal',
-        left: 'center',
-        top: 'bottom',
-        data: ['在线', '离线']
-      },
-      xAxis: {
-        show: false
-      },
-      yAxis: {
-        show: false
-      },
-      series: [{
-        type: 'pie',
-        radius: '55%',
-        center: ['50%', '50%'],
-        color: ['#00FF00', '#FF0000'],
-        data: [
-          { value: 35, name: '在线' },
-          { value: 310, name: '离线' }
-        ],
-        itemStyle: {
-          emphasis: {
-            shadowBlur: 10,
-            shadowOffsetX: 0,
-            shadowColor: 'rgba(0, 0, 0, 0.5)'
-          }
-        }
-      }]
-    },
     pie2: {
       tooltip: {
         trigger: 'item',
@@ -518,27 +480,27 @@ export default {
       width: 100%;
       height: 280px;
       margin-top: -30px;
-      .vue-echarts {
-        height: 100%;
-        width: 100%;
-        &:first-child {
-          width: 358px;
-          height: 280px;
-        }
-      }
+      // .vue-echarts {
+      //   height: 100%;
+      //   width: 100%;
+      //   &:first-child {
+      //     width: 358px;
+      //     height: 280px;
+      //   }
+      // }
     }
     .echarts2 {
       width: 100%;
       height: 330px;
       margin-top: -30px;
-      .vue-echarts {
-        height: 100%;
-        width: 100%;
-        &:first-child {
-          width: 358px;
-          height: 330px;
-        }
-      }
+      // .vue-echarts {
+      //   height: 100%;
+      //   width: 100%;
+      //   &:first-child {
+      //     width: 358px;
+      //     height: 330px;
+      //   }
+      // }
     }
 
 
