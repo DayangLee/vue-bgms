@@ -80,7 +80,7 @@
               </div>
             </div>
             <div class="KG1CardBody">
-              <el-table ref="multipleTable" :data="tableData1" border tooltip-effect="dark" style="width: 100%" stripe>
+              <el-table ref="multipleTable" :data="KG1List" border tooltip-effect="dark" style="width: 100%" stripe>
                 <el-table-column type="index" width="120" min-width="80" align="center">
                 </el-table-column>
                 <el-table-column prop="deviceName" label="设备名称" width="180" min-width="120" align="center">
@@ -183,7 +183,7 @@
               </div>
             </div>
             <div class="KG1CardBody">
-              <el-table ref="multipleTable" :data="tableData1" border tooltip-effect="dark" style="width: 100%" stripe>
+              <el-table ref="multipleTable" :data="KG2List" border tooltip-effect="dark" style="width: 100%" stripe>
                 <el-table-column type="index" width="120" min-width="80" align="center">
                 </el-table-column>
                 <el-table-column prop="deviceName" label="设备名称" width="180" min-width="120" align="center">
@@ -285,7 +285,7 @@
               </div>
             </div>
             <div class="KG1CardBody">
-              <el-table ref="multipleTable" :data="tableData1" border tooltip-effect="dark" style="width: 100%" stripe>
+              <el-table ref="multipleTable" :data="newwindList" border tooltip-effect="dark" style="width: 100%" stripe>
                 <el-table-column type="index" width="120" min-width="80" align="center">
                 </el-table-column>
                 <el-table-column prop="deviceName" label="设备名称" width="180" min-width="120" align="center">
@@ -320,6 +320,7 @@
 <script>
 import circleChart from '../../components/CircleChart/index'
 import ringChart from '../../components/RingChart/index'
+import { getDeviceDataList } from '../../api/deviceDataList'
 export default {
   components: {
     circleChart, ringChart
@@ -339,6 +340,9 @@ export default {
       temp: { min: 2, max: 40 },
       wet: { min: 13, max: 98 }
     },
+    KG1List: null,
+    KG2List: null,
+    newwindList: null,
     tableData1: [{
       deviceName: '汉王大厦空感一代',
       deviceId: 'KG-1484133759908',
@@ -351,6 +355,7 @@ export default {
   computed: {
   },
   created() {
+    this.getData()
   },
   mounted: function () {
   },
@@ -369,6 +374,17 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+    },
+    getData() {
+      getDeviceDataList('KG1').then(res => {
+        this.KG1List = res.data
+      })
+      getDeviceDataList('KG2').then(res => {
+        this.KG2List = res.data
+      })
+      getDeviceDataList('newWind').then(res => {
+        this.newwindList = res.data
+      })
     }
   }
 }
@@ -474,8 +490,7 @@ export default {
     }
     .el-input.searchDevice1 {
       float: right;
-      width: 15%;
-      // margin-top: 0.5%;
+      width: 15%; // margin-top: 0.5%;
       z-index: 10;
     }
     .block {
