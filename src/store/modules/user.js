@@ -7,7 +7,7 @@ const user = {
     status: '',
     acount: '',
     auth_type: '',
-    token: Cookies.get('token'),
+    token: Cookies.get('Token'),
     uid: undefined,
     roles: [],
     name: '',

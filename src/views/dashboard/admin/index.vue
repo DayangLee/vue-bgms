@@ -4,6 +4,7 @@
     <el-row :gutter='50'>
       <el-col :xs="24" :sm="24" :md="24" :lg="14">
         <div class="card card1">
+          <chinaMap height="100%" width="100%"></chinaMap>
           <!-- <IEcharts :option='map'></IEcharts> -->
         </div>
       </el-col>
@@ -67,10 +68,12 @@
 // import IEcharts from 'vue-echarts-v3';
 // import chinaJson from '../../../assets/json/china.json';
 // IEcharts.registerMap('china', chinaJson);
+import chinaMap from '../../../components/ChinaMap'
 export default {
-  // components: {
-  //   IEcharts
-  // },
+  components: {
+    //IEcharts
+    chinaMap
+  },
   data: () => ({
     notRead1: true,
     notRead2: true,

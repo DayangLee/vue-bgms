@@ -6,8 +6,6 @@ import router from './router'
 import store from './store'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
-import 'vue-awesome/icons'
-import Icon from 'vue-awesome/components/Icon'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import './assets/style/index.scss'
@@ -18,7 +16,7 @@ import * as filters from './filters/index'// 全局vue filter
 
 Vue.config.productionTip = false
 
-Vue.component('icon', Icon)
+// Vue.component('icon', Icon)
 Vue.use(ElementUI)
 
 Object.keys(filters).forEach(key => {
@@ -32,13 +30,6 @@ function hasPermission(roles, permissionRoles) {
     } else {
         return false
     }
-}
-function getCookie(name) {
-    var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-    if (arr = document.cookie.match(reg))
-        return unescape(arr[2]);
-    else
-        return null;
 }
 
 const whiteList = ['/login']; // 不重定向白名单
@@ -95,19 +86,6 @@ router.beforeEach((to, from, next) => {
                 // }
                 // 可删 ↑
             }
-        }
-    } else if (getCookie('Token')) { // 判断是否有token
-        if (to.path === '/login') {
-            next({ path: '/dashboard/index' });
-        } else {
-            const roles = getCookie('Token');
-            
-            store.dispatch('GenerateRoutes', { roles }).then(() => { // 生成可访问的路由表
-                //router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
-                //console.log(to);
-                next(); // hack方法 确保addRoutes已完成
-            })
-            
         }
     } else {
         if (whiteList.indexOf(to.path) !== -1) { // 在免登录白名单，直接进入
