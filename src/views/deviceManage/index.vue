@@ -43,16 +43,16 @@
           </el-table-column>
           <el-table-column type="index" width="60" align="center">
           </el-table-column>
-          <el-table-column prop="deviceName" label="设备名称" width="180" align="center">
+          <el-table-column prop="deviceName" label="设备名称" width="170" align="center">
           </el-table-column>
-          <el-table-column prop="deviceId" label="设备ID" width="180" align="center">
+          <el-table-column prop="deviceId" label="设备ID" width="150" align="center">
           </el-table-column>
           <!-- <el-table-column label="开关" width="80" align="center">
-                                              <template scope="scope">
-                                                <el-switch v-model="scope.row.open" on-color="#13ce66" off-color="#ff4949" on-text="" off-text="">
-                                                </el-switch>
-                                              </template>
-                                            </el-table-column> -->
+                                                <template scope="scope">
+                                                  <el-switch v-model="scope.row.open" on-color="#13ce66" off-color="#ff4949" on-text="" off-text="">
+                                                  </el-switch>
+                                                </template>
+                                              </el-table-column> -->
           <el-table-column prop="status" label="运行状态" width="100" align="center">
             <template scope="scope">
               <el-tag :type="scope.row.status === 1 ? 'success' : 'danger'">{{scope.row.status===1?'运行中':'关闭'}}</el-tag>
@@ -60,25 +60,25 @@
           </el-table-column>
           <el-table-column prop="time" label="定时" width="160" align="center">
           </el-table-column>
-          <el-table-column prop="filter" label="滤网" width="120" align="center">
+          <el-table-column prop="filter" label="滤网" width="110" align="center">
           </el-table-column>
-          <el-table-column prop="wind" label="风速" width="90" align="center">
+          <el-table-column prop="wind" label="风速" width="80" align="center">
           </el-table-column>
-          <el-table-column prop="gear" label="档位" width="90" align="center">
+          <el-table-column prop="gear" label="档位" width="80" align="center">
           </el-table-column>
-          <el-table-column prop="circle" label="循环" width="90" align="center">
+          <el-table-column prop="circle" label="循环" width="80" align="center">
             <template scope="scope">
               {{scope.row.circle === 1?'内':'外'}}
             </template>
           </el-table-column>
-          <el-table-column prop="hit" label="热交换" width="90" align="center">
+          <el-table-column prop="hit" label="热交换" width="80" align="center">
             <template scope="scope">
               {{scope.row.hit === 1?'内':'外'}}
             </template>
             <!-- <template scope="scope">
-                                                <el-switch v-model="scope.row.hit" on-color="#13ce66" off-color="#ff4949" on-text="" off-text="">
-                                                </el-switch>
-                                              </template> -->
+                                                  <el-switch v-model="scope.row.hit" on-color="#13ce66" off-color="#ff4949" on-text="" off-text="">
+                                                  </el-switch>
+                                                </template> -->
           </el-table-column>
           <el-table-column label="更多" align="center" min-width="150">
             <template scope="scope">
@@ -100,9 +100,9 @@
           </el-table-column>
           <el-table-column type="index" width="60" align="center">
           </el-table-column>
-          <el-table-column prop="deviceName" label="设备名称" width="180" align="center">
+          <el-table-column prop="deviceName" label="设备名称" width="160" align="center">
           </el-table-column>
-          <el-table-column prop="deviceId" label="设备ID" width="180" align="center">
+          <el-table-column prop="deviceId" label="设备ID" width="160" align="center">
           </el-table-column>
           <el-table-column prop="group" label="群组" width="150" align="center">
           </el-table-column>
@@ -110,9 +110,9 @@
           </el-table-column>
           <el-table-column prop="runTime" label="运行时长" width="120" align="center">
           </el-table-column>
-          <el-table-column prop="contact" label="联系人" width="110" align="center">
+          <el-table-column prop="contact" label="联系人" width="90" align="center">
           </el-table-column>
-          <el-table-column prop="tel" label="电话" width="150" align="center">
+          <el-table-column prop="tel" label="电话" width="130" align="center">
           </el-table-column>
           <el-table-column label="更多" align="center" min-width="150">
             <template scope="scope">
@@ -129,7 +129,7 @@
         </div>
         <div class="clear"></div>
   
-        <el-table ref="multipleTable" :data="tableData" border tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange" stripe>
+        <el-table ref="multipleTable" :data="dataList" border tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange" stripe>
           <el-table-column type="selection" width="55" align="center">
           </el-table-column>
           <el-table-column type="index" width="50" align="center">
@@ -433,7 +433,7 @@
   
         <div class="components-container">
           <div class='chart-container'>
-            <historyChart height='100%' width='100%' />
+            <barChart width="100%"></barChart>
             <!-- <keyboardChart height='100%' width='100%' ></keyboardChart> -->
           </div>
           <div class="chooseDataType">
@@ -551,6 +551,7 @@
 // import historyChart from 'components/Charts/history';
 // import keyboardChart from 'components/Charts/keyboard2';
 import { getDeviceStatus, getDeviceInfo, getDeviceData } from '../../api/deviceManage'
+import barChart from '../../components/BarChart/index'
 export default {
   data: () => ({
     deviceIdSearch: '',
@@ -560,6 +561,7 @@ export default {
     checkList: ['全部'],
     statusList: null,
     infoList: null,
+    dataList: null,
     tableData: [{
       deviceName: '汉王大厦新风机',
       deviceId: 'KG-1484133759908',
@@ -650,10 +652,9 @@ export default {
     editIcon: 'inline-block',
     saveIcon: 'none'
   }),
-  // components: {
-  //   historyChart,
-  //   keyboardChart
-  // },
+  components: {
+    barChart
+  },
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
@@ -709,9 +710,12 @@ export default {
       getDeviceStatus().then(res => {
         this.statusList = res.data
       }),
-        getDeviceInfo().then(res => {
-          this.infoList = res.data
-        })
+      getDeviceInfo().then(res => {
+        this.infoList = res.data
+      }),
+      getDeviceData().then(res => {
+        this.dataList = res.data
+      })
     }
   },
   created() {

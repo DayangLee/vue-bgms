@@ -12,7 +12,7 @@
         <i class="el-icon-caret-bottom" style="color:white;"></i>
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
-        <router-link class='inlineBlock' to="/">
+        <router-link class='inlineBlock' to="/person/index">
           <el-dropdown-item>
             个人中心
           </el-dropdown-item>

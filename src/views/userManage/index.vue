@@ -10,8 +10,8 @@
     <el-input class='searchUser' placeholder="搜索用户" icon="search" v-model="UserSearch" :on-icon-click="handleIconClick">
     </el-input>
   
-    <el-table ref="multipleTable" :data="tableData" border tooltip-effect="dark" style="width: 100%" stripe>
-      <el-table-column type="index" width="50" align="center">
+    <el-table ref="multipleTable" :data="userList" border tooltip-effect="dark" style="width: 100%" stripe>
+      <el-table-column type="index" width="60" align="center">
       </el-table-column>
       <el-table-column sortable prop="group" label="群组" width="150" align="center">
       </el-table-column>
@@ -102,20 +102,13 @@
 </template>
 
 <script>
+import { getUserData } from '../../api/userManage'
 export default {
   data: () => ({
     UserSearch: '',
     currentPage: 1,
     totalItems: 100,
-    tableData: [{
-      group: '分组一',
-      userName: '张全蛋',
-      companyName: '汉王蓝天科技有限公司',
-      tel: '13521347060',
-      deviceCount: 233,
-      lastTime: '2017/04/05 12:00',
-      note: '测试'
-    }],
+    userList: [],
     labelPosition: 'left',
     formLabelData: {
       group: '',
@@ -187,6 +180,14 @@ export default {
       alert('submit   ' + formName + '  !');
       this.dialogTableVisible2 = false;
     },
+    getData() {
+      getUserData().then(res => {
+        this.userList = res.data
+      })
+    }
+  },
+  created() {
+    this.getData()
   }
 
 }
