@@ -397,7 +397,7 @@ export default {
 
 .data-container {
   padding: 30px 50px;
-  min-width: 1330px;
+  min-width: 1300px;
   .title {
     font-size: 24px;
   }
@@ -435,7 +435,8 @@ export default {
   .el-card {
     margin-bottom: 20px;
     height: 400px;
-    width: 400px;
+    width: 380px;
+    min-width: 350px;
     .text {
       width: 100%;
       text-align: center;

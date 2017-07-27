@@ -62,16 +62,16 @@
           </el-table-column>
           <el-table-column prop="filter" label="滤网" width="110" align="center">
           </el-table-column>
-          <el-table-column prop="wind" label="风速" width="80" align="center">
+          <el-table-column prop="wind" label="风速" width="60" align="center">
           </el-table-column>
-          <el-table-column prop="gear" label="档位" width="80" align="center">
+          <el-table-column prop="gear" label="档位" width="60" align="center">
           </el-table-column>
-          <el-table-column prop="circle" label="循环" width="80" align="center">
+          <el-table-column prop="circle" label="循环" width="60" align="center">
             <template scope="scope">
               {{scope.row.circle === 1?'内':'外'}}
             </template>
           </el-table-column>
-          <el-table-column prop="hit" label="热交换" width="80" align="center">
+          <el-table-column prop="hit" label="热交换" width="60" align="center">
             <template scope="scope">
               {{scope.row.hit === 1?'内':'外'}}
             </template>

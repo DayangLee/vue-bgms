@@ -21,7 +21,7 @@
         </template>
         <!-- <template v-for="child in item.children" v-if='!child.hidden'> -->
           <!-- <SidebarItem class='menu-indent' v-if='child.children&&child.children.length>0' :routes='[child]'> </SidebarItem> -->
-          <el-menu-item v-for="child in item.children"  class="menu-indent title2" :index="item.path+'/'+child.path">
+          <el-menu-item v-for="child in item.children"  class="title2" :index="item.path+'/'+child.path">
           <wscn-icon-svg v-if='child.icon' :icon-class="child.icon" class="icon2"></wscn-icon-svg>
           &nbsp;&nbsp;&nbsp;
             {{child.name}}
@@ -67,7 +67,6 @@ img {
   height: 56px;
   line-height: 56px;
   margin-left: -25px;
-  
 }
 .icon1 {
     width: 1.5rem;
