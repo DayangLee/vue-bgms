@@ -376,6 +376,9 @@ export default {
 
       .el-form {
         margin-top: 20px;
+        .el-table {
+          margin-top: 0;
+        }
       }
     }
   }

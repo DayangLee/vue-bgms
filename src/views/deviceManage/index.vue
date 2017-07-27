@@ -1057,7 +1057,10 @@ export default {
     }
   }
 
-  #operateDialog {
+  #operateDialog .el-dialog{
+    width: 800px;
+    margin-bottom: 5%;
+    margin-top: -5%;
     .el-dialog__header {
       padding-top: 20px;
       padding-bottom: 20px;
@@ -1086,7 +1089,7 @@ export default {
         font-size: 18px;
         color: rgb(153, 153, 153);
         float: left;
-        width: 10%;
+        width: 100px;
       }
       .operateSettings1 {
         float: left;
@@ -1137,7 +1140,7 @@ export default {
       .operateSettings3 {
         width: 60%;
         float: left;
-        margin-left: 10%;
+        margin-left: 100px;
         .el-date-editor {
           width: 50%;
           margin-left: 5%;
@@ -1157,7 +1160,7 @@ export default {
       .operateSettings5 {
         width: 60%;
         float: left;
-        margin-left: 10%;
+        margin-left: 100px;
         .el-select {
           width: 50%;
           margin-left: 5%;
