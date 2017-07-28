@@ -21,7 +21,7 @@
                 </div>
                 <div class='card-bottom'>
                   <div class="echarts">
-                      <!-- <IEcharts :option="pie"></IEcharts> -->
+                       <IEcharts :option="pie"></IEcharts> 
                   </div>
                 </div>
             </div>
@@ -180,11 +180,11 @@
 </template>
 
 <script>
-// import IEcharts from 'vue-echarts-v3';
+import IEcharts from 'vue-echarts-v3';
 export default {
-    // components: {
-    //     IEcharts
-    // },
+    components: {
+        IEcharts
+    },
     data: () => ({
         onlineCount1: 8888,
         offlineCount1: 888,
@@ -450,8 +450,8 @@ export default {
   margin-left: 20px;
 }
 .card-bottom>table>tr {
-  height: 60px;
-  line-height: 60px;
+  height: 57px;
+  line-height: 57px;
 }
 .card-bottom>table>tr>td {
   width: 45%;
