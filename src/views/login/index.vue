@@ -11,7 +11,6 @@
           <wscn-icon-svg icon-class="yonghu1" class="icon1"></wscn-icon-svg>
         </div>
         <input type="text" name="acount" autoComplete="on" placeholder="请输入用户名" v-model="loginForm.acount">
-        <!-- <el-input name="acount" type="text" v-model="loginForm.acount" autoComplete="on" placeholder="邮箱/手机/用户名"></el-input> -->
       </el-form-item>
       <el-form-item prop="password" class="item">
         <div class="icon-container">

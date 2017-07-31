@@ -27,7 +27,6 @@
             </div>
             <div class="echarts2">
               <ringChart></ringChart>
-              <!-- <IEcharts :option="pie2"></IEcharts> -->
             </div>
           </el-card>
         </div>
@@ -112,7 +111,7 @@
       <el-tab-pane label="空感二代" name="2">
         <div class="box box1">
           <el-card>
-            <div slot="header">
+            <div slot="header" class="clearfix">
               <span style="line-height: 36px;font-size:26px;">设备在线情况</span>
             </div>
             <div style="width:100%;">
@@ -130,7 +129,6 @@
             </div>
             <div class="echarts2">
               <ringChart></ringChart>
-              <!-- <IEcharts :option="pie2" ref="polluteRank" width='100%' height='100%'></IEcharts> -->
             </div>
           </el-card>
         </div>
@@ -179,7 +177,7 @@
               <el-input class='searchDevice1' placeholder="搜索设备" icon="search" v-model="deviceIdSearch" :on-icon-click="handleSearch">
               </el-input>
               <div class="block">
-                共{{KG1Count}}个设备，{{KG1OnlineCount}}个正在运行
+                共{{KG2Count}}个设备，{{KG2OnlineCount}}个正在运行
               </div>
             </div>
             <div class="KG1CardBody">
@@ -232,7 +230,6 @@
             </div>
             <div class="echarts2">
               <ringChart></ringChart>
-              <!-- <IEcharts :option="pie2"></IEcharts> -->
             </div>
           </el-card>
         </div>
@@ -281,7 +278,7 @@
               <el-input class='searchDevice1' placeholder="搜索设备" icon="search" v-model="deviceIdSearch" :on-icon-click="handleSearch">
               </el-input>
               <div class="block">
-                共{{KG1Count}}个设备，{{KG1OnlineCount}}个正在运行
+                共{{NWCount}}个设备，{{NWOnlineCount}}个正在运行
               </div>
             </div>
             <div class="KG1CardBody">
@@ -329,8 +326,12 @@ export default {
     deviceInfoTabs: '1',
     allcount: 233,
     deviceIdSearch: '',
-    KG1Count: 1234,
-    KG1OnlineCount: 123,
+    KG1Count: 0,
+    KG1OnlineCount: 0,
+    KG2Count: 0,
+    KG2OnlineCount: 0,
+    NWCount: 0,
+    NWOnlineCount: 0,
     currentPage: 1,
     totalItems: 100,
     dataRange: {
@@ -360,11 +361,7 @@ export default {
   mounted: function () {
   },
   methods: {
-    handleClick(tab) {
-      console.log(this.$refs.polluteRank);
-      //console.log(tab._props.name);
-      //this.deviceInfoTabs = tab._props.name;
-      //console.log(this.deviceInfoTabs);
+    handleClick(tab, ev) {
     },
     handleSearch(ev) {
       console.log(ev);
@@ -378,12 +375,24 @@ export default {
     getData() {
       getDeviceDataList('KG1').then(res => {
         this.KG1List = res.data
+        for (let i = 0; i < res.data.length; i++) {
+          this.KG1Count++;
+          if (res.data[i].status == 1) this.KG1OnlineCount++
+        }
       })
       getDeviceDataList('KG2').then(res => {
         this.KG2List = res.data
+        for (let i = 0; i < res.data.length; i++) {
+          this.KG2Count++;
+          if (res.data[i].status == 1) this.KG2OnlineCount++
+        }
       })
       getDeviceDataList('newWind').then(res => {
         this.newwindList = res.data
+        for (let i = 0; i < res.data.length; i++) {
+          this.NWCount++;
+          if (res.data[i].status == 1) this.NWOnlineCount++
+        }
       })
     }
   }
@@ -446,26 +455,20 @@ export default {
     .echarts1 {
       width: 100%;
       height: 280px;
-      margin-top: -30px; // .vue-echarts {
-      //   height: 100%;
-      //   width: 100%;
-      //   &:first-child {
-      //     width: 358px;
-      //     height: 280px;
-      //   }
-      // }
+      margin-top: -30px;
+      .echarts {
+        width: 100%;
+        height: 100%;
+      }
     }
     .echarts2 {
       width: 100%;
       height: 330px;
-      margin-top: -30px; // .vue-echarts {
-      //   height: 100%;
-      //   width: 100%;
-      //   &:first-child {
-      //     width: 358px;
-      //     height: 330px;
-      //   }
-      // }
+      margin-top: -30px;
+      .echarts {
+        width: 100%;
+        height: 100%;
+      }
     }
 
 

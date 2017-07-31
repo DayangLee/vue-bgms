@@ -18,7 +18,7 @@
             <i class="header-icon el-icon-plus define" @click.stop="handleAdd"></i>
             <i class="header-icon el-icon-edit define" @click.stop="handleEdit"></i>
           </template>
-          <div v-for="item in groupItem" :key="item" class="text item">
+          <div v-for="item in groupItem" :key="item.id" class="text item">
             <img src="../../assets/images/device/id.png">
             <span style="margin-left:30px;">{{item.id}}</span>
             <span style="margin-left:30px;">{{item.name}}</span>
@@ -37,7 +37,7 @@
             <i class="header-icon el-icon-plus define" @click.stop="handleAdd"></i>
             <i class="header-icon el-icon-edit define" @click.stop="handleEdit"></i>
           </template>
-          <div v-for="item in groupItem" :key="item" class="text item">
+          <div v-for="item in groupItem" :key="item.id" class="text item">
             <img src="../../assets/images/device/id.png">
             <span style="margin-left:30px;">{{item.id}}</span>
             <span style="margin-left:30px;">{{item.name}}</span>
@@ -56,7 +56,7 @@
             <i class="header-icon el-icon-plus define" @click.stop="handleAdd"></i>
             <i class="header-icon el-icon-edit define" @click.stop="handleEdit"></i>
           </template>
-          <div v-for="item in groupItem" :key="item" class="text item">
+          <div v-for="item in groupItem" :key="item.id" class="text item">
             <img src="../../assets/images/device/id.png">
             <span style="margin-left:30px;">{{item.id}}</span>
             <span style="margin-left:30px;">{{item.name}}</span>
@@ -75,7 +75,7 @@
             <i class="header-icon el-icon-plus define" @click.stop="handleAdd"></i>
             <i class="header-icon el-icon-edit define" @click.stop="handleEdit"></i>
           </template>
-          <div v-for="item in groupItem" :key="item" class="text item">
+          <div v-for="item in groupItem" :key="item.id" class="text item">
             <img src="../../assets/images/device/id.png">
             <span style="margin-left:30px;">{{item.id}}</span>
             <span style="margin-left:30px;">{{item.name}}</span>

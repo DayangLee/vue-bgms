@@ -1,8 +1,8 @@
 import Mock from 'mockjs'
 
+const count = parseInt(Math.random()*(15-5+1)+5,10);
 const KGList = []
 const newWindList = []
-const count = 8
 
 for (let i = 0; i < count; i++) {
   KGList.push(Mock.mock({

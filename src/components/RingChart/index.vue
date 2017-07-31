@@ -1,6 +1,6 @@
 <template>
   <div class="echarts">
-    <IEcharts :option='pie' :style="{height:height,width:width}"></IEcharts>
+    <IEcharts :option='pie' :style="{height:height,width:width}" :resizable="true"></IEcharts>
   </div>
 </template>
 
@@ -12,11 +12,11 @@ export default {
   props: {
     width: {
       type: String,
-      default: '20vw'
+      default: '100%'
     },
     height: {
       type: String,
-      default: '35vh'
+      default: '95%'
     }
   },
   data: () => ({
