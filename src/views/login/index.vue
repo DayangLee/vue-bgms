@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <img class="logo" src='../../assets//images//login//logo.png'>
+    <img class="logo" src='../../assets//images/login/logo.png'>
     <el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left" label-width="0px" class="card-box login-form">
       <div class="title">
         <span style="font-weight:bold;">LOGIN</span>
@@ -27,20 +27,20 @@
     <div class="dcode-container">
       <div class="dcode">
         <div>
-          <img src="../../assets//images//login//weixin_erweima.png" class="img1">
+          <img src="../../assets/images/login/weixin_erweima.png" class="img1">
         </div>
         <div>
-          <img src="../../assets//images//login//weixinlogo.png" class="img2">
+          <img src="../../assets/images/login/weixinlogo.png" class="img2">
           <p>汉王蓝天</p>
         </div>
   
       </div>
       <div class="dcode">
         <div>
-          <img src="../../assets//images//login//weibo_erweima.png" class="img1">
+          <img src="../../assets/images/login/weibo_erweima.png" class="img1">
         </div>
         <div>
-          <img src="../../assets//images//login//weibologo.png" class="img2">
+          <img src="../../assets/images/login/weibologo.png" class="img2">
           <p>汉王蓝天</p>
         </div>
       </div>

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Login from '../views/login/index'
-// import Err404 from '../views/error/404.vue'
+import Err404 from '../views/error404/index'
 
 import Layout from '../views/layout/Layout'
 import Dashboard from '../views/dashboard/index'
@@ -58,7 +58,7 @@ export const constantRouterMap = [
     children: [
       { path: 'index', component: UserManage, name: '用户管理', icon: 'yonghu' },
       { path: 'group-manage', component: UserGroupManage, name: '用户组管理', icon: 'yonghuzu-shixin' },
-      { path: 'auth-manage', component: AuthManage, name: '权限管理', icon: 'quanxianguanli' },
+      { path: 'auth-manage', component: Err404, name: '权限管理', icon: 'quanxianguanli' },
       { path: 'acount-manage', component: AcountManage, name: '账号管理', icon: 'zhanghaoguanli' }
     ]
   },
