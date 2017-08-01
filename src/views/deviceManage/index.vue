@@ -5,6 +5,104 @@
       设备 / 设备管理
     </div>
   
+    <span class="tagsTitle">已选条件</span>
+    <el-tag class="tags" v-for="tag in tags" :key="tag.name" :closable="true" :type="tag.type" @close="handleClose(tag)">
+      {{tag.name}}
+    </el-tag>
+  
+    <div class="filters">
+      <div class="filterItem">
+        <span class="filterItem-title">设备类型</span>
+        <el-checkbox-group class="filterItem-content" v-model="filterDeviceType" size="small">
+          <el-checkbox-button v-for="item in deviceTypeList" :label="item" :key="item">{{item}}</el-checkbox-button>
+        </el-checkbox-group>
+      </div>
+  
+      <div class="filterItem">
+        <span class="filterItem-title">数据</span>
+        <div class="filterItem-content">
+          <p class="dataItem">
+            <span>PM2.5</span>
+            <el-input></el-input> -
+            <el-input></el-input>
+          </p>
+          <p class="dataItem">
+            <span>温度</span>
+            <el-input></el-input> -
+            <el-input></el-input>
+          </p>
+          <p class="dataItem">
+            <span>湿度</span>
+            <el-input></el-input> -
+            <el-input></el-input>
+          </p>
+          <p class="dataItem">
+            <span>CO2</span>
+            <el-input></el-input> -
+            <el-input></el-input>
+          </p>
+          <p class="dataItem">
+            <span>甲醛</span>
+            <el-input></el-input> -
+            <el-input></el-input>
+          </p>
+          <p class="dataItem">
+            <span>TVOC</span>
+            <el-input></el-input> -
+            <el-input></el-input>
+          </p>
+          <p class="dataItem">
+            <span>臭氧</span>
+            <el-input></el-input> -
+            <el-input></el-input>
+          </p>
+          <p class="dataItem">
+            <span>氧气</span>
+            <el-input></el-input> -
+            <el-input></el-input>
+          </p>
+        </div>
+      </div>
+  
+      <div class="filterItem">
+        <span class="filterItem-title">状态</span>
+        <el-checkbox-group class="filterItem-content" v-model="filterDeviceStatus" size="small">
+          <el-checkbox-button v-for="item in deviceStatusList" :label="item" :key="item">{{item}}</el-checkbox-button>
+        </el-checkbox-group>
+      </div>
+  
+      <div class="filterItem">
+        <span class="filterItem-title">位置</span>
+        <el-cascader class="filterItem-content" :options="chinaArea" v-model="filterLocation" @change="filterLocationMethod">
+        </el-cascader>
+      </div>
+  
+      <div class="filterItem">
+        <span class="filterItem-title">分组</span>
+        <el-select class="filterItem-content" v-model="filterGroupList" filterable multiple placeholder="请选择">
+          <el-option v-for="item in groupList" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
+  
+      <div class="filterItem filterItem6">
+        <span class="filterItem-title">序列号区间</span>
+        <div class="filterItem-content">
+          <el-input></el-input> -
+          <el-input></el-input>
+        </div>
+      </div>
+  
+      <div class="filterItem">
+        <span class="filterItem-title">在线时间</span>
+        <div class="filterItem-content">
+          <el-date-picker v-model="filterTimeRange" type="datetimerange" placeholder="选择时间范围">
+          </el-date-picker>
+        </div>
+      </div>
+  
+    </div>
+  
     <el-input class='searchDevice' placeholder="搜索设备" icon="search" v-model="deviceIdSearch" :on-icon-click="handleIconClick">
     </el-input>
   
@@ -48,11 +146,11 @@
           <el-table-column prop="deviceId" label="设备ID" width="150" align="center">
           </el-table-column>
           <!-- <el-table-column label="开关" width="80" align="center">
-                                                <template scope="scope">
-                                                  <el-switch v-model="scope.row.open" on-color="#13ce66" off-color="#ff4949" on-text="" off-text="">
-                                                  </el-switch>
-                                                </template>
-                                              </el-table-column> -->
+                                                                                                                      <template scope="scope">
+                                                                                                                        <el-switch v-model="scope.row.open" on-color="#13ce66" off-color="#ff4949" on-text="" off-text="">
+                                                                                                                        </el-switch>
+                                                                                                                      </template>
+                                                                                                                    </el-table-column> -->
           <el-table-column prop="status" label="运行状态" width="100" align="center">
             <template scope="scope">
               <el-tag :type="scope.row.status === 1 ? 'success' : 'danger'">{{scope.row.status===1?'运行中':'关闭'}}</el-tag>
@@ -76,9 +174,9 @@
               {{scope.row.hit === 1?'内':'外'}}
             </template>
             <!-- <template scope="scope">
-                                                  <el-switch v-model="scope.row.hit" on-color="#13ce66" off-color="#ff4949" on-text="" off-text="">
-                                                  </el-switch>
-                                                </template> -->
+                                                                                                                        <el-switch v-model="scope.row.hit" on-color="#13ce66" off-color="#ff4949" on-text="" off-text="">
+                                                                                                                        </el-switch>
+                                                                                                                      </template> -->
           </el-table-column>
           <el-table-column label="更多" align="center" min-width="150">
             <template scope="scope">
@@ -544,16 +642,45 @@
 </template>
 
 <script>
-// import {
-//   MessageBox
-// } from 'element-ui';
-// import { parseTime } from 'utils/index';
-// import historyChart from 'components/Charts/history';
-// import keyboardChart from 'components/Charts/keyboard2';
 import { getDeviceStatus, getDeviceInfo, getDeviceData } from '../../api/deviceManage'
 import barChart from '../../components/BarChart/index'
+import { regionDataPlus, CodeToText, TextToCode } from 'element-china-area-data'
+const deviceTypeList = ['空感一代', '空感二代', '新风控制板']
+const groupList = [{
+  value: '选项1',
+  label: '分组一'
+}, {
+  value: '选项2',
+  label: '分组二'
+}, {
+  value: '选项3',
+  label: '分组三'
+}, {
+  value: '选项4',
+  label: '分组四'
+}, {
+  value: '选项5',
+  label: '分组五'
+}]
 export default {
   data: () => ({
+    tags: [
+      { name: '标签一', type: '' },
+      { name: '标签二', type: 'gray' },
+      { name: '标签三', type: 'primary' },
+      { name: '标签四', type: 'success' },
+      { name: '标签五', type: 'warning' },
+      { name: '标签六', type: 'danger' }
+    ],
+    deviceTypeList: deviceTypeList,
+    filterDeviceType: [],
+    deviceStatusList: ['开机', '关机'],
+    filterDeviceStatus: [],
+    chinaArea: regionDataPlus,
+    filterLocation: [],
+    groupList: groupList,
+    filterGroupList: [],
+    filterTimeRange: [new Date(2017, 7, 1, 10, 10), new Date(2017, 8, 1, 10, 10)],
     deviceIdSearch: '',
     deviceManageTabs: 'first',
     currentPage: 1,
@@ -562,30 +689,6 @@ export default {
     statusList: null,
     infoList: null,
     dataList: null,
-    tableData: [{
-      deviceName: '汉王大厦新风机',
-      deviceId: 'KG-1484133759908',
-      open: true,
-      status: '运行中',
-      time: '05:00 - 07:00',
-      filter: '128/60/52',
-      wind: '3档',
-      gear: '自动',
-      circle: '内',
-      hit: '外',
-      pm2d5: '233',
-      co2: '435',
-      temp: '23',
-      wet: '45',
-      cho: '0.025',
-      tvoc: '0.025',
-      group: '北京汉王蓝天',
-      location: '北京市昌平区',
-      runTime: '12h30min',
-      lastTime: '2017/04/05 12:00',
-      contact: '大洋李',
-      tel: '13521347060'
-    }],
     deviceCount: 1000,
     onlineCount: 333,
     thisId: '',
@@ -656,6 +759,15 @@ export default {
     barChart
   },
   methods: {
+    handleClose(tag) {
+      this.tags.splice(this.tags.indexOf(tag), 1);
+    },
+    filterLocationMethod(value) {
+      console.log(value)
+      console.log(CodeToText[this.filterLocation[0]])
+      console.log(CodeToText[this.filterLocation[1]])
+      console.log(CodeToText[this.filterLocation[2]])
+    },
     handleClick(tab, event) {
       console.log(tab, event);
     },
@@ -710,12 +822,12 @@ export default {
       getDeviceStatus().then(res => {
         this.statusList = res.data
       }),
-      getDeviceInfo().then(res => {
-        this.infoList = res.data
-      }),
-      getDeviceData().then(res => {
-        this.dataList = res.data
-      })
+        getDeviceInfo().then(res => {
+          this.infoList = res.data
+        }),
+        getDeviceData().then(res => {
+          this.dataList = res.data
+        })
     }
   },
   created() {
@@ -737,10 +849,94 @@ export default {
   .title {
     font-size: 24px;
   }
+
+  .tagsTitle {
+    font-size: 16px;
+    margin-right: 5px;
+  }
+  .tags {
+    margin-top: 20px;
+    margin-right: 2px;
+  }
+
+  .filters {
+    margin-top: 20px;
+    border: 1px solid #8391a5;
+    .filterItem {
+      height: 45px;
+      height: auto;
+      min-height: 45px;
+      line-height: 45px;
+      overflow: hidden;
+      border &:after {
+        visibility: hidden;
+        display: block;
+        font-size: 0;
+        content: " ";
+        clear: both;
+        height: 0;
+      }
+      .filterItem-title {
+        float: left;
+        font-size: 14px;
+        width: 80px;
+        text-align: center;
+      }
+      .filterItem-content {
+        margin-left: 80px;
+        height: auto;
+        height: 40px;
+        min-height: 40px;
+        .dataItem {
+          float: left;
+          width: 150px;
+          margin-top: 0px;
+          margin-bottom: 0px;
+          span {
+            font-size: 12px;
+          }
+          .el-input {
+            width: 40px;
+            height: 20px;
+            .el-input__inner {
+              height: 20px;
+            }
+          }
+        }
+      }
+      .el-cascader.filterItem-content {
+        margin-left: 0px;
+        .el-cascader__label {
+          line-height: 45px;
+        }
+      }
+
+      .el-select.filterItem-content {
+        margin-left: 0px;
+        .el-input {
+          height: 30px;
+          line-height: 30px;
+          .el-input__inner {
+            height: 30px;
+          }
+          .el-input__icon.el-icon-caret-top {
+            top: 60%;
+          }
+        }
+      }
+    }
+
+    .filterItem6 {
+      .el-input {
+        width: 224px;
+      }
+    }
+  }
+
   .el-input.searchDevice {
-    position: absolute;
-    top: 160px;
-    right: 50px;
+    position: relative;
+    top: 80px;
+    left: 80%;
     width: 15%;
     z-index: 10;
   }
@@ -1057,7 +1253,7 @@ export default {
     }
   }
 
-  #operateDialog .el-dialog{
+  #operateDialog .el-dialog {
     width: 800px;
     margin-bottom: 5%;
     margin-top: -5%;
