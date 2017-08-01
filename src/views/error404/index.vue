@@ -15,12 +15,13 @@
     <div class="box4">
       <button class="button button1">
         <!-- <img src="../../assets/images/404/shuaxin.png"> -->
-         <img src="../../assets/images/404/shuaxin_icon.png"> 
-         <span>刷新</span>
+        <img src="../../assets/images/404/shuaxin_icon.png">
+        <p>刷新</p>
       </button>
       <button class="button button2">
         <!-- <img src="../../assets/images/404/fanhuishouye.png"> -->
-        <img src="../../assets/images/404/fanhuishouye_icon.png"> 返回首页
+        <img src="../../assets/images/404/fanhuishouye_icon.png">
+        <p>返回首页</p>
       </button>
     </div>
   </div>
@@ -67,7 +68,7 @@ export default {
 }
 
 .box4 {
-  width: 450px;
+  width: 400px;
   margin: 40px auto;
 }
 
@@ -75,7 +76,6 @@ export default {
   font-family: 微软雅黑;
   font-size: 25px;
   color: white;
-  width: 120px;
   height: 40px;
   background-color: rgba(255, 187, 28, 1);
   border-radius: 15px;
@@ -87,12 +87,34 @@ export default {
   &:focus {
     border: none;
   }
+}
+
+.button1 {
+  width: 120px;
   img {
     width: 30px;
     margin-top: 5px;
+    margin-left: 10px;
+    float: left;
   }
-  span {
+  p {
     width: 80px;
+    margin-left: 15px;
+  }
+}
+
+.button2 {
+  width: 180px;
+  float: right;
+  img {
+    width: 30px;
+    margin-top: 0px;
+    margin-left: 10px;
+    float: left;
+  }
+  p {
+    width: 150px;
+    margin-left: 15px;
   }
 }
 
