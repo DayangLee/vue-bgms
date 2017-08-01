@@ -1,6 +1,6 @@
 <template>
-  <div class="login-container">
-    <img class="logo" src='../../assets//images/login/logo.png'>
+  <div class="login-container" :style="{backgroundImage:'url('+ bg +')'}">
+    <img class="logo" src='../../assets/images/login/logo.png'>
     <el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left" label-width="0px" class="card-box login-form">
       <div class="title">
         <span style="font-weight:bold;">LOGIN</span>
@@ -53,6 +53,7 @@
 
 <script>
 import { isHwEmail } from '../../utils/validate'
+import bgPic from '../../assets/images/login/bj.jpg'
 export default {
   name: 'login',
   data() {
@@ -73,6 +74,7 @@ export default {
       }
     };
     return {
+      bg: bgPic,
       loginForm: {
         acount: 'admin@hanwang.com.cn',
         password: '111111'
@@ -106,6 +108,9 @@ export default {
         }
       });
     }
+  },
+  mounted() {
+    console.log(this.bg)
   }
 }
 </script>
@@ -115,8 +120,7 @@ export default {
 .login-container {
   // @include relative;
   width: 100%;
-  height: 100vh;
-  background-image: url('../../assets/images/login/bj.jpg');
+  height: 100vh; //background-image: url(../../assets/images/login/bj.jpg);
   background-repeat: no-repeat;
   background-size: cover;
 
