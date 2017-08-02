@@ -33,7 +33,6 @@ export const constantRouterMap = [
     path: '/dashboard',
     component: Layout,
     noDropdown: true,
-    name: '主页',
     icon: 'zhuye',
     children: [{ path: 'index', component: Dashboard, name: '主页' }]
   },

@@ -1,6 +1,6 @@
 <template>
   <div class="echarts">
-    <IEcharts :option='map' :style="{height:height,width:width}"></IEcharts>
+    <IEcharts :option='map' :style="{height:height,width:width}" :resizable="true"></IEcharts>
   </div>
 </template>
 

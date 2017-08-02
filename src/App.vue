@@ -11,9 +11,10 @@ export default {
 </script>
 
 <style>
-  #app{
-    width: 100%;
-    margin: 0;
-    padding: 0;
-  }
+@import 'assets/style/index.scss';
+ #app {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
 </style>

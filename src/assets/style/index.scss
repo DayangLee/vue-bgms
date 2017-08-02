@@ -1,12 +1,15 @@
+@import './mixin.scss';
 @import './btn.scss';
 @import './element-ui.scss';
-@import "./mixin.scss";
+@import './sidebar.scss';
+
 body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  font-family:"Helvetica Neue",Helvetica, "microsoft yahei", arial, STHeiTi, sans-serif;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
   margin: 0;
+  padding: 0;
 }
 
 label {
@@ -15,6 +18,8 @@ label {
 
 html {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 *,
@@ -97,6 +102,7 @@ code {
   opacity: 0;
 }
 
+
 //main-container全局样式
 .app-container {
   padding: 20px;
@@ -109,12 +115,14 @@ code {
   margin-top: 30px;
 }
 
-
 .editor-container .CodeMirror {
   height: 100%!important;
 }
 
-.wscn-icon {
+.text-center{
+  text-align: center
+}
+.svg-icon {
   width: 1em;
   height: 1em;
   vertical-align: -0.15em;
@@ -222,6 +230,13 @@ code {
   z-index: 1000 !important;
 }
 
+//refine simplemde
+.simplemde-container{
+  .editor-toolbar.fullscreen,.CodeMirror-fullscreen{
+    z-index: 1003;
+  }
+}
+
 //暂时性解决diolag 问题 https://github.com/ElemeFE/element/issues/2461
 .el-dialog {
   transform: none;
@@ -257,32 +272,4 @@ code {
   .github-corner .octo-arm {
     animation: octocat-wave 560ms ease-in-out
   }
-}
-
-/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
-::-webkit-scrollbar
-{
-    width: 6px;
-    height: 10px;
-    background-color: #F5F5F5;
-}
- 
-/*定义滚动条轨道 内阴影+圆角*/
-::-webkit-scrollbar-track
-{
-  box-shadow: inset 0 0 2px rgba(0,0,0,0.3);
-     -webkit-box-shadow: inset 0 0 2px rgba(0,0,0,0.3);
-    border-radius: 10px;
-    background-color: #F5F5F5;
-}
- 
-/*定义滑块 内阴影+圆角*/
-::-webkit-scrollbar-thumb
-{
-    border-radius: 10px;
-    background-image:-webkit-gradient(linear,left bottom,
-									   left top,
-									   color-stop(0.44, rgb(122,153,217)),
-									   color-stop(0.72, rgb(73,125,189)),
-									   color-stop(0.86, rgb(28,58,148)))
 }

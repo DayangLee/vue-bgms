@@ -1,7 +1,8 @@
 <template>
-  <div class="sidebar-content">
-    <img class="logo" src="../../assets/images/logo.png">
-    <el-menu mode="vertical" theme="dark" default-active="$route.path" @select="handleSelect" unique-opened>
+  <div>
+    <img class="logo1" v-if="isCollapse" src="../../assets/images/logo-small.png">
+    <img class="logo2" v-else src="../../assets/images/logo.png">
+    <el-menu mode="vertical" theme="dark" :default-active="$route.path" @select="handleSelect" :collapse="isCollapse" @open="handleOpen" @close="handleClose" unique-opened>
       <SidebarItem :routes='permission_routers'></SidebarItem>
     </el-menu>
   </div>
@@ -12,35 +13,38 @@ import SidebarItem from './SidebarItem'
 export default {
   components: { SidebarItem },
   computed: {
-    ...mapGetters(['permission_routers'])
-  },
-  mounted: function () {
-    console.log(this.$route.path)
+    ...mapGetters(['permission_routers', 'sidebar']),
+    isCollapse() {
+      return !this.sidebar.opened
+    }
   },
   methods: {
     handleSelect(key) {
       this.$router.push(key)
+    },
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-.sidebar-content {
-  // display: block;
-  position: absolute;
-  width: 220px;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  background: #324157;
-  .logo {
-    width: 188px;
-    display: block; // margin-left: 15px;
-    // margin-top: 10px;
-    margin: 10px auto;
-  }
-  .el-menu {
-    margin-top: 50px;
-  }
+.logo1 {
+  width: 40px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 5px;
+}
+
+.logo2 {
+  width: 200px;
+  margin: 10px auto;
+}
+
+.el-menu {
+  min-height: 100%;
 }
 </style>

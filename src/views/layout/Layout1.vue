@@ -1,6 +1,8 @@
 <template>
   <div class="app-wrapper" :class="{hideSidebar:!sidebar.opened}">
-    <Sidebar class="sidebar-container"></Sidebar>
+    <div class="sidebar-wrapper">
+      <Sidebar class="sidebar-container"></Sidebar>
+    </div>
     <div class="main-container">
       <Navbar></Navbar>
       <App-main></App-main>
@@ -20,48 +22,60 @@ export default {
   },
   computed: {
     sidebar() {
-      return this.$store.state.app.sidebar
+      return this.$store.state.app.sidebar;
     }
   }
 }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-@import '../../assets/style/mixin.scss';
+@import "../../assets/style/mixin.scss";
 .app-wrapper {
   @include clearfix;
   position: relative;
   height: 100%;
   width: 100%;
-
+  
   &.hideSidebar {
-    .sidebar-container {
-      width: 56px;
-      overflow: inherit;
+    .sidebar-wrapper {
+      transform: translate(-180px, 0);
+      .sidebar-container {
+        transform: translate(172px, 0);
+      }
+      &:hover {
+        transform: translate(0, 0);
+        .sidebar-container {
+          transform: translate(0, 0);
+        }
+      }
     }
     .main-container {
-      margin-left: 56px;
+      margin-left: 40px;
     }
   }
   .sidebar-container {
-    transition: width .28s ease-out;
+    transition: all .28s ease-out;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: -17px;
+    overflow-y: auto;
+  }
+  .sidebar-wrapper {
     width: 220px;
-    height: 100%;
     position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
-    z-index: 9999;
-    background: #324157;
-    overflow-y: auto;
-    &::-webkit-scrollbar {
-      display: none;
-    }
+    z-index: 1001;
+    overflow: hidden;
+    transition: all .28s ease-out;
   }
-
+  
   .main-container {
     min-height: 100%;
-    transition: margin-left .28s ease-out;
+    transition: all .28s ease-out;
     margin-left: 220px;
   }
 }

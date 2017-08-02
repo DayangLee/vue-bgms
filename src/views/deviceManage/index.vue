@@ -763,7 +763,15 @@ export default {
     editIcon: 'inline-block',
     saveIcon: 'none',
     focus: [true, false],
-    focus0: false
+    focus0: false,
+    focus1: false,
+    focus2: false,
+    focus3: false,
+    focus4: false,
+    focus5: false,
+    focus6: false,
+    focus7: false,
+    focus8: false
   }),
   components: {
     barChart
