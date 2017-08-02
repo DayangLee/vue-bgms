@@ -25,7 +25,7 @@
             <span>PM2.5</span>
             <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
             <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
-            <el-button type="success" size="small" v-show="focus[0]">确定</el-button>
+            <el-button type="success" size="small" v-show="focus0">确定</el-button>
           </p>
           <p class="dataItem" id="dataItem2">
             <span>温度</span>
@@ -33,42 +33,42 @@
             <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
             <el-button type="success" size="small" v-show="focus[1]">确定</el-button>
           </p>
-          <!-- <p class="dataItem" id="dataItem3">
-                      <span>湿度</span>
-                      <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
-                      <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
-                      <el-button type="success" size="small" v-show="focus3">确定</el-button>
-                    </p>
-                    <p class="dataItem" id="dataItem4">
-                      <span>CO2</span>
-                      <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
-                      <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
-                      <el-button type="success" size="small" v-show="focus4">确定</el-button>
-                    </p>
-                    <p class="dataItem" id="dataItem5">
-                      <span>甲醛</span>
-                      <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
-                      <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
-                      <el-button type="success" size="small" v-show="focus5">确定</el-button>
-                    </p>
-                    <p class="dataItem" id="dataItem6">
-                      <span>TVOC</span>
-                      <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
-                      <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
-                      <el-button type="success" size="small" v-show="focus6">确定</el-button>
-                    </p>
-                    <p class="dataItem" id="dataItem7">
-                      <span>臭氧</span>
-                      <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
-                      <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
-                      <el-button type="success" size="small" v-show="focus7">确定</el-button>
-                    </p>
-                    <p class="dataItem" id="dataItem8">
-                      <span>氧气</span>
-                      <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
-                      <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
-                      <el-button type="success" size="small" v-show="focus8">确定</el-button>
-                    </p> -->
+          <p class="dataItem" id="dataItem3">
+            <span>湿度</span>
+            <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
+            <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
+            <el-button type="success" size="small" v-show="focus3">确定</el-button>
+          </p>
+          <p class="dataItem" id="dataItem4">
+            <span>CO2</span>
+            <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
+            <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
+            <el-button type="success" size="small" v-show="focus4">确定</el-button>
+          </p>
+          <p class="dataItem" id="dataItem5">
+            <span>甲醛</span>
+            <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
+            <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
+            <el-button type="success" size="small" v-show="focus5">确定</el-button>
+          </p>
+          <p class="dataItem" id="dataItem6">
+            <span>TVOC</span>
+            <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
+            <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
+            <el-button type="success" size="small" v-show="focus6">确定</el-button>
+          </p>
+          <p class="dataItem" id="dataItem7">
+            <span>臭氧</span>
+            <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
+            <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
+            <el-button type="success" size="small" v-show="focus7">确定</el-button>
+          </p>
+          <p class="dataItem" id="dataItem8">
+            <span>氧气</span>
+            <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
+            <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
+            <el-button type="success" size="small" v-show="focus8">确定</el-button>
+          </p>
         </div>
       </div>
   
@@ -154,11 +154,11 @@
           <el-table-column prop="deviceId" label="设备ID" width="150" align="center">
           </el-table-column>
           <!-- <el-table-column label="开关" width="80" align="center">
-                                                                                                                                                        <template scope="scope">
-                                                                                                                                                          <el-switch v-model="scope.row.open" on-color="#13ce66" off-color="#ff4949" on-text="" off-text="">
-                                                                                                                                                          </el-switch>
-                                                                                                                                                        </template>
-                                                                                                                                                      </el-table-column> -->
+                                                                                                                                                            <template scope="scope">
+                                                                                                                                                              <el-switch v-model="scope.row.open" on-color="#13ce66" off-color="#ff4949" on-text="" off-text="">
+                                                                                                                                                              </el-switch>
+                                                                                                                                                            </template>
+                                                                                                                                                          </el-table-column> -->
           <el-table-column prop="status" label="运行状态" width="100" align="center">
             <template scope="scope">
               <el-tag :type="scope.row.status === 1 ? 'success' : 'danger'">{{scope.row.status===1?'运行中':'关闭'}}</el-tag>
@@ -182,9 +182,9 @@
               {{scope.row.hit === 1?'内':'外'}}
             </template>
             <!-- <template scope="scope">
-                                                                                                                                                          <el-switch v-model="scope.row.hit" on-color="#13ce66" off-color="#ff4949" on-text="" off-text="">
-                                                                                                                                                          </el-switch>
-                                                                                                                                                        </template> -->
+                                                                                                                                                              <el-switch v-model="scope.row.hit" on-color="#13ce66" off-color="#ff4949" on-text="" off-text="">
+                                                                                                                                                              </el-switch>
+                                                                                                                                                            </template> -->
           </el-table-column>
           <el-table-column label="更多" align="center" min-width="150">
             <template scope="scope">
@@ -781,18 +781,18 @@ export default {
     inputFocus(e) {
       const index = parseInt(e.path[2].id.substr(e.path[2].id.length - 1)) - 1;
       console.log(index)
-      this.focus[index] = true
+      //this.focus[index] = true
       //this.focus[0] = true
-      //this.focus0 = true
+      this.focus0 = true
       console.log(this.focus[index])
 
     },
     inputBlur(e) {
       const index = parseInt(e.path[2].id.substr(e.path[2].id.length - 1)) - 1;
       console.log(index)
-      this.focus[index] = false
+      //this.focus[index] = false
       //this.focus[0] = false
-      //this.focus0 = false
+      this.focus0 = false
       console.log(this.focus[index])
       //this.focus[index] = false
 
