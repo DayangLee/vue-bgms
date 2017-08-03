@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 import Login from '../views/login/index'
 import Err404 from '../views/error404/index'
+import testPage from 'views/testPage/index'
 
 import Layout from '../views/layout/Layout'
 import Dashboard from '../views/dashboard/index'

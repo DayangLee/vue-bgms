@@ -8,13 +8,13 @@
       </div>
       <el-form-item prop="acount" class="item">
         <div class="icon-container">
-          <wscn-icon-svg icon-class="yonghu1" class="icon1"></wscn-icon-svg>
+          <icon-svg icon-class="yonghu1" class="icon1"></icon-svg>
         </div>
         <input type="text" name="acount" autoComplete="on" placeholder="请输入用户名" v-model="loginForm.acount">
       </el-form-item>
       <el-form-item prop="password" class="item">
         <div class="icon-container">
-          <wscn-icon-svg icon-class="mima" class="icon1"></wscn-icon-svg>
+          <icon-svg icon-class="mima" class="icon1"></icon-svg>
         </div>
         <input type="password" name="password" autoComplete="on" placeholder="请输入密码" v-model="loginForm.password">
       </el-form-item>
@@ -108,9 +108,6 @@ export default {
         }
       });
     }
-  },
-  mounted() {
-    console.log(this.bg)
   }
 }
 </script>

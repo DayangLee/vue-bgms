@@ -10,7 +10,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
   .data-container {
     padding: 30px 50px;
     width: 100%;
