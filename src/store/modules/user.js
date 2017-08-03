@@ -32,17 +32,17 @@ const user = {
   actions: {
     LoginByAcount({ commit }, userInfo) {
       const acount = userInfo.acount.trim()
-      console.log(acount)
       const password = userInfo.password
       return new Promise((resolve, reject) => {
         loginByAcount(acount, password).then(response => {
-          const data = response.data
-          setToken(data.token)
-          commit('SET_TOKEN', data.token)
-          commit('SET_ACOUNT', acount)
+          console.log(response)
+          // const data = response.data
+          // setToken(data.token)
+          // commit('SET_TOKEN', data.token)
+          // commit('SET_ACOUNT', acount)
           resolve()
         }).catch(error => {
-          reject(error)
+          //reject(error)
         })
       })
     },

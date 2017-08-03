@@ -1,13 +1,13 @@
-import axios_service from '../utils/fetch'
+import axios_service from 'utils/login_axios'
+import md5 from 'js-md5'
 
 export function loginByAcount(acount, password) {
-  const data = {
-    acount, password
-  }
+  const auth = "Basic " + btoa(acount + ":" + md5(password))
+  console.log(auth)
   return axios_service({
-    url: '/loginbyacount',
-    method: 'post',
-    data
+    url: '/user',
+    method: 'get',
+    headers: { auth: auth }
   })
 }
 

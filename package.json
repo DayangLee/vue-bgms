@@ -14,6 +14,7 @@
     "element-china-area-data": "^3.1.0",
     "element-ui": "^1.4.1",
     "js-cookie": "^2.1.4",
+    "js-md5": "^0.6.0",
     "mockjs": "^1.0.1-beta3",
     "vue": "^2.3.3",
     "vue-echarts-v3": "^1.0.4",

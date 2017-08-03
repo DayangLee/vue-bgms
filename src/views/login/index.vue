@@ -52,7 +52,6 @@
 </template>
 
 <script>
-import { isHwEmail } from '../../utils/validate'
 import bgPic from '../../assets/images/login/bj.jpg'
 export default {
   name: 'login',
@@ -60,8 +59,6 @@ export default {
     const validateAcount = (rule, value, callback) => {
       if (!value) {
         callback(new Error('用户名不能为空'))
-      } else if (!isHwEmail(value)) {
-        callback(new Error('请输入合法邮箱'))
       } else {
         callback()
       }
@@ -76,8 +73,8 @@ export default {
     return {
       bg: bgPic,
       loginForm: {
-        acount: 'admin@hanwang.com.cn',
-        password: '111111'
+        acount: '13521347060',
+        password: '123456'
       },
       loginRules: {
         acount: [
@@ -97,10 +94,10 @@ export default {
           this.loading = true;
           this.$store.dispatch('LoginByAcount', this.loginForm).then(() => {
             this.loading = false;
-            this.$router.push({ path: '/dashboard/index' });
+            //this.$router.push({ path: '/dashboard/index' });
           }).catch(err => {
             this.$message.error(err);
-            this.loading = false;
+            //this.loading = false;
           });
         } else {
           console.log('登录失败，请检查用户名和密码!!');
