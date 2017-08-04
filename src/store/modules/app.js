@@ -11,7 +11,7 @@ const app = {
       if (state.sidebar.opened) {
         Cookies.set('sidebarStatus', 1);
       } else {
-        Cookies.set('sidebarStatue', 0);
+        Cookies.set('sidebarStatus', 0);
       }
       state.sidebar.opened = !state.sidebar.opened;
     }

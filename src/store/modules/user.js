@@ -4,7 +4,7 @@ import { getToken, setToken, removeToken } from 'utils/auth'
 const user = {
   state: {
     acount: '',
-    token: getToken(),
+    userToken: getToken(),
     roles: [],
     name: '',
     avatar: ''
@@ -14,7 +14,7 @@ const user = {
       state.acount = acount
     },
     SET_TOKEN: (state, token) => {
-      state.token = token
+      state.userToken = token
     },
     SET_NAME: (state, name) => {
       state.name = name
@@ -51,7 +51,7 @@ const user = {
     // 获取用户信息
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
-        getInfo(state.token).then(response => {
+        getInfo(state.userToken).then(response => {
           const data = response.data
           commit('SET_ROLES', data.role)
           commit('SET_NAME', data.name)

@@ -30,7 +30,9 @@ export default {
     return userMap[acount.split('@')[0]];
   },
   getInfo: config => {
+    console.log(config)
     const { token } = param2Obj(config.url);
+    console.log(token)
     if (userMap[token]) {
       return userMap[token];
     } else {
