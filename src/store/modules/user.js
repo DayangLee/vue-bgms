@@ -36,13 +36,15 @@ const user = {
       return new Promise((resolve, reject) => {
         loginByAcount(acount, password).then(response => {
           console.log(response)
-          // const data = response.data
-          // setToken(data.token)
-          // commit('SET_TOKEN', data.token)
-          // commit('SET_ACOUNT', acount)
+          const data = response.data
+          if(data.roles.length !== 0 && data.roles[0] == 'ROLE_USER'){
+            setToken('user')
+            commit('SET_TOKEN', 'user')
+            commit('SET_ACOUNT', acount)
+          }
           resolve()
         }).catch(error => {
-          //reject(error)
+          reject(error)
         })
       })
     },
@@ -62,7 +64,7 @@ const user = {
     },
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
-        logout(state.token).then(() => {
+        logout().then(() => {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', '')
           removeToken()

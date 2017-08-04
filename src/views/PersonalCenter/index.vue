@@ -14,16 +14,16 @@
         </template>
         <div class="details">
           <el-form label-width="80px" :model="ruleForm1">
-            <el-form-item label="登录名">
+            <el-form-item label="用户名">
               <el-input v-model="ruleForm1.name" :disabled="true"></el-input>
             </el-form-item>
             <el-form-item label="昵称">
               <el-input v-model="ruleForm1.nickName"></el-input>
             </el-form-item>
-            <el-form-item label="公司名称">
+            <el-form-item label="手机">
               <el-input v-model="ruleForm1.company"></el-input>
             </el-form-item>
-            <el-form-item label="所在城市">
+            <el-form-item label="邮箱">
               <el-input v-model="ruleForm1.city"></el-input>
             </el-form-item>
             <el-form-item style="text-align:center;">
@@ -245,8 +245,29 @@ export default {
       this.imagecropperKey = this.imagecropperKey + 1;
       this.image = resData.files.avatar;
     }
-  }
+  },
+  created() {
 
+    // handleLogin() {
+    //   this.$refs.loginForm.validate(valid => {
+    //     if (valid) {
+    //       this.loading = true
+    //       this.$store.dispatch('LoginByAcount', this.loginForm).then(() => {
+    //         this.loading = false
+    //         this.$router.push({ path: '/dashboard/index' })
+    //       }).catch(err => {
+    //         let that = this
+    //         setTimeout(() => {
+    //           that.loading = false
+    //         }, 3000)
+    //       });
+    //     } else {
+    //       console.log('登录失败，请检查用户名和密码!!')
+    //       return false
+    //     }
+    //   });
+    // }
+  }
 }
 </script>
 
@@ -305,6 +326,7 @@ export default {
     }
     .details {
       width: 25%;
+      min-width: 300px;
       margin-left: 10%;
       font-size: 18px;
       .el-form {

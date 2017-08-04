@@ -2,7 +2,6 @@ import { constantRouterMap } from '../../router'
 
 function hasPermission(roles, route) {
     if (route.meta && route.meta.role) {
-        console.log(route.meta.role)
         if (route.meta.role.indexOf(roles) !== -1) {
             return true
         } else {

@@ -91,17 +91,19 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.loading = true;
+          this.loading = true
           this.$store.dispatch('LoginByAcount', this.loginForm).then(() => {
-            this.loading = false;
-            //this.$router.push({ path: '/dashboard/index' });
+            this.loading = false
+            this.$router.push({ path: '/dashboard/index' })
           }).catch(err => {
-            this.$message.error(err);
-            //this.loading = false;
+            let that = this
+            setTimeout(() => {
+              that.loading = false
+            }, 3000)
           });
         } else {
-          console.log('登录失败，请检查用户名和密码!!');
-          return false;
+          console.log('登录失败，请检查用户名和密码!!')
+          return false
         }
       });
     }

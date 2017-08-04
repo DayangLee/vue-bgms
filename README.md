@@ -24,4 +24,11 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 ## note
 ``` bash
 #  dialog内点击某一元素展开第二个dialog，这两个dialog应平级，不要嵌套
+
+#  Vue方法中setTimeout改变变量的值无效，需要把data里的变量继承过来重新封装一下
+let that = this;
+this.rightAnswer = false;
+setTimeout(function() {
+  that.rightAnswer = true;
+}, 1500)
 ```

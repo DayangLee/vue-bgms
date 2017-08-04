@@ -13,8 +13,6 @@ const service = axios.create({
 // request拦截器
 service.interceptors.request.use(
   config => {
-    console.log(config)
-    console
     return config
   },
   error => {

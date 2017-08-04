@@ -3,17 +3,16 @@ import md5 from 'js-md5'
 
 export function loginByAcount(acount, password) {
   const auth = "Basic " + btoa(acount + ":" + md5(password))
-  console.log(auth)
   return axios_service({
     url: '/user',
     method: 'get',
-    headers: { auth: auth }
+    headers: { Authorization: auth }
   })
 }
 
 export function logout() {
   return axios_service({
-    url: '/logout',
+    url: '/user/logout',
     method: 'post'
   })
 }
