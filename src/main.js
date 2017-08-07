@@ -12,7 +12,7 @@ import 'mock/index.js'
 import 'assets/iconfont/iconfont'
 import IconSvg from 'components/Icon-svg/index.vue'
 import * as filters from './filters/index'// 全局vue filter
-import { getToken } from './utils/auth'
+import { getCookie } from './utils/auth'
 
 Vue.config.productionTip = false
 
@@ -26,7 +26,7 @@ Object.keys(filters).forEach(key => {
 const whiteList = ['/login'];// 不重定向白名单
 router.beforeEach((to, from, next) => {
     NProgress.start(); // 开启Progress
-    if (getToken()) { // 判断是否有token
+    if (getCookie('userToken')) { // 判断是否有token
         if (to.path === '/login') {
             next({ path: '/' });
         } else {

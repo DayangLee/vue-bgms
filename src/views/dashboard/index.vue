@@ -14,7 +14,7 @@
       components: { AgentDashboard, UserDashboard, AdminDashboard },
       data() {
         return {
-          currentRole: 'AdminDashboard'
+          currentRole: 'UserDashboard'
         }
       },
       computed: {

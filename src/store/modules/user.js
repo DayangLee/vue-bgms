@@ -1,10 +1,10 @@
 import { loginByAcount, logout, getInfo } from 'api/login'
-import { getToken, setToken, removeToken } from 'utils/auth'
+import { getCookie, setCookie, removeCookie } from 'utils/auth'
 
 const user = {
   state: {
     acount: '',
-    userToken: getToken(),
+    userToken: getCookie('userToken'),
     roles: [],
     name: '',
     avatar: ''
@@ -38,7 +38,7 @@ const user = {
           console.log(response)
           const data = response.data
           if(data.roles.length !== 0 && data.roles[0] == 'ROLE_USER'){
-            setToken('user')
+            setCookie('userToken','user')
             commit('SET_TOKEN', 'user')
             commit('SET_ACOUNT', acount)
           }
@@ -67,7 +67,7 @@ const user = {
         logout().then(() => {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', '')
-          removeToken()
+          removeCookie('userToken')
           resolve()
         }).catch(error => {
           reject(error)
@@ -77,7 +77,7 @@ const user = {
     FedLogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
         commit('SET_TOKEN', '')
-        removeToken()
+        removeCookie('userToken')
         resolve()
       })
     }
