@@ -37,6 +37,7 @@ const user = {
         loginByAcount(acount, password).then(response => {
           console.log(response)
           const data = response.data
+          window.localStorage.setItem('userInfo',JSON.stringify(data))
           if(data.roles.length !== 0 && data.roles[0] == 'ROLE_USER'){
             setCookie('userToken','user')
             commit('SET_TOKEN', 'user')
@@ -63,6 +64,7 @@ const user = {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', '')
           removeCookie('userToken')
+          window.localStorage.clear()
           resolve()
         }).catch(error => {
           reject(error)

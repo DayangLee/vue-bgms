@@ -15,11 +15,19 @@
         <div class="details">
           <el-form label-width="80px" :model="user">
             <el-form-item label="用户名">
-              <el-input v-model="user.name"></el-input>
+              <el-input v-model="user.name" :disabled="true"></el-input>
             </el-form-item>
-            <el-form-item>
-              <el-button type="primary" size="large" style="width:100px;" @click="cancelChangeUsername('user')">取消</el-button>
-              <el-button type="primary" size="large" style="width:100px;float:right;" @click="submitInformationForm('user')">提交</el-button>
+            <el-form-item label="昵称">
+              <el-input v-model="user.nickname"></el-input>
+            </el-form-item>
+            <el-form-item label="手机">
+              <el-input v-model="user.phone"></el-input>
+            </el-form-item>
+            <el-form-item label="邮箱">
+              <el-input v-model="user.email"></el-input>
+            </el-form-item>
+            <el-form-item style="text-align:center;">
+              <el-button type="primary" size="large" style="width:150px;" @click="submitInformationForm('user')">提交</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -44,35 +52,13 @@
   
       <el-collapse-item>
         <template slot="title" class="info-title">
-          <div class="unit">昵称</div>
-          <div class="content">{{user.nickname}}</div>
-          <div class="edit">编辑</div>
-        </template>
-        <div class="details">
-          <el-form label-width="80px" :model="user">
-            <el-form-item label="昵称">
-              <el-input v-model="user.nickname"></el-input>
-            </el-form-item>
-            <el-form-item style="text-align:center;">
-              <el-button type="primary" size="large" style="width:150px;" @click="submitInformationForm('user')">提交</el-button>
-            </el-form-item>
-          </el-form>
-        </div>
-      </el-collapse-item>
-  
-      <el-collapse-item>
-        <template slot="title" class="info-title">
           <div class="unit">邮箱</div>
-          <div class="content">
-            {{user.email}}&nbsp;&nbsp;&nbsp;&nbsp;
-            <span v-if="user.emailVerified" style="color:green;">已验证</span>
-            <span v-else style="color:red;">未验证</span>
-          </div>
+          <div class="content">{{user.email}}</div>
           <div class="edit">编辑</div>
         </template>
         <div class="details">
           <p>当前邮箱：{{user.email}}</p>
-          <el-button type="primary" style="width:100px;" :disabled="user.emailVerified">验证邮箱</el-button>
+          <el-button type="primary" style="width:100px;">验证邮箱</el-button>
           <el-button type="primary" style="width:100px;">更换邮箱</el-button>
         </div>
       </el-collapse-item>
@@ -80,21 +66,16 @@
       <el-collapse-item>
         <template slot="title" class="info-title">
           <div class="unit">绑定手机</div>
-          <div class="content">
-            {{user.phone}}&nbsp;&nbsp;&nbsp;&nbsp;
-            <span v-if="user.phoneVerified" style="color:green;">已验证</span>
-            <span v-else style="color:red;">未验证</span>
-          </div>
+          <div class="content">{{user.phone}}</div>
           <div class="edit">编辑</div>
         </template>
         <div class="details">
           <el-form :model="ruleForm3" :rules="rules1" ref="ruleForm3" label-width="80px">
             <el-form-item label="手机号" prop="newPhone">
-              <el-input v-model="user.newPhone"></el-input>
+              <el-input v-model="ruleForm3.newPhone"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" style="width:100px;" :disabled="user.phoneVerified">验证手机</el-button>
-              <el-button type="primary" style="width:100px;">更换手机</el-button>
+              <el-button type="primary" style="width:120px;margin-left:80px;">绑定手机</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -240,9 +221,6 @@ export default {
     submitInformationForm(e) {
       console.log(e);
     },
-    cancelChangeUsername(e) {
-      console.log(e)
-    },
     submitChangePasswordForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -269,7 +247,10 @@ export default {
     }
   },
   created() {
-    this.user = JSON.parse(localStorage.getItem('userInfo'))
+    this.user.name = window.localStorage.getItem('name')
+    this.user.nickname = window.localStorage.getItem('nickname')
+    this.user.email = window.localStorage.getItem('email')
+    this.user.phone = window.localStorage.getItem('phone')
   }
 }
 </script>
