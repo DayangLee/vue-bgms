@@ -1,189 +1,189 @@
 <template>
-<div class="dashboard-user-container">
-    <div class='title'>主页</div>
-    <el-row :gutter='50'>
-        <el-col :xs="24" :sm="24" :md="8" :lg="8">
-            <div class="card">
-                <div class='card-top'>
-                    <span>设备在线情况</span>
-                </div>
-                <div class='card-bottom'>
-                    <div class="echarts">
-                        <IEcharts :option="pie"></IEcharts>
+    <div class="dashboard-user-container">
+        <div class='title'>主页</div>
+        <el-row :gutter='50'>
+            <el-col :xs="24" :sm="24" :md="8" :lg="8">
+                <div class="card">
+                    <div class='card-top'>
+                        <span>设备在线情况</span>
+                    </div>
+                    <div class='card-bottom'>
+                        <div class="echarts">
+                            <circleChart></circleChart>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </el-col>
-        <el-col :xs="24" :sm="24" :md="8" :lg="8">
-            <div class="card">
-                <div class='card-top'>
-                    <span>污染情况分布</span>
-                </div>
-                <div class='card-bottom'>
-                  <div class="echarts">
-                       <IEcharts :option="pie"></IEcharts> 
-                  </div>
-                </div>
-            </div>
-        </el-col>
-        <el-col :xs="24" :sm="24" :md="8" :lg="8">
-            <div class="card">
-                <div class='card-top'>
-                    <span>污染极值</span>
-                </div>
-                <div class='card-bottom'>
-                  <table>
-                    <tr>
-                      <td>PM2.5</td>
-                      <td class="td1">200</td>
-                      <td class="td2">300</td>
-                    </tr>
-                    <tr>
-                      <td>CO2</td>
-                      <td class="td1">200</td>
-                      <td class="td2">300</td>
-                    </tr>
-                    <tr>
-                      <td>甲醛</td>
-                      <td class="td1">200</td>
-                      <td class="td2">300</td>
-                    </tr>
-                    <tr>
-                      <td>温度</td>
-                      <td class="td1">200</td>
-                      <td class="td2">300</td>
-                    </tr>
-                    <tr>
-                      <td>湿度</td>
-                      <td class="td1">200</td>
-                      <td class="td2">300</td>
-                    </tr>
-                  </table>
-                </div>
-            </div>
-        </el-col>
-    </el-row>
-
-    <div class="device_list">
-        <el-row class="list_head">
-            <el-col :xs="24" :sm="24" :md="24" :lg="10">
-                <div class="list_title">
-                    设备列表
-                </div>
             </el-col>
-            <el-col :xs="20" :sm="20" :md="20" :lg="5">
-                <div class="list_search">
-                    <el-input placeholder="请输入设备名称" icon="search" v-model="device_input" :on-icon-click="searchDevice">
-                    </el-input>
-                </div>
-            </el-col>
-            <el-col :xs="4" :sm="4" :md="4" :lg="2">
-                <div class="list_filter">
-                    <el-popover ref="fliter" placement="bottom" width="200" trigger="click">
-                        <div class="fliter">
-                            <div class="fliter_title">筛选</div>
-                            <div class="fliter_body">
-
-                            </div>
-                            <div class="fliter_footer">
-                                <el-button size="mini">取消</el-button>
-                                <el-button type="primary" size="mini">确定</el-button>
-                            </div>
+            <el-col :xs="24" :sm="24" :md="8" :lg="8">
+                <div class="card">
+                    <div class='card-top'>
+                        <span>污染情况分布</span>
+                    </div>
+                    <div class='card-bottom'>
+                        <div class="echarts">
+                            <ringChart></ringChart>
                         </div>
-                    </el-popover>
-                    <el-button type="text" v-popover:fliter><i class="fa fa-filter fa-2x"></i></el-button>
+                    </div>
                 </div>
             </el-col>
-            <el-col :xs="24" :sm="24" :md="24" :lg="7">
-                <div class="list_info">
-                    共{{onlineCount1 + offlineCount1 + onlineCount2 + offlineCount2}}个设备，{{onlineCount1 + onlineCount2}}个正在运行中
+            <el-col :xs="24" :sm="24" :md="8" :lg="8">
+                <div class="card">
+                    <div class='card-top'>
+                        <span>污染极值</span>
+                    </div>
+                    <div class='card-bottom'>
+                        <table>
+                            <tr>
+                                <td>PM2.5</td>
+                                <td class="td1">200</td>
+                                <td class="td2">300</td>
+                            </tr>
+                            <tr>
+                                <td>CO2</td>
+                                <td class="td1">200</td>
+                                <td class="td2">300</td>
+                            </tr>
+                            <tr>
+                                <td>甲醛</td>
+                                <td class="td1">200</td>
+                                <td class="td2">300</td>
+                            </tr>
+                            <tr>
+                                <td>温度</td>
+                                <td class="td1">200</td>
+                                <td class="td2">300</td>
+                            </tr>
+                            <tr>
+                                <td>湿度</td>
+                                <td class="td1">200</td>
+                                <td class="td2">300</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </el-col>
         </el-row>
-        <div class="list_body">
-            <el-table class="device_table" :data="deviceData" stripe highlight-current-row :default-sort="{prop: 'name', order: 'descending'}" @current-change="handleCurrentChange">
-                <el-table-column type="index" width="50">
-                </el-table-column>
-                <el-table-column label="设备名称" sortable width="120">
-                    <template scope="scope">
-        <el-button type="text" @click="showDetail">{{ scope.row.name }}</el-button>
-</template>
-    </el-table-column>
-    <el-table-column prop="status" label="运行状态" sortable width="120"></el-table-column>
-    <el-table-column prop="pm25" label="PM2.5" sortable width="100"></el-table-column>
-    <el-table-column prop="co2" label="CO2" sortable width="100"></el-table-column>
-    <el-table-column prop="cho" label="甲醛" sortable width="100"></el-table-column>
-    <el-table-column prop="temp" label="温度" sortable width="100"></el-table-column>
-    <el-table-column prop="wet" label="湿度" sortable width="100"></el-table-column>
-    <el-table-column prop="id" label="设备ID" sortable width="150"></el-table-column>
-    <el-table-column prop="address" label="位置" ></el-table-column>
-    <el-table-column prop="user" label="用户" ></el-table-column>
-  </el-table>
-</div>
-<div class="list_pagination">
-  <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="device_list_currentPage"
-  layout="total, prev, pager, next, jumper"
-  :total="onlineCount1 + offlineCount1 + onlineCount2 + offlineCount2">
-</el-pagination>
-</div>
-</div>
-
-<div class="user_list">
-<el-row class="list_head">
-  <el-col :xs="24" :sm="24" :md="24" :lg="10">
-    <div class="list_title">
-      账户列表
-    </div>
-  </el-col>
-  <el-col :xs="24" :sm="24" :md="24" :lg="7">
-    <div class="list_search">
-      <el-input placeholder="请输入设备名称" icon="search" v-model="device_input" :on-icon-click="searchDevice">
-      </el-input>
-    </div>
-  </el-col>
-
-  <el-col :xs="24" :sm="24" :md="24" :lg="7">
-    <div class="list_info">
-      共{{onlineCount1 + offlineCount1 + onlineCount2 + offlineCount2}}个设备，{{onlineCount1 + onlineCount2}}个正在运行中
-    </div>
-  </el-col>
-</el-row>
-<div class="list_body">
-  <el-table class="device_table" :data="deviceData" stripe highlight-current-row :default-sort = "{prop: 'name', order: 'descending'}" @current-change="handleCurrentChange">
-    <el-table-column type="index" width="50">
-    </el-table-column>
-    <el-table-column label="设备名称" sortable width="120">
-      <template scope="scope">
-<el-button type="text" @click="showDetail">
-    {{ scope.row.name }}</el-button>
-</template>
-    </el-table-column>
-    <el-table-column prop="status" label="运行状态" sortable width="120"></el-table-column>
-    <el-table-column prop="pm25" label="PM2.5" sortable width="100"></el-table-column>
-    <el-table-column prop="co2" label="CO2" sortable width="100"></el-table-column>
-    <el-table-column prop="cho" label="甲醛" sortable width="100"></el-table-column>
-    <el-table-column prop="temp" label="温度" sortable width="100"></el-table-column>
-    <el-table-column prop="wet" label="湿度" sortable width="100"></el-table-column>
-    <el-table-column prop="id" label="设备ID" sortable width="150"></el-table-column>
-    <el-table-column prop="address" label="位置" ></el-table-column>
-    <el-table-column prop="user" label="用户" ></el-table-column>
-  </el-table>
-</div>
-<div class="list_pagination">
-  <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="device_list_currentPage"
-  layout="total, prev, pager, next, jumper"
-  :total="onlineCount1 + offlineCount1 + onlineCount2 + offlineCount2">
-</el-pagination>
-</div>
-</div>
+    
+        <div class="device_list">
+            <el-row class="list_head">
+                <el-col :xs="24" :sm="24" :md="24" :lg="10">
+                    <div class="list_title">
+                        设备列表
+                    </div>
+                </el-col>
+                <el-col :xs="20" :sm="20" :md="20" :lg="5">
+                    <div class="list_search">
+                        <el-input placeholder="请输入设备名称" icon="search" v-model="device_input" :on-icon-click="searchDevice">
+                        </el-input>
+                    </div>
+                </el-col>
+                <el-col :xs="4" :sm="4" :md="4" :lg="2">
+                    <div class="list_filter">
+                        <el-popover ref="fliter" placement="bottom" width="200" trigger="click">
+                            <div class="fliter">
+                                <div class="fliter_title">筛选</div>
+                                <div class="fliter_body">
+    
+                                </div>
+                                <div class="fliter_footer">
+                                    <el-button size="mini">取消</el-button>
+                                    <el-button type="primary" size="mini">确定</el-button>
+                                </div>
+                            </div>
+                        </el-popover>
+                        <el-button type="text" v-popover:fliter>
+                            <i class="fa fa-filter fa-2x"></i>
+                        </el-button>
+                    </div>
+                </el-col>
+                <el-col :xs="24" :sm="24" :md="24" :lg="7">
+                    <div class="list_info">
+                        共{{onlineCount1 + offlineCount1 + onlineCount2 + offlineCount2}}个设备，{{onlineCount1 + onlineCount2}}个正在运行中
+                    </div>
+                </el-col>
+            </el-row>
+            <div class="list_body">
+                <el-table class="device_table" :data="deviceData" stripe highlight-current-row :default-sort="{prop: 'name', order: 'descending'}" @current-change="handleCurrentChange">
+                    <el-table-column type="index" width="50">
+                    </el-table-column>
+                    <el-table-column label="设备名称" sortable width="120">
+                        <template scope="scope">
+                            <el-button type="text" @click="showDetail">{{ scope.row.name }}</el-button>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="status" label="运行状态" sortable width="120"></el-table-column>
+                    <el-table-column prop="pm25" label="PM2.5" sortable width="100"></el-table-column>
+                    <el-table-column prop="co2" label="CO2" sortable width="100"></el-table-column>
+                    <el-table-column prop="cho" label="甲醛" sortable width="100"></el-table-column>
+                    <el-table-column prop="temp" label="温度" sortable width="100"></el-table-column>
+                    <el-table-column prop="wet" label="湿度" sortable width="100"></el-table-column>
+                    <el-table-column prop="id" label="设备ID" sortable width="150"></el-table-column>
+                    <el-table-column prop="address" label="位置"></el-table-column>
+                    <el-table-column prop="user" label="用户"></el-table-column>
+                </el-table>
+            </div>
+            <div class="list_pagination">
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="device_list_currentPage" layout="total, prev, pager, next, jumper" :total="onlineCount1 + offlineCount1 + onlineCount2 + offlineCount2">
+                </el-pagination>
+            </div>
+        </div>
+    
+        <div class="user_list">
+            <el-row class="list_head">
+                <el-col :xs="24" :sm="24" :md="24" :lg="10">
+                    <div class="list_title">
+                        账户列表
+                    </div>
+                </el-col>
+                <el-col :xs="24" :sm="24" :md="24" :lg="7">
+                    <div class="list_search">
+                        <el-input placeholder="请输入设备名称" icon="search" v-model="device_input" :on-icon-click="searchDevice">
+                        </el-input>
+                    </div>
+                </el-col>
+    
+                <el-col :xs="24" :sm="24" :md="24" :lg="7">
+                    <div class="list_info">
+                        共{{onlineCount1 + offlineCount1 + onlineCount2 + offlineCount2}}个设备，{{onlineCount1 + onlineCount2}}个正在运行中
+                    </div>
+                </el-col>
+            </el-row>
+            <div class="list_body">
+                <el-table class="device_table" :data="deviceData" stripe highlight-current-row :default-sort="{prop: 'name', order: 'descending'}" @current-change="handleCurrentChange">
+                    <el-table-column type="index" width="50">
+                    </el-table-column>
+                    <el-table-column label="设备名称" sortable width="120">
+                        <template scope="scope">
+                            <el-button type="text" @click="showDetail">
+                                {{ scope.row.name }}</el-button>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="status" label="运行状态" sortable width="120"></el-table-column>
+                    <el-table-column prop="pm25" label="PM2.5" sortable width="100"></el-table-column>
+                    <el-table-column prop="co2" label="CO2" sortable width="100"></el-table-column>
+                    <el-table-column prop="cho" label="甲醛" sortable width="100"></el-table-column>
+                    <el-table-column prop="temp" label="温度" sortable width="100"></el-table-column>
+                    <el-table-column prop="wet" label="湿度" sortable width="100"></el-table-column>
+                    <el-table-column prop="id" label="设备ID" sortable width="150"></el-table-column>
+                    <el-table-column prop="address" label="位置"></el-table-column>
+                    <el-table-column prop="user" label="用户"></el-table-column>
+                </el-table>
+            </div>
+            <div class="list_pagination">
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="device_list_currentPage" layout="total, prev, pager, next, jumper" :total="onlineCount1 + offlineCount1 + onlineCount2 + offlineCount2">
+                </el-pagination>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-import IEcharts from 'vue-echarts-v3';
+import circleChart from 'components/CircleChart/index'
+import ringChart from 'components/RingChart/index'
+import { getBaseData } from 'api/getBaseData'
 export default {
     components: {
-        IEcharts
+        circleChart, ringChart
     },
     data: () => ({
         onlineCount1: 8888,
@@ -304,25 +304,25 @@ export default {
                     }
                 },
                 data: [{
-                        value: 335,
-                        name: 'PM2.5'
-                    },
-                    {
-                        value: 310,
-                        name: 'CO2'
-                    },
-                    {
-                        value: 234,
-                        name: '甲醛'
-                    },
-                    {
-                        value: 135,
-                        name: '温度'
-                    },
-                    {
-                        value: 548,
-                        name: '湿度'
-                    }
+                    value: 335,
+                    name: 'PM2.5'
+                },
+                {
+                    value: 310,
+                    name: 'CO2'
+                },
+                {
+                    value: 234,
+                    name: '甲醛'
+                },
+                {
+                    value: 135,
+                    name: '温度'
+                },
+                {
+                    value: 548,
+                    name: '湿度'
+                }
                 ],
                 itemStyle: {
                     emphasis: {
@@ -335,7 +335,7 @@ export default {
         },
     }),
     methods: {
-        say: function(message) {
+        say: function (message) {
             alert(message);
         },
         handleSelectionChange(val) {
@@ -347,7 +347,7 @@ export default {
         handleCurrentChange(val) {
             this.currentRow = val;
         },
-        showDetail: function(e) {
+        showDetail: function (e) {
             console.log(e.target.innerText);
             this.$msgbox({
                 title: '详情',
@@ -382,7 +382,15 @@ export default {
         handleCurrentChange(val) {
             this.currentPage = val;
             console.log(`当前页: ${val}`);
+        },
+        getBaseData() {
+            getBaseData().then(res => {
+                console.log(res)
+            })
         }
+    },
+    created() {
+        this.getBaseData()
     }
 }
 </script>
@@ -391,12 +399,15 @@ export default {
 .dashboard-user-container {
     padding: 30px 50px;
 }
+
 * {
     margin: 0;
 }
+
 .title {
     font-size: 28px;
 }
+
 .el-row {
     margin-top: 50px;
     margin-bottom: 20px;
@@ -404,6 +415,7 @@ export default {
         margin-bottom: 0;
     }
 }
+
 .el-col {
     border-radius: 4px;
     margin-top: 10px;
@@ -416,7 +428,7 @@ export default {
     border-radius: 4px;
     background-color: #fff;
     overflow: hidden;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12), 0 0 6px 0 rgba(0, 0, 0, .04);
 }
 
 .card-top {
@@ -426,10 +438,12 @@ export default {
     padding-bottom: 20px;
     border-bottom: 1px solid #d1dbe5;
 }
+
 .image {
     width: 100%;
     display: block;
 }
+
 .card-bottom {
     height: 300px;
 }
@@ -438,30 +452,36 @@ export default {
     width: 100%;
     height: 100%;
 }
+
 .vue-echarts {
-  width: 100%;
-  min-width: 100%;
+    width: 100%;
+    min-width: 100%;
     height: 100%;
     min-height: 100%;
     z-index: 99;
 }
+
 .card-bottom>table {
-  font-size: 18px;
-  margin-left: 20px;
+    font-size: 18px;
+    margin-left: 20px;
 }
+
 .card-bottom>table>tr {
-  height: 57px;
-  line-height: 57px;
+    height: 57px;
+    line-height: 57px;
 }
+
 .card-bottom>table>tr>td {
-  width: 45%;
-  text-align: center;
+    width: 45%;
+    text-align: center;
 }
+
 .td1 {
-  color: rgba(0, 153, 255, 0.7);
+    color: rgba(0, 153, 255, 0.7);
 }
+
 .td2 {
-  color: rgba(204, 0, 0, 0.7);
+    color: rgba(204, 0, 0, 0.7);
 }
 
 .device_list,
@@ -471,9 +491,10 @@ export default {
     border: 1px solid #d1dbe5;
     border-radius: 4px;
     background-color: #fff;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12), 0 0 6px 0 rgba(0, 0, 0, .04);
     margin-top: 50px;
 }
+
 .list_head {
     width: 94%;
     border-bottom: 1px solid #d1dbe5;
@@ -487,10 +508,12 @@ export default {
     font-size: 24px;
     line-height: 50px;
 }
-.list_search > .el-input {
+
+.list_search>.el-input {
     width: 80%;
     margin-top: 5px;
 }
+
 .list_fliter {
     line-height: 50px;
 }
@@ -498,18 +521,21 @@ export default {
 .list_info {
     line-height: 50px;
 }
+
 .device_table {
     width: 94%;
     margin: 20px auto;
 }
+
 .list_pagination {
     width: 100%;
 }
+
 .el-pagination {
     width: 500px;
     margin: 30px auto;
-
 }
+
 @media screen and (min-width: 1200px) {
     .text1 {
         font-size: 14px;
@@ -522,6 +548,7 @@ export default {
         height: 450px;
     }
 }
+
 @media screen and (min-width: 992px) and (max-width: 1200px) {
     .text1 {
         font-size: 14px;
@@ -534,6 +561,7 @@ export default {
         height: 500px;
     }
 }
+
 @media screen and (min-width: 768px) and (max-width: 992px) {
     .text1 {
         font-size: 14px;
@@ -546,7 +574,8 @@ export default {
         height: 500px;
     }
 }
-@media screen and (max-width : 768px) {
+
+@media screen and (max-width: 768px) {
     .text1 {
         font-size: 14px;
     }

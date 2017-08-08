@@ -18,7 +18,7 @@
               <el-input v-model="user.name"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="large" style="width:100px;" @click="cancelChangeUsername('user')">取消</el-button>
+              <el-button size="large" style="width:100px;" @click="cancelChangeUsername('user')">取消</el-button>
               <el-button type="primary" size="large" style="width:100px;float:right;" @click="submitInformationForm('user')">提交</el-button>
             </el-form-item>
           </el-form>
@@ -33,7 +33,7 @@
           </div>
           <div class="edit">编辑</div>
         </template>
-        <div class="components-container">
+        <div class="components-container details">
           <PanThumb :image='image'>
           </PanThumb>
           <el-button type="primary" icon="upload" style="position: absolute;bottom: 15px;margin-left: 40px;" @click="imagecropperShow=true">修改头像
@@ -53,8 +53,9 @@
             <el-form-item label="昵称">
               <el-input v-model="user.nickname"></el-input>
             </el-form-item>
-            <el-form-item style="text-align:center;">
-              <el-button type="primary" size="large" style="width:150px;" @click="submitInformationForm('user')">提交</el-button>
+            <el-form-item>
+              <el-button size="large" style="width:100px;" @click="cancelChangeUsername('user')">取消</el-button>
+              <el-button type="primary" size="large" style="width:100px;float:right;" @click="submitInformationForm('user')">提交</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -70,16 +71,22 @@
           </div>
           <div class="edit">编辑</div>
         </template>
-        <div class="details">
-          <p>当前邮箱：{{user.email}}</p>
-          <el-button type="primary" style="width:100px;" :disabled="user.emailVerified">验证邮箱</el-button>
-          <el-button type="primary" style="width:100px;">更换邮箱</el-button>
+        <div class="details details4">
+          <el-form :model="ruleForm3" :rules="rules1" ref="ruleForm3" label-width="80px">
+            <el-form-item label="邮箱" prop="newEmail">
+              <el-input v-model="user.newEmail"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" style="width:100px;" :disabled="user.emailVerified">验证邮箱</el-button>
+              <el-button type="primary" style="width:100px;float:right;">更换邮箱</el-button>
+            </el-form-item>
+          </el-form>
         </div>
       </el-collapse-item>
   
       <el-collapse-item>
         <template slot="title" class="info-title">
-          <div class="unit">绑定手机</div>
+          <div class="unit">手机</div>
           <div class="content">
             {{user.phone}}&nbsp;&nbsp;&nbsp;&nbsp;
             <span v-if="user.phoneVerified" style="color:green;">已验证</span>
@@ -94,7 +101,7 @@
             </el-form-item>
             <el-form-item>
               <el-button type="primary" style="width:100px;" :disabled="user.phoneVerified">验证手机</el-button>
-              <el-button type="primary" style="width:100px;">更换手机</el-button>
+              <el-button type="primary" style="width:100px;float:right;">更换手机</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -118,8 +125,8 @@
               <el-input type="password" v-model="ruleForm2.checkPassword" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="submitChangePasswordForm('ruleForm2')" style="width:100px;">提交</el-button>
-              <el-button @click="resetForm('ruleForm2')" style="width:100px;">重置</el-button>
+              <el-button @click="resetForm('ruleForm2')" style="width:90px;">重置</el-button>
+              <el-button type="primary" @click="submitChangePasswordForm('ruleForm2')" style="width:90px;float:right;">提交</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -133,6 +140,7 @@
 import ImageCropper from '../../components/ImageCropper'
 import PanThumb from '../../components/PanThumb'
 import Image from '../../assets/images/avater/1.jpg'
+import { getCookie } from 'utils/auth'
 export default {
   components: { ImageCropper, PanThumb },
   data() {
@@ -269,7 +277,8 @@ export default {
     }
   },
   created() {
-    this.user = JSON.parse(localStorage.getItem('userInfo'))
+    this.user = JSON.parse(sessionStorage.getItem('userInfo'))
+    console.log(getCookie('SESSION'))
   }
 }
 </script>
@@ -330,7 +339,7 @@ export default {
     .details {
       width: 25%;
       min-width: 300px;
-      margin-left: 10%;
+      margin-left: 15%;
       font-size: 18px;
       .el-form {
         padding-top: 20px;
