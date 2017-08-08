@@ -1,5 +1,4 @@
 import axios from 'axios'
-import store from '../store'
 import { Message } from 'element-ui'
 
 // 创建 axios 实例
@@ -7,7 +6,9 @@ const service = axios.create({
   baseURL: 'http://app.hw99lt.com', // api 的 base_url
   timeout: 5000, // 请求超时时间
   withCredentials: true,
-  headers: { 'X-Requested-With': 'XMLHttpRequest' }
+  headers: {
+    'X-Requested-With': 'XMLHttpRequest'
+  }
 })
 
 // request拦截器
@@ -30,7 +31,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => response,
   error => {
-    console.log('err' + error);// for debug
+    console.log(error);// for debug
     Message({
       message: error.message,
       type: 'error',

@@ -17,3 +17,17 @@ export function logout() {
     method: 'post'
   })
 }
+
+export function getSession(){
+  return axios_service({
+    url: '/user',
+    method: 'get'
+  })
+}
+
+export function getBaseData() {
+  return axios_service({
+    url: '/device/adapters',
+    method: 'get'
+  })
+}

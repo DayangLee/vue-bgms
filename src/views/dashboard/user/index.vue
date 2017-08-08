@@ -180,7 +180,8 @@
 <script>
 import circleChart from 'components/CircleChart/index'
 import ringChart from 'components/RingChart/index'
-import { getBaseData } from 'api/getBaseData'
+import { getBaseData, getSession } from 'api/login'
+
 export default {
     components: {
         circleChart, ringChart
@@ -269,70 +270,7 @@ export default {
             temp: -6,
             wet: 43,
             address: '上海市普陀区金沙江路 1518 弄'
-        }],
-        pie: {
-            color: ["#20a0ff", "#13CE66", "#F7BA2A", "#FF4949", "#61a0a8"],
-            title: {
-                show: false
-            },
-            tooltip: {
-                trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
-            },
-            legend: {
-                show: false
-            },
-            series: [{
-                name: '销量',
-                type: 'pie',
-                radius: '55%',
-                center: ['50%', '50%'],
-                label: {
-                    normal: {
-                        show: false
-                    },
-                    emphasis: {
-                        show: true
-                    }
-                },
-                lableLine: {
-                    normal: {
-                        show: false
-                    },
-                    emphasis: {
-                        show: true
-                    }
-                },
-                data: [{
-                    value: 335,
-                    name: 'PM2.5'
-                },
-                {
-                    value: 310,
-                    name: 'CO2'
-                },
-                {
-                    value: 234,
-                    name: '甲醛'
-                },
-                {
-                    value: 135,
-                    name: '温度'
-                },
-                {
-                    value: 548,
-                    name: '湿度'
-                }
-                ],
-                itemStyle: {
-                    emphasis: {
-                        shadowBlur: 10,
-                        shadowOffsetX: 0,
-                        shadowColor: 'rgba(0, 0, 0, 0.5)'
-                    }
-                }
-            }]
-        },
+        }]
     }),
     methods: {
         say: function (message) {
@@ -383,14 +321,14 @@ export default {
             this.currentPage = val;
             console.log(`当前页: ${val}`);
         },
-        getBaseData() {
-            getBaseData().then(res => {
+        getData() {
+            getSession().then(res => {
                 console.log(res)
             })
         }
     },
     created() {
-        this.getBaseData()
+        this.getData()
     }
 }
 </script>
