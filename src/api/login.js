@@ -20,7 +20,7 @@ export function logout() {
 
 export function getSession(){
   return axios_service({
-    url: '/user',
+    url: '/user/sessionId',
     method: 'get'
   })
 }

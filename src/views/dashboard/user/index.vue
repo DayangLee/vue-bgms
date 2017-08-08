@@ -20,8 +20,8 @@
                         <span>污染情况分布</span>
                     </div>
                     <div class='card-bottom'>
-                        <div class="echarts">
-                            <ringChart></ringChart>
+                        <div class="echarts" style="margin-left:15%;">
+                            <ringChart width="70%"></ringChart>
                         </div>
                     </div>
                 </div>
@@ -71,29 +71,10 @@
                         设备列表
                     </div>
                 </el-col>
-                <el-col :xs="20" :sm="20" :md="20" :lg="5">
+                <el-col :xs="24" :sm="24" :md="24" :lg="7">
                     <div class="list_search">
                         <el-input placeholder="请输入设备名称" icon="search" v-model="device_input" :on-icon-click="searchDevice">
                         </el-input>
-                    </div>
-                </el-col>
-                <el-col :xs="4" :sm="4" :md="4" :lg="2">
-                    <div class="list_filter">
-                        <el-popover ref="fliter" placement="bottom" width="200" trigger="click">
-                            <div class="fliter">
-                                <div class="fliter_title">筛选</div>
-                                <div class="fliter_body">
-    
-                                </div>
-                                <div class="fliter_footer">
-                                    <el-button size="mini">取消</el-button>
-                                    <el-button type="primary" size="mini">确定</el-button>
-                                </div>
-                            </div>
-                        </el-popover>
-                        <el-button type="text" v-popover:fliter>
-                            <i class="fa fa-filter fa-2x"></i>
-                        </el-button>
                     </div>
                 </el-col>
                 <el-col :xs="24" :sm="24" :md="24" :lg="7">

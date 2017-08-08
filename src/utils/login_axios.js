@@ -17,7 +17,7 @@ service.interceptors.request.use(
     return config
   },
   error => {
-    console.log('err' + error);// for debug
+    console.log(error) // for debug
     Message({
       message: error.message,
       type: 'error',
@@ -31,7 +31,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => response,
   error => {
-    console.log(error);// for debug
+    console.log(error) // for debug
     Message({
       message: error.message,
       type: 'error',

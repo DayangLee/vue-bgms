@@ -1,5 +1,4 @@
 import Mock from 'mockjs'
-
 const count = parseInt(Math.random()*(15-5+1)+5,10);
 const KGList = []
 const newWindList = []
