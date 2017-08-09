@@ -1,179 +1,129 @@
 <template>
-    <div class="dashboard-user-container">
+    <div class="dashboard-agent-container">
         <div class='title'>主页</div>
         <el-row :gutter='50'>
-            <el-col :xs="24" :sm="24" :md="8" :lg="8">
+            <el-col :xs="24" :sm="12" :md="12" :lg="7">
                 <div class="card">
                     <div class='card-top'>
-                        <span>设备在线情况</span>
+                        <p>
+                            <img src='../../../assets/images/kg.png' class='image'>
+                        </p>
+                        <span>空感一代</span>
                     </div>
                     <div class='card-bottom'>
-                        <div class="echarts">
-                            <circleChart></circleChart>
+                        <div class='card-bottom-left'>
+                            <p style='color: #00CC00;' class="text1">在线</p>
+                            <p class='onlineCount text2'>{{ onlineCount1 }}</p>
+                        </div>
+                        <div class='card-bottom-right'>
+                            <p style='color: #cccccc;' class="text1">离线</p>
+                            <p class='onlineCount text2'>{{ offlineCount1 }}</p>
                         </div>
                     </div>
                 </div>
             </el-col>
-            <el-col :xs="24" :sm="24" :md="8" :lg="8">
+    
+            <el-col :xs="24" :sm="12" :md="12" :lg="7">
                 <div class="card">
                     <div class='card-top'>
-                        <span>污染情况分布</span>
+                        <p>
+                            <img src='../../../assets/images/kg.png' class='image'>
+                        </p>
+                        <span>空感二代</span>
                     </div>
                     <div class='card-bottom'>
-                        <div class="echarts" style="margin-left:15%;">
-                            <ringChart width="70%"></ringChart>
+                        <div class='card-bottom-left'>
+                            <p style='color: #00CC00;' class="text1">在线</p>
+                            <p class='onlineCount text2'>{{ onlineCount2 }}</p>
+                        </div>
+                        <div class='card-bottom-right'>
+                            <p style='color: #cccccc;' class="text1">离线</p>
+                            <p class='onlineCount text2'>{{ offlineCount2 }}</p>
                         </div>
                     </div>
                 </div>
+    
             </el-col>
-            <el-col :xs="24" :sm="24" :md="8" :lg="8">
-                <div class="card">
-                    <div class='card-top'>
-                        <span>污染极值</span>
+            <el-col :xs="24" :sm="24" :md="24" :lg="10">
+                <div class="card card3">
+                    <div class="card3-title">
+                        消息
                     </div>
-                    <div class='card-bottom'>
-                        <table>
-                            <tr>
-                                <td>PM2.5</td>
-                                <td class="td1">200</td>
-                                <td class="td2">300</td>
-                            </tr>
-                            <tr>
-                                <td>CO2</td>
-                                <td class="td1">200</td>
-                                <td class="td2">300</td>
-                            </tr>
-                            <tr>
-                                <td>甲醛</td>
-                                <td class="td1">200</td>
-                                <td class="td2">300</td>
-                            </tr>
-                            <tr>
-                                <td>温度</td>
-                                <td class="td1">200</td>
-                                <td class="td2">300</td>
-                            </tr>
-                            <tr>
-                                <td>湿度</td>
-                                <td class="td1">200</td>
-                                <td class="td2">300</td>
-                            </tr>
-                        </table>
+                    <div class="card3-body">
+                        <el-collapse @change="handleChange">
+                            <el-collapse-item name="1">
+                                <template slot="title">
+                                    <el-badge is-dot class="item" v-if="notRead1" v-once>[系统消息]</el-badge>
+                                    <span v-else>[系统消息]</span>
+                                    <span style="margin-left:30px;">与现实生活一致</span>
+                                </template>
+                                <div>在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。</div>
+                            </el-collapse-item>
+                        </el-collapse>
+                        <el-collapse @change="handleChange">
+                            <el-collapse-item name="2">
+                                <template slot="title">
+                                    <el-badge is-dot class="item" v-if="notRead2" v-once>[系统消息]</el-badge>
+                                    <span v-else>[系统消息]</span>
+                                    <span style="margin-left:30px;">与现实生活一致</span>
+                                </template>
+                                <div>在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。</div>
+                            </el-collapse-item>
+                        </el-collapse>
+                        <el-collapse @change="handleChange">
+                            <el-collapse-item name="3">
+                                <template slot="title">
+                                    <el-badge is-dot class="item" v-if="notRead3" v-once>[系统消息]</el-badge>
+                                    <span v-else>[系统消息]</span>
+                                    <span style="margin-left:30px;">与现实生活一致</span>
+                                </template>
+                                <div>在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。</div>
+                            </el-collapse-item>
+                        </el-collapse>
                     </div>
                 </div>
             </el-col>
         </el-row>
     
-        <div class="device_list">
-            <el-row class="list_head">
-                <el-col :xs="24" :sm="24" :md="24" :lg="10">
-                    <div class="list_title">
-                        设备列表
-                    </div>
-                </el-col>
-                <el-col :xs="24" :sm="24" :md="24" :lg="7">
-                    <div class="list_search">
-                        <el-input placeholder="请输入设备名称" icon="search" v-model="device_input" :on-icon-click="searchDevice">
-                        </el-input>
-                    </div>
-                </el-col>
-                <el-col :xs="24" :sm="24" :md="24" :lg="7">
-                    <div class="list_info">
-                        共{{onlineCount1 + offlineCount1 + onlineCount2 + offlineCount2}}个设备，{{onlineCount1 + onlineCount2}}个正在运行中
-                    </div>
-                </el-col>
-            </el-row>
-            <div class="list_body">
-                <el-table class="device_table" :data="deviceData" stripe highlight-current-row :default-sort="{prop: 'name', order: 'descending'}" @current-change="handleCurrentChange">
-                    <el-table-column type="index" width="50">
-                    </el-table-column>
-                    <el-table-column label="设备名称" sortable width="120">
-                        <template scope="scope">
-                            <el-button type="text" @click="showDetail">{{ scope.row.name }}</el-button>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="status" label="运行状态" sortable width="120"></el-table-column>
-                    <el-table-column prop="pm25" label="PM2.5" sortable width="100"></el-table-column>
-                    <el-table-column prop="co2" label="CO2" sortable width="100"></el-table-column>
-                    <el-table-column prop="cho" label="甲醛" sortable width="100"></el-table-column>
-                    <el-table-column prop="temp" label="温度" sortable width="100"></el-table-column>
-                    <el-table-column prop="wet" label="湿度" sortable width="100"></el-table-column>
-                    <el-table-column prop="id" label="设备ID" sortable width="150"></el-table-column>
-                    <el-table-column prop="address" label="位置"></el-table-column>
-                    <el-table-column prop="user" label="用户"></el-table-column>
-                </el-table>
-            </div>
-            <div class="list_pagination">
-                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="device_list_currentPage" layout="total, prev, pager, next, jumper" :total="onlineCount1 + offlineCount1 + onlineCount2 + offlineCount2">
-                </el-pagination>
-            </div>
-        </div>
-    
-        <div class="user_list">
-            <el-row class="list_head">
-                <el-col :xs="24" :sm="24" :md="24" :lg="10">
-                    <div class="list_title">
-                        账户列表
-                    </div>
-                </el-col>
-                <el-col :xs="24" :sm="24" :md="24" :lg="7">
-                    <div class="list_search">
-                        <el-input placeholder="请输入设备名称" icon="search" v-model="device_input" :on-icon-click="searchDevice">
-                        </el-input>
-                    </div>
-                </el-col>
-    
-                <el-col :xs="24" :sm="24" :md="24" :lg="7">
-                    <div class="list_info">
-                        共{{onlineCount1 + offlineCount1 + onlineCount2 + offlineCount2}}个设备，{{onlineCount1 + onlineCount2}}个正在运行中
-                    </div>
-                </el-col>
-            </el-row>
-            <div class="list_body">
-                <el-table class="device_table" :data="deviceData" stripe highlight-current-row :default-sort="{prop: 'name', order: 'descending'}" @current-change="handleCurrentChange">
-                    <el-table-column type="index" width="50">
-                    </el-table-column>
-                    <el-table-column label="设备名称" sortable width="120">
-                        <template scope="scope">
-                            <el-button type="text" @click="showDetail">
-                                {{ scope.row.name }}</el-button>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="status" label="运行状态" sortable width="120"></el-table-column>
-                    <el-table-column prop="pm25" label="PM2.5" sortable width="100"></el-table-column>
-                    <el-table-column prop="co2" label="CO2" sortable width="100"></el-table-column>
-                    <el-table-column prop="cho" label="甲醛" sortable width="100"></el-table-column>
-                    <el-table-column prop="temp" label="温度" sortable width="100"></el-table-column>
-                    <el-table-column prop="wet" label="湿度" sortable width="100"></el-table-column>
-                    <el-table-column prop="id" label="设备ID" sortable width="150"></el-table-column>
-                    <el-table-column prop="address" label="位置"></el-table-column>
-                    <el-table-column prop="user" label="用户"></el-table-column>
-                </el-table>
-            </div>
-            <div class="list_pagination">
-                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="device_list_currentPage" layout="total, prev, pager, next, jumper" :total="onlineCount1 + offlineCount1 + onlineCount2 + offlineCount2">
-                </el-pagination>
-            </div>
-        </div>
+        <el-row :gutter="20" class="pictures">
+            <el-col :xs="12" :sm="12" :md="6" :lg="6">
+                <a href="http://www.hwlantian.com/html/detail_m1.html" target="_blank">
+                    <img src="../../../assets/images/dashboard/img1.jpg">
+                </a>
+            </el-col>
+            <el-col :xs="12" :sm="12" :md="6" :lg="6">
+                <a href="http://www.hwlantian.com/html/detail_m2.html" target="_blank">
+                    <img src="../../../assets/images/dashboard/img2.jpg">
+                </a>
+            </el-col>
+            <el-col :xs="12" :sm="12" :md="6" :lg="6">
+                <a href="http://www.hwlantian.com/html/detail_n1.html" target="_blank">
+                    <img src="../../../assets/images/dashboard/img3.jpg">
+                </a>
+            </el-col>
+            <el-col :xs="12" :sm="12" :md="6" :lg="6">
+                <a href="http://www.hwlantian.com/html/detail_u1.html" target="_blank">
+                    <img src="../../../assets/images/dashboard/img4.jpg">
+                </a>
+            </el-col>
+        </el-row>
     </div>
 </template>
 
 <script>
-import circleChart from 'components/CircleChart/index'
-import ringChart from 'components/RingChart/index'
-import { getBaseData, getSession } from 'api/login'
-
+import { getBaseData } from 'api/acount'
 export default {
-    components: {
-        circleChart, ringChart
-    },
     data: () => ({
+        notRead1: true,
+        notRead2: true,
+        notRead3: true,
         onlineCount1: 8888,
         offlineCount1: 888,
         onlineCount2: 666,
         offlineCount2: 666,
+        allCount: null,
         device_input: '',
-        device_list_currentPage: 2,
+        device_list_currentPage: 1,
         deviceData: [{
             name: '2016-05-01',
             id: 'KG-123456789',
@@ -254,17 +204,21 @@ export default {
         }]
     }),
     methods: {
-        say: function (message) {
-            alert(message);
-        },
-        handleSelectionChange(val) {
-            this.multipleSelection = val
+        handleChange(val) {
+            switch (val[0]) {
+                case '1':
+                    this.notRead1 = false;
+                    break;
+                case '2':
+                    this.notRead2 = false;
+                    break;
+                case '3':
+                    this.notRead3 = false;
+                    break;
+            }
         },
         searchDevice(ev) {
             alert(this.device_input);
-        },
-        handleCurrentChange(val) {
-            this.currentRow = val;
         },
         showDetail: function (e) {
             console.log(e.target.innerText);
@@ -295,32 +249,28 @@ export default {
                 });
             });
         },
-        handleSizeChange(val) {
-            console.log(`每页 ${val} 条`);
-        },
         handleCurrentChange(val) {
             this.currentPage = val;
             console.log(`当前页: ${val}`);
-        },
-        getData() {
-            getSession().then(res => {
-                console.log(res)
-            })
         }
     },
     created() {
-        this.getData()
+        getBaseData().then(res => {
+            console.log(res.data)
+            const tableData = res.data
+            this.allCount = tableData.length
+        })
     }
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
-.dashboard-user-container {
-    padding: 30px 50px;
-}
-
+<style rel="stylesheet/scss" lang="scss">
 * {
     margin: 0;
+}
+
+.dashboard-agent-container {
+    padding: 30px 50px;
 }
 
 .title {
@@ -342,7 +292,7 @@ export default {
 
 .card {
     width: 100%;
-    height: auto;
+    height: 450px;
     border: 1px solid #d1dbe5;
     border-radius: 4px;
     background-color: #fff;
@@ -351,159 +301,143 @@ export default {
 }
 
 .card-top {
-    font-size: 20px;
-    padding-left: 20px;
-    padding-top: 20px;
+    text-align: center;
+    height: 350px;
     padding-bottom: 20px;
     border-bottom: 1px solid #d1dbe5;
-}
-
-.image {
-    width: 100%;
-    display: block;
+    p {
+        height: 300px;
+        line-height: 300px;
+        img {
+            width: 90%;
+            margin: 0 auto;
+            vertical-align: middle;
+        }
+    }
+    p:before {
+        content: ".";
+        margin-left: -5px;
+        font-size: 10px;
+        visibility: hidden;
+    }
+    span {
+        height: 50px;
+    }
 }
 
 .card-bottom {
-    height: 300px;
+    padding-top: 14px;
+    margin-bottom: 4px;
 }
 
-.echarts {
-    width: 100%;
-    height: 100%;
-}
-
-.vue-echarts {
-    width: 100%;
-    min-width: 100%;
-    height: 100%;
-    min-height: 100%;
-    z-index: 99;
-}
-
-.card-bottom>table {
-    font-size: 18px;
-    margin-left: 20px;
-}
-
-.card-bottom>table>tr {
-    height: 57px;
-    line-height: 57px;
-}
-
-.card-bottom>table>tr>td {
-    width: 45%;
+.card-bottom-left,
+.card-bottom-right {
+    width: 49%;
+    display: block;
+    float: left;
     text-align: center;
+    margin-bottom: 14px;
 }
 
-.td1 {
-    color: rgba(0, 153, 255, 0.7);
+.card-bottom-left {
+    border-right: 1px solid #d1dbe5;
 }
 
-.td2 {
-    color: rgba(204, 0, 0, 0.7);
+.text1 {
+    font-size: 20px;
 }
 
-.device_list,
-.user_list {
-    width: 100%;
-    height: auto;
-    border: 1px solid #d1dbe5;
-    border-radius: 4px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12), 0 0 6px 0 rgba(0, 0, 0, .04);
-    margin-top: 50px;
+.text2 {
+    padding-top: 10px;
+    font-size: 20px;
 }
 
-.list_head {
-    width: 94%;
-    border-bottom: 1px solid #d1dbe5;
-    margin-left: 3%;
-    margin-top: 15px;
-    padding-bottom: 10px;
-}
-
-.list_title {
-    text-align: left;
+.card3-title {
     font-size: 24px;
-    line-height: 50px;
+    width: 90%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #d1dbe5;
+    margin-left: 5%;
 }
 
-.list_search>.el-input {
-    width: 80%;
-    margin-top: 5px;
-}
-
-.list_fliter {
-    line-height: 50px;
-}
-
-.list_info {
-    line-height: 50px;
-}
-
-.device_table {
-    width: 94%;
+.card3-body {
+    width: 90%;
     margin: 20px auto;
 }
 
-.list_pagination {
+.el-collapse {
+    .el-badge__content.is-fixed.is-dot {
+        top: 10px;
+    }
+}
+
+.pictures {
+  a {
     width: 100%;
+    margin-top: 5px;
+
+    img {
+      width: 100%;
+      -webkit-transition: all .2s linear;
+      transition: all .2s linear;
+      &:hover {
+        margin-top: -5px;
+        -moz-box-shadow: 2px 2px 15px rgba(136, 136, 136, 0.5);
+        -webkit-box-shadow: 2px 2px 15px rgba(136, 136, 136, 0.5);
+        box-shadow: 2px 2px 15px rgba(136, 136, 136, 0.5);
+      }
+    }
+  }
 }
 
-.el-pagination {
-    width: 500px;
-    margin: 30px auto;
-}
 
-@media screen and (min-width: 1200px) {
-    .text1 {
-        font-size: 14px;
-    }
-    .text2 {
-        font-size: 22px;
-    }
-    .card3 {
-        width: 100%;
-        height: 450px;
-    }
-}
-
-@media screen and (min-width: 992px) and (max-width: 1200px) {
-    .text1 {
-        font-size: 14px;
-    }
-    .text2 {
-        font-size: 22px;
-    }
-    .card3 {
-        width: 100%;
-        height: 500px;
-    }
-}
-
-@media screen and (min-width: 768px) and (max-width: 992px) {
-    .text1 {
-        font-size: 14px;
-    }
-    .text2 {
-        font-size: 24px;
-    }
-    .card3 {
-        width: 100%;
-        height: 500px;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .text1 {
-        font-size: 14px;
-    }
-    .text2 {
-        font-size: 28px;
-    }
-    .card3 {
-        width: 100%;
-        height: 500px;
-    }
-}
+// @media screen and (min-width: 1200px) {
+//     .text1 {
+//         font-size: 14px;
+//     }
+//     .text2 {
+//         font-size: 22px;
+//     }
+//     .card3 {
+//         width: 100%;
+//         height: 450px;
+//     }
+// }
+// @media screen and (min-width: 992px) and (max-width: 1200px) {
+//     .text1 {
+//         font-size: 14px;
+//     }
+//     .text2 {
+//         font-size: 22px;
+//     }
+//     .card3 {
+//         width: 100%;
+//         height: 500px;
+//     }
+// }
+// @media screen and (min-width: 768px) and (max-width: 992px) {
+//     .text1 {
+//         font-size: 14px;
+//     }
+//     .text2 {
+//         font-size: 24px;
+//     }
+//     .card3 {
+//         width: 100%;
+//         height: 500px;
+//     }
+// }
+// @media screen and (max-width: 768px) {
+//     .text1 {
+//         font-size: 14px;
+//     }
+//     .text2 {
+//         font-size: 28px;
+//     }
+//     .card3 {
+//         width: 100%;
+//         height: 500px;
+//     }
+// }
 </style>

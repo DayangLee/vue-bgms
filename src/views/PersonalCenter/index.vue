@@ -5,26 +5,11 @@
       个人中心
     </div>
   
+    <div class="username">
+      <div class="unit">用户名</div>
+      <div class="content">{{user.name}}</div>
+    </div>
     <el-collapse accordion class="personalCollapse">
-      <el-collapse-item>
-        <template slot="title" class="info-title">
-          <div class="unit">用户名</div>
-          <div class="content">{{user.name}}</div>
-          <div class="edit">编辑</div>
-        </template>
-        <div class="details">
-          <el-form label-width="80px" :model="user">
-            <el-form-item label="用户名">
-              <el-input v-model="user.name"></el-input>
-            </el-form-item>
-            <el-form-item>
-              <el-button size="large" style="width:100px;" @click="cancelChangeUsername('user')">取消</el-button>
-              <el-button type="primary" size="large" style="width:100px;float:right;" @click="submitInformationForm('user')">提交</el-button>
-            </el-form-item>
-          </el-form>
-        </div>
-      </el-collapse-item>
-  
       <el-collapse-item>
         <template slot="title">
           <div class="unit">头像</div>
@@ -51,11 +36,11 @@
         <div class="details">
           <el-form label-width="80px" :model="user">
             <el-form-item label="昵称">
-              <el-input v-model="user.nickname"></el-input>
+              <el-input v-model="newNickname"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button size="large" style="width:100px;" @click="cancelChangeUsername('user')">取消</el-button>
-              <el-button type="primary" size="large" style="width:100px;float:right;" @click="submitInformationForm('user')">提交</el-button>
+              <el-button size="large" style="width:100px;" @click="cancelChange('nickname')">取消</el-button>
+              <el-button type="primary" size="large" style="width:100px;float:right;" @click="submitForm('nickname')">确定</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -65,20 +50,31 @@
         <template slot="title" class="info-title">
           <div class="unit">邮箱</div>
           <div class="content">
-            {{user.email}}&nbsp;&nbsp;&nbsp;&nbsp;
-            <span v-if="user.emailVerified" style="color:green;">已验证</span>
-            <span v-else style="color:red;">未验证</span>
+            <span v-if="user.email">{{user.email}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span v-else style="color:blue;">未添加</span>
+            <span v-if="user.email&&user.emailVerified" style="color:green;">已验证</span>
+            <span v-else-if="user.email&&!user.emailVerified" style="color:red;">未验证</span>
           </div>
           <div class="edit">编辑</div>
         </template>
         <div class="details details4">
-          <el-form :model="ruleForm3" :rules="rules1" ref="ruleForm3" label-width="80px">
+          <el-form :rules="rules1" label-width="80px">
+            <el-form-item label="验证码" prop="verifyCode">
+              <el-input v-model="verifyCode1"></el-input>
+              <el-button class="verifyButton" @click.prevent="sendVerifyCode('email')">发送验证码</el-button>
+            </el-form-item>
             <el-form-item label="邮箱" prop="newEmail">
-              <el-input v-model="user.newEmail"></el-input>
+              <el-input v-model="newEmail"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" style="width:100px;" :disabled="user.emailVerified">验证邮箱</el-button>
-              <el-button type="primary" style="width:100px;float:right;">更换邮箱</el-button>
+              <p v-if="user.email">
+                <el-button type="primary" style="width:100px;" :disabled="user.emailVerified">验证邮箱</el-button>
+                <el-button type="primary" style="width:100px;float:right;">更换邮箱</el-button>
+              </p>
+              <p v-else>
+                <el-button size="large" style="width:100px;" @click="cancelChange('email')">取消</el-button>
+                <el-button type="primary" size="large" style="width:100px;float:right;" @click="submitAddForm('email')">添加</el-button>
+              </p>
             </el-form-item>
           </el-form>
         </div>
@@ -95,7 +91,7 @@
           <div class="edit">编辑</div>
         </template>
         <div class="details">
-          <el-form :model="ruleForm3" :rules="rules1" ref="ruleForm3" label-width="80px">
+          <el-form :rules="rules1" label-width="80px">
             <el-form-item label="手机号" prop="newPhone">
               <el-input v-model="user.newPhone"></el-input>
             </el-form-item>
@@ -141,6 +137,7 @@ import ImageCropper from '../../components/ImageCropper'
 import PanThumb from '../../components/PanThumb'
 import Image from '../../assets/images/avater/1.jpg'
 import { getCookie } from 'utils/auth'
+import { userInfo, changeUserInfo, changeNickname, getVerifyCode, checkVerifyCode, uniqueCheck } from 'api/acount'
 export default {
   components: { ImageCropper, PanThumb },
   data() {
@@ -190,14 +187,11 @@ export default {
     };
     return {
       infoEdit: false,
-      user: {
-        name: '',
-        nickname: '',
-        imgUrl: '../../assets/images/avater/1.jpg',
-        email: '',
-        phone: '',
-        password: ''
-      },
+      newNickname: null,
+      newEmail: null,
+      verifyCode1: null,
+      user: {},
+      userInfo: {},
       ruleForm1: {
         name: '',
         nickName: '',
@@ -208,9 +202,6 @@ export default {
         password: '',
         newPassword: '',
         checkPassword: ''
-      },
-      ruleForm3: {
-        newPhone: ''
       },
       imageUrl: '',
       fileList2: [{
@@ -245,11 +236,66 @@ export default {
     handleEdit1() {
       console.log('h');
     },
-    submitInformationForm(e) {
-      console.log(e);
-    },
-    cancelChangeUsername(e) {
+    submitForm(e) {
       console.log(e)
+      if (e == 'nickname') {
+        this.userInfo.nickname = this.newNickname.trim()
+        console.log(typeof(this.userInfo.phone))
+        changeNickname(this.userInfo).then(res => {
+          this.$message({
+            message: '昵称修改成功！',
+            type: 'success'
+          });
+          this.user = res.data
+          this.userInfo = res.data
+        })
+      }
+    },
+    submitAddForm(e) {
+      if (e == 'email') {  // 添加邮箱
+      // 邮箱唯一性校验
+        uniqueCheck('email', this.newEmail).then(res => {
+          this.$alert('该邮箱已被别人使用', '', {
+            confirmButtonText: '确定'
+          });
+        }).catch(error => {
+          // 手机已验证时，验证码发至手机，check手机验证码
+          if (this.user.phoneVerified) {
+            checkVerifyCode('phone', this.user.phone, this.verifyCode1).then(res => {
+              this.userInfo.email = this.newEmail.trim()
+              changeUserInfo(this.userInfo,this.verifyCode1).then(res => {
+                this.$message({
+                  message: '邮箱添加成功！',
+                  type: 'success'
+                })
+                this.user = res.data
+                this.userInfo = res.data
+              })
+            })
+          }
+        })
+
+      }
+    },
+    cancelChange(e) {
+      console.log(e)
+      if (e == 'nickname') {
+        this.newNickname = this.user.nickname
+      }
+    },
+    sendVerifyCode(e) {
+      if (e == 'email') {
+        if (this.user.phoneVerified) {
+          getVerifyCode('phone', this.user.phone).then(res => {
+            console.log(res.data)
+            this.$notify({
+              title: '成功',
+              message: '验证码已发送至' + this.user.phone,
+              type: 'success'
+            });
+          })
+        }
+      }
     },
     submitChangePasswordForm(formName) {
       this.$refs[formName].validate((valid) => {
@@ -277,8 +323,13 @@ export default {
     }
   },
   created() {
-    this.user = JSON.parse(sessionStorage.getItem('userInfo'))
-    console.log(getCookie('SESSION'))
+    userInfo().then(res => {
+      console.log(res.data)
+      const userData = res.data
+      this.user = userData
+      this.userInfo = userData
+      this.newNickname = this.user.nickname
+    })
   }
 }
 </script>
@@ -295,14 +346,32 @@ export default {
   .title {
     font-size: 24px;
   }
-  .avatar {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
+  .username {
+    height: 90px;
+    width: 100%;
+    margin-top: 50px;
+    font-weight: 400;
+    color: #48576a;
+    line-height: 90px;
+    font-size: 18px;
+    border-top: 1px solid #dfe6ec;
+    padding-left: 15px;
+    .unit {
+      width: 20%;
+      float: left;
+      text-align: left;
+      font-size: 18px;
+    }
+    .content {
+      width: 50%;
+      float: left;
+      text-align: left;
+      font-size: 18px;
+    }
   }
   .el-collapse.personalCollapse {
     width: 100%;
-    margin: 50px auto;
+    margin: 0 auto;
     font-weight: 400;
     color: #48576a;
     border: none;
@@ -349,6 +418,17 @@ export default {
       }
       .el-button {
         margin-top: 20px;
+      }
+    }
+    .details4 {
+      width: 350px;
+      .el-input {
+        width: 100%;
+      }
+      .verifyButton {
+        position: absolute;
+        left: 300px;
+        top: -18px;
       }
     }
     .content2 {

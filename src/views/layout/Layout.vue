@@ -33,7 +33,7 @@ export default {
   position: relative;
   height: 100%;
   width: 100%;
-  min-width: 1000px;
+  min-width: 960px;
 
   &.hideSidebar {
     .sidebar-container {

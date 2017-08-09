@@ -53,6 +53,7 @@
 
 <script>
 import bgPic from '../../assets/images/login/bj.jpg'
+import { isChinese } from 'utils/validate'
 export default {
   name: 'login',
   data() {
@@ -73,7 +74,7 @@ export default {
     return {
       bg: bgPic,
       loginForm: {
-        acount: '13521347060',
+        acount: '18931619929',
         password: '123456'
       },
       loginRules: {
@@ -91,6 +92,9 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
+          if(isChinese(this.loginForm.acount)){
+            this.loginForm.acount = unescape(encodeURIComponent(this.loginForm.acount))
+          }
           this.loading = true
           this.$store.dispatch('LoginByAcount', this.loginForm).then(() => {
             this.loading = false

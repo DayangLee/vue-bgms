@@ -8,7 +8,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-import 'mock/index.js'
+// import 'mock/index.js'
 import 'assets/iconfont/iconfont'
 import IconSvg from 'components/Icon-svg/index.vue'
 import * as filters from './filters/index'// 全局vue filter
