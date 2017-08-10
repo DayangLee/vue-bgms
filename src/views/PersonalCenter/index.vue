@@ -30,7 +30,8 @@
       <el-collapse-item>
         <template slot="title" class="info-title">
           <div class="unit">昵称</div>
-          <div class="content">{{user.nickname}}</div>
+          <div v-if="this.user.nickname" class="content">{{user.nickname}}</div>
+          <div v-else class="content" style="color:blue;">未添加</div>
           <div class="edit">编辑</div>
         </template>
         <div class="details">
@@ -59,7 +60,7 @@
         </template>
         <div class="details details4">
           <el-form :rules="rules1" label-width="80px">
-            <el-form-item label="验证码" prop="verifyCode">
+            <el-form-item label="验证码" prop="verifyCode1">
               <el-input v-model="verifyCode1"></el-input>
               <el-button class="verifyButton" @click.prevent="sendVerifyCode('email')">发送验证码</el-button>
             </el-form-item>
@@ -68,8 +69,8 @@
             </el-form-item>
             <el-form-item>
               <p v-if="user.email">
-                <el-button type="primary" style="width:100px;" :disabled="user.emailVerified">验证邮箱</el-button>
-                <el-button type="primary" style="width:100px;float:right;">更换邮箱</el-button>
+                <el-button type="primary" style="width:100px;" :disabled="user.emailVerified" @click.prevent="verifyEmail">验证邮箱</el-button>
+                <el-button type="primary" style="width:100px;float:right;" @click.prevent="changeEmail">更换邮箱</el-button>
               </p>
               <p v-else>
                 <el-button size="large" style="width:100px;" @click="cancelChange('email')">取消</el-button>
@@ -84,20 +85,31 @@
         <template slot="title" class="info-title">
           <div class="unit">手机</div>
           <div class="content">
-            {{user.phone}}&nbsp;&nbsp;&nbsp;&nbsp;
-            <span v-if="user.phoneVerified" style="color:green;">已验证</span>
-            <span v-else style="color:red;">未验证</span>
+            <span v-if="user.phone">{{user.phone}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span v-else style="color:blue;">未添加</span>
+            <span v-if="user.phone&&user.phoneVerified" style="color:green;">已验证</span>
+            <span v-else-if="user.phone&&!user.phoneVerified" style="color:red;">未验证</span>
           </div>
           <div class="edit">编辑</div>
         </template>
-        <div class="details">
+        <div class="details details4">
           <el-form :rules="rules1" label-width="80px">
-            <el-form-item label="手机号" prop="newPhone">
-              <el-input v-model="user.newPhone"></el-input>
+            <el-form-item label="验证码" prop="verifyCode2">
+              <el-input v-model="verifyCode2"></el-input>
+              <el-button class="verifyButton" @click.prevent="sendVerifyCode('phone')">发送验证码</el-button>
+            </el-form-item>
+            <el-form-item label="手机" prop="newPhone">
+              <el-input v-model="newPhone"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" style="width:100px;" :disabled="user.phoneVerified">验证手机</el-button>
-              <el-button type="primary" style="width:100px;float:right;">更换手机</el-button>
+              <p v-if="user.phone">
+                <el-button type="primary" style="width:100px;" :disabled="user.phoneVerified">验证手机</el-button>
+                <el-button type="primary" style="width:100px;float:right;">更换手机</el-button>
+              </p>
+              <p v-else>
+                <el-button size="large" style="width:100px;" @click="cancelChange('phone')">取消</el-button>
+                <el-button type="primary" size="large" style="width:100px;float:right;" @click="submitAddForm('phone')">添加</el-button>
+              </p>
             </el-form-item>
           </el-form>
         </div>
@@ -137,7 +149,9 @@ import ImageCropper from '../../components/ImageCropper'
 import PanThumb from '../../components/PanThumb'
 import Image from '../../assets/images/avater/1.jpg'
 import { getCookie } from 'utils/auth'
-import { userInfo, changeUserInfo, changeNickname, getVerifyCode, checkVerifyCode, uniqueCheck } from 'api/acount'
+import { isEmail, isPhone } from 'utils/validate'
+import { userInfo, changeUserInfo, changeNickname, getVerifyCode, getEmailVerifyCode, checkVerifyCode, uniqueCheck } from 'api/acount'
+
 export default {
   components: { ImageCropper, PanThumb },
   data() {
@@ -189,7 +203,9 @@ export default {
       infoEdit: false,
       newNickname: null,
       newEmail: null,
+      newPhone: null,
       verifyCode1: null,
+      verifyCode2: null,
       user: {},
       userInfo: {},
       ruleForm1: {
@@ -204,13 +220,6 @@ export default {
         checkPassword: ''
       },
       imageUrl: '',
-      fileList2: [{
-        name: 'food.jpeg',
-        url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-      }, {
-        name: 'food2.jpeg',
-        url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-      }],
       rules1: {
         newPhone: [
           { validator: validatePhone, trigger: 'blur' }
@@ -240,7 +249,7 @@ export default {
       console.log(e)
       if (e == 'nickname') {
         this.userInfo.nickname = this.newNickname.trim()
-        console.log(typeof(this.userInfo.phone))
+        console.log(typeof (this.userInfo.phone))
         changeNickname(this.userInfo).then(res => {
           this.$message({
             message: '昵称修改成功！',
@@ -252,18 +261,22 @@ export default {
       }
     },
     submitAddForm(e) {
-      if (e == 'email') {  // 添加邮箱
-      // 邮箱唯一性校验
-        uniqueCheck('email', this.newEmail).then(res => {
-          this.$alert('该邮箱已被别人使用', '', {
-            confirmButtonText: '确定'
-          });
-        }).catch(error => {
-          // 手机已验证时，验证码发至手机，check手机验证码
-          if (this.user.phoneVerified) {
+      // 添加邮箱
+      if (e == 'email') {  
+        // 手机已验证时，验证码发至手机
+        if(this.user.phoneVerified){
+          // 邮箱唯一性校验
+          uniqueCheck('email', this.newEmail).then(res => {
+            this.$alert('该邮箱已被别人使用', '', {
+              confirmButtonText: '确定',
+              closeOnClickModal: true
+            }).then(()=>{}).catch(()=>{})
+          }).catch(error => {
+            // check手机验证码
             checkVerifyCode('phone', this.user.phone, this.verifyCode1).then(res => {
+              const code = res.data.code
               this.userInfo.email = this.newEmail.trim()
-              changeUserInfo(this.userInfo,this.verifyCode1).then(res => {
+              changeUserInfo(this.userInfo, code).then(res => {
                 this.$message({
                   message: '邮箱添加成功！',
                   type: 'success'
@@ -271,10 +284,39 @@ export default {
                 this.user = res.data
                 this.userInfo = res.data
               })
+            }).catch(err=>{
+            console.log(err.response.status)
+            if(err.response.status === 404){
+              this.$alert('验证码错误', '', {
+                confirmButtonText: '确定',
+                closeOnClickModal: true
+              }).then(()=>{}).catch(()=>{})
+            }
+          })
+          })
+        } else {  // 手机未验证，验证码发送至邮箱
+          // check邮箱验证码
+          checkVerifyCode('email', this.newEmail, this.verifyCode1).then(res => {
+            const code = res.data.code
+            this.userInfo.email = this.newEmail.trim()
+            changeUserInfo(this.userInfo, code).then(res => {
+              this.$message({
+                message: '邮箱添加成功！',
+                type: 'success'
+              })
+              this.user = res.data
+              this.userInfo = res.data
             })
-          }
-        })
-
+          }).catch(err=>{
+            console.log(err.response.status)
+            if(err.response.status === 404){
+              this.$alert('验证码错误', '', {
+                confirmButtonText: '确定',
+                closeOnClickModal: true
+              }).then(()=>{}).catch(()=>{})
+            }
+          })
+        }
       }
     },
     cancelChange(e) {
@@ -282,10 +324,16 @@ export default {
       if (e == 'nickname') {
         this.newNickname = this.user.nickname
       }
+      if (e == 'email') {
+        this.newEmail = this.user.email
+        this.verifyCode1 = null
+      }
     },
     sendVerifyCode(e) {
-      if (e == 'email') {
+      // 邮箱相关操作
+      if (e == 'email') {    
         if (this.user.phoneVerified) {
+        // 手机已验证时，验证码发至手机 
           getVerifyCode('phone', this.user.phone).then(res => {
             console.log(res.data)
             this.$notify({
@@ -293,6 +341,123 @@ export default {
               message: '验证码已发送至' + this.user.phone,
               type: 'success'
             });
+          })
+        } else {
+        // 手机未验证，验证码发送至邮箱
+          if(this.user.emailVerified){
+              // 邮箱已验证，直接发送验证码
+              getEmailVerifyCode('email', this.user.email, this.user).then(res => {
+                console.log(res.data)
+                this.$notify({
+                  title: '成功',
+                  message: '验证码已发送至' + this.newEmail,
+                  type: 'success'
+                })
+              })
+            } else {  
+              // 邮箱未验证，验证码发送至新邮箱
+               if (!isEmail(this.newEmail)) {
+                this.$alert('请输入正确的邮箱地址', '', {
+                  confirmButtonText: '确定',
+                  closeOnClickModal: true
+                }).then(()=>{}).catch(()=>{})
+               } else {           
+                // 添加的新邮箱做唯一性校验
+                uniqueCheck('email', this.newEmail).then(res => {
+                  this.$alert('该邮箱已被别人使用', '', {
+                    confirmButtonText: '确定',
+                    closeOnClickModal: true
+                  }).then(()=>{}).catch(()=>{})
+                }).catch(error => {
+                getEmailVerifyCode('email', this.newEmail, this.user).then(res => {
+                  console.log(res.data)
+                  this.$notify({
+                    title: '成功',
+                    message: '验证码已发送至' + this.newEmail,
+                    type: 'success'
+                  })
+                })
+              })
+            }
+           }
+        }
+      } else if(e == 'phone'){  // 手机相关操作
+        // 手机未验证，验证码发送至新手机
+          if (!isPhone(this.newPhone)) {
+            this.$alert('请输入正确的手机号码', '', {
+              confirmButtonText: '确定',
+              closeOnClickModal: true
+            }).then(()=>{}).catch(()=>{})
+          } else {
+            if(this.user)
+            // 添加的新邮箱做唯一性校验
+            uniqueCheck('phone', this.newPhone).then(res => {
+              this.$alert('该手机号码已被别人使用', '', {
+                confirmButtonText: '确定',
+                closeOnClickModal: true
+              }).then(()=>{}).catch(()=>{})
+            }).catch(error => {
+              getVerifyCode('phone', this.newPhone).then(res => {
+                console.log(res.data)
+                this.$notify({
+                  title: '成功',
+                  message: '验证码已发送至' + this.newPhone,
+                  type: 'success'
+                })
+              })
+            })
+          }
+      }
+    },
+    verifyEmail(){
+      this.newEmail = this.user.email
+      if(this.verifyCode1 == '' || this.verifyCode1 == null){
+        this.$alert('请输入验证码', '', {
+          confirmButtonText: '确定',
+          closeOnClickModal: true
+        }).then(()=>{}).catch(()=>{})
+      } else {
+         if (this.user.phoneVerified) {
+          // 手机已验证时，验证发至手机的验证码
+          checkVerifyCode('phone', this.user.phone, this.verifyCode1).then(res => {
+              const code = res.data.code
+              changeUserInfo(this.userInfo, code).then(res => {
+                this.$message({
+                  message: '邮箱验证成功！',
+                  type: 'success'
+                })
+                this.user = res.data
+                this.userInfo = res.data
+              })
+            }).catch(err=>{
+              console.log(err.response.status)
+              //if(err.response.status === 404){
+                this.$alert('验证码错误', '', {
+                  confirmButtonText: '确定',
+                  closeOnClickModal: true
+                }).then(()=>{}).catch(()=>{})
+              //}
+            })
+        } else { 
+          // 手机未验证，验证发送至邮箱的验证码
+          checkVerifyCode('email', this.user.email, this.verifyCode1).then(res => {
+            const code = res.data.code
+            changeUserInfo(this.userInfo, code).then(res => {
+              this.$message({
+                message: '邮箱验证成功！',
+                type: 'success'
+              })
+              this.user = res.data
+              this.userInfo = res.data
+            })
+          }).catch(err=>{
+            console.log(err.response.status)
+            if(err.response.status === 404){
+              this.$alert('验证码错误', '', {
+                confirmButtonText: '确定',
+                closeOnClickModal: true
+              }).then(()=>{}).catch(()=>{})
+            }
           })
         }
       }
@@ -329,6 +494,8 @@ export default {
       this.user = userData
       this.userInfo = userData
       this.newNickname = this.user.nickname
+      this.newEmail = this.user.email
+      this.newPhone = this.user.phone
     })
   }
 }

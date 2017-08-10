@@ -41,10 +41,10 @@ export function changeNickname(user) {
 }
 
 export function changeUserInfo(user,token) {
-  const auth = 'Token ' + token
+  const auth = 'Token ' + token.trim()
   return axios_service({
     url: '/user',
-    method: 'post',
+    method: 'put',
     data: user,
     headers: { Authorization: auth }
   })
@@ -56,9 +56,16 @@ export function getVerifyCode(type, num) {
     method: 'post'
   })
 }
+export function getEmailVerifyCode(type, num, user) {
+  return axios_service({
+    url: '/user/verify/fetch/' + type + '/' + num,
+    method: 'post',
+    data: user
+  })
+}
 
 export function checkVerifyCode(type,num,code){
-  const auth = 'Token ' + code
+  const auth = 'Token ' + code.trim()
   return axios_service({
     url: '/user/verify/check/' + type + '/' + num,
     method:'post',
