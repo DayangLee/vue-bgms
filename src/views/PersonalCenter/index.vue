@@ -96,7 +96,7 @@
           <el-form :rules="rules1" label-width="80px">
             <el-form-item label="验证码" prop="verifyCode2">
               <el-input v-model="verifyCode2"></el-input>
-              <el-button class="verifyButton" @click.prevent="sendVerifyCode('phone')">发送验证码</el-button>
+              <el-button class="verifyButton">发送验证码</el-button>
             </el-form-item>
             <el-form-item label="手机" prop="newPhone">
               <el-input v-model="newPhone"></el-input>
@@ -208,7 +208,7 @@ export default {
       newNickname: null,
       newEmail: null,
       newPhone: null,
-      verifyCode1: null,
+      verifyCode1: '',
       verifyCode2: null,
       user: {},
       userInfo: {},
@@ -282,17 +282,21 @@ export default {
       } else if(!this.user.phoneVerified && !this.user.emailVerified && !this.user.email){
         console.log('4')
         if (!isEmail(this.newEmail)) {
-          this.$alert('请输入正确的邮箱地址', '', {
-            confirmButtonText: '确定',
-            closeOnClickModal: true
-          }).then(()=>{}).catch(()=>{})
+          this.$confirm('请输入正确的邮箱地址', '提示', {
+              confirmButtonText: '确定',
+              showCancelButton: false,
+              closeOnClickModal: true,
+              type: 'warning'
+            }).then(() => {}).catch(() => {});
         } else {           
           // 添加的新邮箱做唯一性校验
           uniqueCheck('email', this.newEmail).then(res => {
-            this.$alert('该邮箱已被别人使用', '', {
+            this.$confirm('该邮箱已被别人使用', '提示', {
               confirmButtonText: '确定',
-              closeOnClickModal: true
-            }).then(()=>{}).catch(()=>{})
+              showCancelButton: false,
+              closeOnClickModal: true,
+              type: 'warning'
+            }).then(() => {}).catch(() => {});
           }).catch(error => {
             getVerifyCode('email', this.newEmail).then(res => {
               this.$notify({
@@ -315,7 +319,40 @@ export default {
       }
     },
     addEmail(){
-
+      let code = this.verifyCode1
+      if(code.length !== 6 || code == null ){
+        this.$confirm('验证码应为6位数字', '提示', {
+          confirmButtonText: '确定',
+          showCancelButton: false,
+          closeOnClickModal: true,
+          type: 'warning'
+        }).then(() => {}).catch(() => {})
+      } else if(!isEmail(this.newEmail)){
+        this.$confirm('请输入正确的邮箱', '提示', {
+          confirmButtonText: '确定',
+          showCancelButton: false,
+          closeOnClickModal: true,
+          type: 'warning'
+        }).then(() => {}).catch(() => {})
+      } else {
+        this.userInfo.email = this.newEmail.trim()
+        changeUserInfo(this.userInfo, code).then(res => {
+          this.$message({
+            message: '邮箱添加成功！',
+            type: 'success'
+          })
+          console.log('ssss')
+          this.user = res.data
+          this.userInfo = res.data
+        }).catch(err=>{
+          this.$confirm('添加失败，请重试!', '提示', {
+            confirmButtonText: '确定',
+            showCancelButton: false,
+            closeOnClickModal: true,
+            type: 'error'
+          }).then(() => {}).catch(() => {})
+        })
+      }
     },
     verifyEmail(){
 
@@ -345,65 +382,6 @@ export default {
           });
         })
     },
-    submitAddForm(e) {
-      // 添加邮箱
-      if (e == 'email') {  
-        // 手机已验证时，验证码发至手机
-        if(this.user.phoneVerified){
-          // 邮箱唯一性校验
-          uniqueCheck('email', this.newEmail).then(res => {
-            this.$alert('该邮箱已被别人使用', '', {
-              confirmButtonText: '确定',
-              closeOnClickModal: true
-            }).then(()=>{}).catch(()=>{})
-          }).catch(error => {
-            // check手机验证码
-            checkVerifyCode('phone', this.user.phone, this.verifyCode1).then(res => {
-              const code = res.data.code
-              this.userInfo.email = this.newEmail.trim()
-              changeUserInfo(this.userInfo, code).then(res => {
-                this.$message({
-                  message: '邮箱添加成功！',
-                  type: 'success'
-                })
-                this.user = res.data
-                this.userInfo = res.data
-              })
-            }).catch(err=>{
-            console.log(err.response.status)
-            if(err.response.status === 404){
-              this.$alert('验证码错误', '', {
-                confirmButtonText: '确定',
-                closeOnClickModal: true
-              }).then(()=>{}).catch(()=>{})
-            }
-          })
-          })
-        } else {  // 手机未验证，验证码发送至邮箱
-          // check邮箱验证码
-          checkVerifyCode('email', this.newEmail, this.verifyCode1).then(res => {
-            const code = res.data.code
-            this.userInfo.email = this.newEmail.trim()
-            changeUserInfo(this.userInfo, code).then(res => {
-              this.$message({
-                message: '邮箱添加成功！',
-                type: 'success'
-              })
-              this.user = res.data
-              this.userInfo = res.data
-            })
-          }).catch(err=>{
-            console.log(err.response.status)
-            if(err.response.status === 404){
-              this.$alert('验证码错误', '', {
-                confirmButtonText: '确定',
-                closeOnClickModal: true
-              }).then(()=>{}).catch(()=>{})
-            }
-          })
-        }
-      }
-    },
     cancelChange(e) {
       console.log(e)
       if (e == 'nickname') {
@@ -413,139 +391,6 @@ export default {
         this.newEmail = this.user.email
         this.verifyCode1 = null
       }
-    },
-    sendVerifyCode(e) {
-      // 邮箱相关操作
-      if (e == 'email') {    
-        if (this.user.phoneVerified) {
-        // 手机已验证时，验证码发至手机 
-          getVerifyCode('phone', this.user.phone).then(res => {
-            console.log(res.data)
-            this.$notify({
-              title: '成功',
-              message: '验证码已发送至' + this.user.phone,
-              type: 'success'
-            });
-          })
-        } else {
-        // 手机未验证，验证码发送至邮箱
-          if(this.user.emailVerified){
-              // 邮箱已验证，直接发送验证码
-              getEmailVerifyCode('email', this.user.email, this.user).then(res => {
-                console.log(res.data)
-                this.$notify({
-                  title: '成功',
-                  message: '验证码已发送至' + this.newEmail,
-                  type: 'success'
-                })
-              })
-            } else {  
-              // 邮箱未验证，验证码发送至新邮箱
-               if (!isEmail(this.newEmail)) {
-                this.$alert('请输入正确的邮箱地址', '', {
-                  confirmButtonText: '确定',
-                  closeOnClickModal: true
-                }).then(()=>{}).catch(()=>{})
-               } else {           
-                // 添加的新邮箱做唯一性校验
-                uniqueCheck('email', this.newEmail).then(res => {
-                  this.$alert('该邮箱已被别人使用', '', {
-                    confirmButtonText: '确定',
-                    closeOnClickModal: true
-                  }).then(()=>{}).catch(()=>{})
-                }).catch(error => {
-                getEmailVerifyCode('email', this.newEmail, this.user).then(res => {
-                  console.log(res.data)
-                  this.$notify({
-                    title: '成功',
-                    message: '验证码已发送至' + this.newEmail,
-                    type: 'success'
-                  })
-                })
-              })
-            }
-           }
-        }
-      } else if(e == 'phone'){  // 手机相关操作
-        // 手机未验证，验证码发送至新手机
-          if (!isPhone(this.newPhone)) {
-            this.$alert('请输入正确的手机号码', '', {
-              confirmButtonText: '确定',
-              closeOnClickModal: true
-            }).then(()=>{}).catch(()=>{})
-          } else {
-            if(this.user)
-            // 添加的新邮箱做唯一性校验
-            uniqueCheck('phone', this.newPhone).then(res => {
-              this.$alert('该手机号码已被别人使用', '', {
-                confirmButtonText: '确定',
-                closeOnClickModal: true
-              }).then(()=>{}).catch(()=>{})
-            }).catch(error => {
-              getVerifyCode('phone', this.newPhone).then(res => {
-                console.log(res.data)
-                this.$notify({
-                  title: '成功',
-                  message: '验证码已发送至' + this.newPhone,
-                  type: 'success'
-                })
-              })
-            })
-          }
-      }
-    },
-    verifyEmail(){
-      this.newEmail = this.user.email
-      if(this.verifyCode1 == '' || this.verifyCode1 == null){
-        this.$alert('请输入验证码', '', {
-          confirmButtonText: '确定',
-          closeOnClickModal: true
-        }).then(()=>{}).catch(()=>{})
-      } else {
-          // 手机未验证，验证发送至邮箱的验证码
-          checkVerifyCode('email', this.user.email, this.verifyCode1).then(res => {
-            const code = res.data.code
-            changeUserInfo(this.userInfo, code).then(res => {
-              this.$message({
-                message: '邮箱验证成功！',
-                type: 'success'
-              })
-              this.user = res.data
-              this.userInfo = res.data
-            })
-          }).catch(err=>{
-            console.log(err.response.status)
-            if(err.response.status === 404){
-              this.$alert('验证码错误', '', {
-                confirmButtonText: '确定',
-                closeOnClickModal: true
-              }).then(()=>{}).catch(()=>{})
-            }
-          })
-        }
-    },
-    changeEmail(){
-      if (this.user.phoneVerified) {
-        // 手机已验证时，验证码发至手机 
-          getVerifyCode('phone', this.user.phone).then(res => {
-            console.log(res.data)
-            this.$notify({
-              title: '成功',
-              message: '验证码已发送至' + this.user.phone,
-              type: 'success'
-            });
-          })
-        } else {
-          // 修改邮箱前提是邮箱已验证，直接发送验证码
-          getEmailVerifyCode('email', this.user.email, this.user).then(res => {
-            console.log(res.data)
-            this.$notify({
-              title: '成功',
-              message: '验证码已发送至' + this.user.email,
-              type: 'success'
-            })
-          })
-        } 
     },
     submitChangePasswordForm(formName) {
       this.$refs[formName].validate((valid) => {
