@@ -51,3 +51,9 @@ setTimeout(function() {
 | 验证  |&times;  | &radic;  |  |  | phone |
 | 修改(手机必验证，邮箱已验证)|&radic;|&radic;|&radic;||phone或email(用户选择)|
 | 修改(手机必验证，邮箱未验证)|&radic;|&radic;|&times;||phone|
+
+* 更新信息
+  * 获取验证码
+  * 更新用户信息: PUT /user，在request header里添加Authorization
+* check验证码
+  * 只能check验证过的邮箱或手机
