@@ -42,3 +42,12 @@ setTimeout(function() {
 | 验证  |    | |&times;  | &radic;  |  email|
 | 修改(邮箱必验证，手机已验证)|&radic;||&radic;|&radic;|phone或email(用户选择)|
 | 修改(邮箱必验证，手机未验证)|&times;||&radic;|&radic;|email|
+
+#### 2. 手机：
+| 操作 | phoneVerified | phone | emailVerified | email | 验证码发送至 |
+| --------   | :-----:  | :----:  |  :---:  | :---:  | :---: |
+| 添加(邮箱已验证)| &times; |  &times; | 	&radic;  |  |  email|
+| 添加(邮箱未验证) | &times; | &times;  |&times;  | |phone(新输入的)|
+| 验证  |&times;  | &radic;  |  |  | phone |
+| 修改(手机必验证，邮箱已验证)|&radic;|&radic;|&radic;||phone或email(用户选择)|
+| 修改(手机必验证，邮箱未验证)|&radic;|&radic;|&times;||phone|
