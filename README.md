@@ -32,3 +32,13 @@ setTimeout(function() {
   that.rightAnswer = true;
 }, 1500)
 ```
+
+## 个人中心逻辑
+#### 1. 邮箱：
+| 操作 | phoneVerified | phone | emailVerified | email | 验证码发送至 |
+| --------   | :-----:  | :----:  |  :---:  | :---:  | :---: |
+| 添加(手机已验证)| &radic; |     | 	&times;  | &times;  |  phone|
+| 添加(手机未验证) | &times; |   |&times;  | &times; |email(新输入的)|
+| 验证  |    | |&times;  | &radic;  |  email|
+| 修改(邮箱必验证，手机已验证)|&radic;||&radic;|&radic;|phone或email(用户选择)|
+| 修改(邮箱必验证，手机未验证)|&times;||&radic;|&radic;|email|

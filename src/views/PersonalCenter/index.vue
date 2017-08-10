@@ -41,7 +41,7 @@
             </el-form-item>
             <el-form-item>
               <el-button size="large" style="width:100px;" @click="cancelChange('nickname')">取消</el-button>
-              <el-button type="primary" size="large" style="width:100px;float:right;" @click="submitForm('nickname')">确定</el-button>
+              <el-button type="primary" size="large" style="width:100px;float:right;" @click="changeNickname()">确定</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -62,7 +62,7 @@
           <el-form :rules="rules1" label-width="80px">
             <el-form-item label="验证码" prop="verifyCode1">
               <el-input v-model="verifyCode1"></el-input>
-              <el-button class="verifyButton" @click.prevent="sendVerifyCode('email')">发送验证码</el-button>
+              <el-button class="verifyButton" @click.prevent="emailSendVerifyCode()">发送验证码</el-button>
             </el-form-item>
             <el-form-item label="邮箱" prop="newEmail">
               <el-input v-model="newEmail"></el-input>
@@ -70,11 +70,11 @@
             <el-form-item>
               <p v-if="user.email">
                 <el-button type="primary" style="width:100px;" :disabled="user.emailVerified" @click.prevent="verifyEmail">验证邮箱</el-button>
-                <el-button type="primary" style="width:100px;float:right;" @click.prevent="changeEmail">更换邮箱</el-button>
+                <el-button type="primary" style="width:100px;float:right;" @click.prevent="changeEmail" :disabled="!user.emailVerified">更换邮箱</el-button>
               </p>
               <p v-else>
                 <el-button size="large" style="width:100px;" @click="cancelChange('email')">取消</el-button>
-                <el-button type="primary" size="large" style="width:100px;float:right;" @click="submitAddForm('email')">添加</el-button>
+                <el-button type="primary" size="large" style="width:100px;float:right;" @click="addEmail">添加</el-button>
               </p>
             </el-form-item>
           </el-form>
@@ -141,6 +141,10 @@
       </el-collapse-item>
     </el-collapse>
   
+    <el-dialog title="请选择验证码发送地址" :visible.sync="phoneOrEmail" style="text-align:center;margin-top:15%;">
+      <el-button type="primary" size="large" @click.prevent="sendVerifyCodeToPhone">手机</el-button>
+      <el-button type="primary" size="large" @click.prevent="sendVerifyCodeToEmail">邮箱</el-button>
+    </el-dialog>
   </div>
 </template>
 
@@ -200,7 +204,7 @@ export default {
       }
     };
     return {
-      infoEdit: false,
+      phoneOrEmail: false,
       newNickname: null,
       newEmail: null,
       newPhone: null,
@@ -242,23 +246,104 @@ export default {
     }
   },
   methods: {
-    handleEdit1() {
-      console.log('h');
+    changeNickname() {
+      this.userInfo.nickname = this.newNickname.trim()
+      changeNickname(this.userInfo).then(res => {
+        this.$message({
+          message: '昵称修改成功！',
+          type: 'success'
+        });
+        this.user = res.data
+        this.userInfo = res.data
+      })
     },
-    submitForm(e) {
-      console.log(e)
-      if (e == 'nickname') {
-        this.userInfo.nickname = this.newNickname.trim()
-        console.log(typeof (this.userInfo.phone))
-        changeNickname(this.userInfo).then(res => {
-          this.$message({
-            message: '昵称修改成功！',
+    emailSendVerifyCode(){
+      if(this.user.email && !this.user.emailVerified){
+        console.log('1')
+        getVerifyCode('email', this.user.email).then(res => {
+          this.$notify({
+            title: '成功',
+            message: '验证码已发送至' + this.user.email,
             type: 'success'
           });
-          this.user = res.data
-          this.userInfo = res.data
+        })
+      } else if(this.user.phoneVerified && !this.user.emailVerified && !this.user.email) {
+        console.log('2')
+        getVerifyCode('phone', this.user.phone).then(res => {
+          this.$notify({
+            title: '成功',
+            message: '验证码已发送至' + this.user.phone,
+            type: 'success'
+          });
+        })
+      } else if(this.user.phoneVerified && this.user.emailVerified){
+        console.log('3')
+        this.phoneOrEmail = true
+      } else if(!this.user.phoneVerified && !this.user.emailVerified && !this.user.email){
+        console.log('4')
+        if (!isEmail(this.newEmail)) {
+          this.$alert('请输入正确的邮箱地址', '', {
+            confirmButtonText: '确定',
+            closeOnClickModal: true
+          }).then(()=>{}).catch(()=>{})
+        } else {           
+          // 添加的新邮箱做唯一性校验
+          uniqueCheck('email', this.newEmail).then(res => {
+            this.$alert('该邮箱已被别人使用', '', {
+              confirmButtonText: '确定',
+              closeOnClickModal: true
+            }).then(()=>{}).catch(()=>{})
+          }).catch(error => {
+            getVerifyCode('email', this.newEmail).then(res => {
+              this.$notify({
+                title: '成功',
+                message: '验证码已发送至' + this.newEmail,
+                type: 'success'
+              });
+            })
+          })
+        }
+      } else if(!this.user.phoneVerified && this.user.emailVerified){
+        console.log('5')
+        getVerifyCode('email', this.user.email).then(res => {
+          this.$notify({
+            title: '成功',
+            message: '验证码已发送至' + this.user.email,
+            type: 'success'
+          });
         })
       }
+    },
+    addEmail(){
+
+    },
+    verifyEmail(){
+
+    },
+    changeEmail(){
+
+    },
+    sendVerifyCodeToPhone(){
+      this.phoneOrEmail = false
+      getVerifyCode('phone', this.user.phone).then(res => {
+          console.log(res.data)
+          this.$notify({
+            title: '成功',
+            message: '验证码已发送至' + this.user.phone,
+            type: 'success'
+          });
+        })
+    },
+    sendVerifyCodeToEmail(){
+      this.phoneOrEmail = false
+      getVerifyCode('email', this.user.email).then(res => {
+          console.log(res.data)
+          this.$notify({
+            title: '成功',
+            message: '验证码已发送至' + this.user.email,
+            type: 'success'
+          });
+        })
     },
     submitAddForm(e) {
       // 添加邮箱
@@ -417,28 +502,6 @@ export default {
           closeOnClickModal: true
         }).then(()=>{}).catch(()=>{})
       } else {
-         if (this.user.phoneVerified) {
-          // 手机已验证时，验证发至手机的验证码
-          checkVerifyCode('phone', this.user.phone, this.verifyCode1).then(res => {
-              const code = res.data.code
-              changeUserInfo(this.userInfo, code).then(res => {
-                this.$message({
-                  message: '邮箱验证成功！',
-                  type: 'success'
-                })
-                this.user = res.data
-                this.userInfo = res.data
-              })
-            }).catch(err=>{
-              console.log(err.response.status)
-              //if(err.response.status === 404){
-                this.$alert('验证码错误', '', {
-                  confirmButtonText: '确定',
-                  closeOnClickModal: true
-                }).then(()=>{}).catch(()=>{})
-              //}
-            })
-        } else { 
           // 手机未验证，验证发送至邮箱的验证码
           checkVerifyCode('email', this.user.email, this.verifyCode1).then(res => {
             const code = res.data.code
@@ -460,7 +523,29 @@ export default {
             }
           })
         }
-      }
+    },
+    changeEmail(){
+      if (this.user.phoneVerified) {
+        // 手机已验证时，验证码发至手机 
+          getVerifyCode('phone', this.user.phone).then(res => {
+            console.log(res.data)
+            this.$notify({
+              title: '成功',
+              message: '验证码已发送至' + this.user.phone,
+              type: 'success'
+            });
+          })
+        } else {
+          // 修改邮箱前提是邮箱已验证，直接发送验证码
+          getEmailVerifyCode('email', this.user.email, this.user).then(res => {
+            console.log(res.data)
+            this.$notify({
+              title: '成功',
+              message: '验证码已发送至' + this.user.email,
+              type: 'success'
+            })
+          })
+        } 
     },
     submitChangePasswordForm(formName) {
       this.$refs[formName].validate((valid) => {
