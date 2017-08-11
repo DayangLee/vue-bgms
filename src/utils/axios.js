@@ -12,33 +12,33 @@ const service = axios.create({
 })
 
 // request拦截器
-// service.interceptors.request.use(
-//   config => {
-//     return config
-//   },
-//   error => {
-//     console.log(error) // for debug
-//     Message({
-//       message: error.message,
-//       type: 'error',
-//       duration: 5 * 1000
-//     });
-//     return Promise.reject(error);
-//   }
-// )
+service.interceptors.request.use(
+  config => {
+    return config
+  },
+  error => {
+    console.log(error) // for debug
+    Message({
+      message: error.message,
+      type: 'error',
+      duration: 5 * 1000
+    });
+    return Promise.reject(error);
+  }
+)
 
 // respone拦截器
-// service.interceptors.response.use(
-//   response => response,
-//   error => {
-//     console.log(error) // for debug
-//     Message({
-//       message: error.message,
-//       type: 'error',
-//       duration: 5 * 1000
-//     });
-//     return Promise.reject(error);
-//   }
-// )
+service.interceptors.response.use(
+  response => response,
+  error => {
+    console.log(error) // for debug
+    Message({
+      message: error.message,
+      type: 'error',
+      duration: 5 * 1000
+    });
+    return Promise.reject(error);
+  }
+)
 
 export default service

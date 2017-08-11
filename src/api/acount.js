@@ -56,6 +56,13 @@ export function getVerifyCode(type, num) {
     method: 'post'
   })
 }
+export function getPhoneVerifyCode(type, num, user) {
+  return axios_service({
+    url: '/user/verify/fetch/' + type + '/' + num,
+    method: 'post',
+    data: user
+  })
+}
 export function getEmailVerifyCode(type, num, user) {
   return axios_service({
     url: '/user/verify/fetch/' + type + '/' + num,
