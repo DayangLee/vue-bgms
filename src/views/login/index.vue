@@ -10,13 +10,13 @@
         <div class="icon-container">
           <icon-svg icon-class="yonghu1" class="icon1"></icon-svg>
         </div>
-        <input type="text" name="acount" autoComplete="on" placeholder="请输入用户名" v-model="loginForm.acount">
+        <input type="text" name="acount" autoComplete="off" placeholder="请输入用户名" v-model="loginForm.acount">
       </el-form-item>
       <el-form-item prop="password" class="item">
         <div class="icon-container">
           <icon-svg icon-class="mima" class="icon1"></icon-svg>
         </div>
-        <input type="password" name="password" autoComplete="on" placeholder="请输入密码" v-model="loginForm.password">
+        <input type="password" name="password" autoComplete="off" placeholder="请输入密码" v-model="loginForm.password">
       </el-form-item>
       <el-form-item class="item item1">
         <el-button class="login-button" :loading="loading" @click.native.prevent="handleLogin">

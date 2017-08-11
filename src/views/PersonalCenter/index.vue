@@ -113,39 +113,6 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <!-- <el-collapse-item>
-        <template slot="title" class="info-title">
-          <div class="unit">手机</div>
-          <div class="content">
-            <span v-if="user.phone">{{user.phone}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            <span v-else style="color:blue;">未添加</span>
-            <span v-if="user.phone&&user.phoneVerified" style="color:green;">已验证</span>
-            <span v-else-if="user.phone&&!user.phoneVerified" style="color:red;">未验证</span>
-          </div>
-          <div class="edit">编辑</div>
-        </template>
-        <div class="details details4">
-          <el-form :rules="rules1" label-width="80px">
-            <el-form-item label="验证码" prop="verifyCode2">
-              <el-input v-model="verifyCode2"></el-input>
-              <el-button class="verifyButton">发送验证码</el-button>
-            </el-form-item>
-            <el-form-item label="手机" prop="newPhone">
-              <el-input v-model="newPhone"></el-input>
-            </el-form-item>
-            <el-form-item>
-              <p v-if="user.phone">
-                <el-button type="primary" style="width:100px;" :disabled="user.phoneVerified">验证手机</el-button>
-                <el-button type="primary" style="width:100px;float:right;">更换手机</el-button>
-              </p>
-              <p v-else>
-                <el-button size="large" style="width:100px;" @click="cancelChange('phone')">取消</el-button>
-                <el-button type="primary" size="large" style="width:100px;float:right;" @click="submitAddForm('phone')">添加</el-button>
-              </p>
-            </el-form-item>
-          </el-form>
-        </div>
-      </el-collapse-item> -->
   
       <el-collapse-item>
         <template slot="title" class="info-title">
@@ -153,20 +120,21 @@
           <div class="content">******</div>
           <div class="edit">编辑</div>
         </template>
-        <div class="details">
+        <div class="details details4">
           <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" label-width="100px" class="ruleForm">
-            <el-form-item label="当前密码" prop="password">
-              <el-input type="password" v-model="ruleForm2.password" auto-complete="off"></el-input>
+            <el-form-item label="验证码">
+              <el-input v-model="verifyCode3"></el-input>
+              <el-button class="verifyButton" @click.prevent="passwordSendVerifyCode()">发送验证码</el-button>
             </el-form-item>
-            <el-form-item label="新密码" prop="newPassword">
-              <el-input type="password" v-model="ruleForm2.newPassword" auto-complete="off"></el-input>
+            <el-form-item label="新密码">
+              <el-input type="password" v-model="newPassword1" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item label="确认密码" prop="checkPassword">
-              <el-input type="password" v-model="ruleForm2.checkPassword" auto-complete="off"></el-input>
+            <el-form-item label="确认密码">
+              <el-input type="password" v-model="newPassword2" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button @click="resetForm('ruleForm2')" style="width:90px;">重置</el-button>
-              <el-button type="primary" @click="submitChangePasswordForm('ruleForm2')" style="width:90px;float:right;">提交</el-button>
+              <el-button @click="cancelChange('password')" style="width:90px;">取消</el-button>
+              <el-button type="primary" @click="changePassWord()" style="width:90px;float:right;">确定</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -181,6 +149,7 @@
 </template>
 
 <script>
+import md5 from 'js-md5'
 import ImageCropper from '../../components/ImageCropper'
 import PanThumb from '../../components/PanThumb'
 import Image from '../../assets/images/avater/1.jpg'
@@ -240,8 +209,11 @@ export default {
       newNickname: null,
       newEmail: null,
       newPhone: null,
+      newPassword1: '',
+      newPassword2: '',
       verifyCode1: '',
       verifyCode2: '',
+      verifyCode3: '',
       user: {},
       userInfo: {},
       ruleForm2: {
@@ -663,6 +635,81 @@ export default {
         })
       }
     },
+    passwordSendVerifyCode(){
+      if(!this.user.emailVerified && !this.user.phoneVerified) {
+        this.$confirm('请先验证邮箱或手机', '提示', {
+          confirmButtonText: '确定',
+          showCancelButton: false,
+          closeOnClickModal: true,
+          type: 'info'
+        }).then(() => {}).catch(() => {});
+      } else if(this.user.emailVerified && !this.user.phoneVerified){
+          getVerifyCode('email', this.user.email).then(res => {
+            console.log(res.data)
+            this.$notify({
+              title: '成功',
+              message: '验证码已发送至' + this.user.email,
+              type: 'success'
+            });
+          })
+        } else if(!this.user.emailVerified && this.user.phoneVerified){
+          getVerifyCode('phone', this.user.phone).then(res => {
+            this.$notify({
+              title: '成功',
+              message: '验证码已发送至' + this.user.phone,
+              type: 'success'
+            });
+          })
+        } else if(this.user.emailVerified && this.user.phoneVerified){
+          this.phoneOrEmail = true
+        }
+    },
+    changePassWord(){
+      if(this.newPassword1.trim() !== this.newPassword2.trim()){
+        this.$confirm('两次输入的密码不同', '提示', {
+          confirmButtonText: '确定',
+          showCancelButton: false,
+          closeOnClickModal: true,
+          type: 'warning'
+        }).then(() => {}).catch(() => {});
+      } else if(this.newPassword1.trim().length < 6){
+        this.$confirm('密码不能少于6位字符', '提示', {
+          confirmButtonText: '确定',
+          showCancelButton: false,
+          closeOnClickModal: true,
+          type: 'warning'
+        }).then(() => {}).catch(() => {});
+      } else if(this.verifyCode3.trim().length !== 6){
+        this.$confirm('验证码应为6位数字', '提示', {
+          confirmButtonText: '确定',
+          showCancelButton: false,
+          closeOnClickModal: true,
+          type: 'warning'
+        }).then(() => {}).catch(() => {})
+      } else {
+        let code = this.verifyCode3.trim()
+        this.userInfo.password = md5(this.newPassword1)
+        changeUserInfo(this.userInfo, code).then(res => {
+            this.$message({
+              message: '密码修改成功！',
+              type: 'success'
+            })           
+            this.user = res.data
+            this.userInfo = res.data
+            this.verifyCode3 = ''
+            this.newPassword1 = ''
+            this.newPassword2 = ''
+          }).catch(err=>{
+            this.$confirm('密码修改失败，请重试!', '提示', {
+              confirmButtonText: '确定',
+              showCancelButton: false,
+              closeOnClickModal: true,
+              type: 'error'
+            }).then(() => {}).catch(() => {})
+            this.verifyCode3 = ''
+          })
+      }
+    },
     sendVerifyCodeToPhone(){
       this.phoneOrEmail = false
       getVerifyCode('phone', this.user.phone).then(res => {
@@ -695,16 +742,17 @@ export default {
     cancelChange(e) {
       if (e == 'nickname') {
         this.newNickname = this.user.nickname
-      }
-      if (e == 'email') {
+      } else if (e == 'email') {
         console.log(this.user)
         this.newEmail = this.user.email
         this.verifyCode1 = null
-      }
-      if (e == 'phone') {
+      } else if (e == 'phone') {
         console.log(this.user)
         this.newPhone = this.user.phone
         this.verifyCode2 = null
+      } else if (e == 'password') {
+        this.newPassword1 = ''
+        this.newPassword2 = ''
       }
     },
     submitChangePasswordForm(formName) {

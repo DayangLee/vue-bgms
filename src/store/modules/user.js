@@ -1,4 +1,4 @@
-import { loginByAcount, logout } from 'api/acount'
+import { loginByAcount, logout } from 'api/login'
 import { getCookie, setCookie, removeCookie } from 'utils/auth'
 
 const user = {
