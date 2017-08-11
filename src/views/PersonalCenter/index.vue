@@ -333,25 +333,34 @@ export default {
           type: 'warning'
         }).then(() => {}).catch(() => {})
       } else {
-        this.userInfo.email = this.newEmail.trim()
-        changeUserInfo(this.userInfo, code).then(res => {
-          this.$message({
-            message: '邮箱添加成功！',
-            type: 'success'
+        uniqueCheck('email', this.newEmail).then(res => {
+            this.$confirm('该邮箱已被别人使用', '提示', {
+              confirmButtonText: '确定',
+              showCancelButton: false,
+              closeOnClickModal: true,
+              type: 'warning'
+            }).then(() => {}).catch(() => {});
+          }).catch(error => {
+            this.userInfo.email = this.newEmail.trim()
+            changeUserInfo(this.userInfo, code).then(res => {
+            this.$message({
+              message: '邮箱添加成功！',
+              type: 'success'
+            })
+            this.user = res.data
+            this.userInfo = res.data
+            this.verifyCode1 = ''
+          }).catch(err=>{
+            this.$confirm('添加失败，请重试!', '提示', {
+              confirmButtonText: '确定',
+              showCancelButton: false,
+              closeOnClickModal: true,
+              type: 'error'
+            }).then(() => {}).catch(() => {})
+            delete this.userInfo.email
+            this.user = this.userInfo
+            this.verifyCode1 = ''
           })
-          this.user = res.data
-          this.userInfo = res.data
-          this.verifyCode1 = ''
-        }).catch(err=>{
-          this.$confirm('添加失败，请重试!', '提示', {
-            confirmButtonText: '确定',
-            showCancelButton: false,
-            closeOnClickModal: true,
-            type: 'error'
-          }).then(() => {}).catch(() => {})
-          delete this.userInfo.email
-          this.user = this.userInfo
-          this.verifyCode1 = ''
         })
       }
     },

@@ -43,6 +43,22 @@ setTimeout(function() {
 | 修改(邮箱必验证，手机已验证)|&radic;||&radic;|&radic;|phone或email(用户选择)|
 | 修改(邮箱必验证，手机未验证)|&times;||&radic;|&radic;|email|
 
+##### 流程图：
+```flow
+  st=>start: Start
+  e=>end: End
+  c1=>condition: A
+  c2=>condition: B
+  c3=>condition: C
+  io=>inputoutput: D
+
+  st->c1(no)->e
+  c2(no)->e
+  c3(no)->e
+  c1(yes,right)->c2(yes,right)->c3(yes,right)->io
+  io->e
+```
+
 #### 2. 手机：
 | 操作 | phoneVerified | phone | emailVerified | email | 验证码发送至 |
 | --------   | :-----:  | :----:  |  :---:  | :---:  | :---: |
