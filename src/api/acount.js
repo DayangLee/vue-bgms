@@ -64,8 +64,15 @@ export function checkVerifyCode(type,num,code){
 
 export function uniqueCheck(type,num){
   return axios_service({
-    url:'/user/' + type + '/' + num,
-    method:'head'
+    url: '/user/' + type + '/' + num,
+    method: 'head'
+  })
+}
+
+export function postAvatar(){
+  return axios_service({
+    url: '/user/upload/avatar',
+    method: 'post'
   })
 }
 

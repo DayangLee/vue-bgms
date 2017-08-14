@@ -1,5 +1,5 @@
 import { loginByAcount, logout } from 'api/login'
-import { getCookie, setCookie, removeCookie } from 'utils/auth'
+import { getCookie, setCookie, removeCookie } from 'utils/cookie'
 
 const user = {
   state: {
@@ -37,9 +37,10 @@ const user = {
         loginByAcount(acount, password).then(response => {
           console.log(response)
           const data = response.data
-          window.sessionStorage.setItem('userInfo',JSON.stringify(data))
+          // window.sessionStorage.setItem('userInfo',JSON.stringify(data))
           if(data.roles.length !== 0 && data.roles[0] == 'ROLE_USER'){
             setCookie('userToken','user')
+            setCookie('faceUrl', data.faceUri)
             commit('SET_TOKEN', 'user')
             commit('SET_ACOUNT', acount)
           }

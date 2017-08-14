@@ -19,7 +19,7 @@
                     </i>
                     <span class="vicp-hint" v-show="loading !== 1">{{ lang.hint }}</span>
                     <span class="vicp-no-supported-hint" v-show="!isSupported">{{ lang.noSupported }}</span>
-                    <input type="file" v-show="false" @change="handleChange" ref="fileinput">
+                    <input type="file" name="file" v-show="false" @change="handleChange" ref="fileinput">
                 </div>
                 <div class="vicp-error" v-show="hasError">
                     <i class="vicp-icon2"></i> {{ errorMsg }}
@@ -53,7 +53,7 @@
                             <div class="vicp-img-shade vicp-img-shade-2" :style="sourceImgShadeStyle"></div>
                         </div>
                         <div class="vicp-range">
-                            <input type="range" :value="scale.range" step="1" min="0" max="100" @change="zoomChange">
+                            <input type="range" name="file" :value="scale.range" step="1" min="0" max="100" @change="zoomChange">
                             <i @mousedown="startZoomSub" @mouseout="endZoomSub" @mouseup="endZoomSub"
                                class="vicp-icon5"></i>
                             <i @mousedown="startZoomAdd" @mouseout="endZoomAdd" @mouseup="endZoomAdd"
@@ -149,7 +149,7 @@
             // 单文件大小限制
             maxSize: {
                 type: Number,
-                default: 10240
+                default: 5120
             },
             // 语言类型
             langType: {

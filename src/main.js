@@ -11,7 +11,7 @@ import 'nprogress/nprogress.css'
 import 'assets/iconfont/iconfont'
 import IconSvg from 'components/Icon-svg/index.vue'
 import * as filters from './filters/index'// 全局vue filter
-import { getCookie } from './utils/auth'
+import { getCookie } from './utils/cookie'
 
 Vue.config.productionTip = false
 

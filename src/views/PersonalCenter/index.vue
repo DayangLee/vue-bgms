@@ -18,12 +18,17 @@
           </div>
           <div class="edit">编辑</div>
         </template>
-        <div class="components-container details">
+        <div class="components-container details"> 
+          <!-- <vue-core-image-upload :class="['btn', 'btn-primary']" :crop="true" @imageuploaded="imageuploaded" :max-file-size="5242880" url="http://app.hw99lt.com/user/upload/avater" >
+          </vue-core-image-upload> -->
+          <!-- <a class="btn" @click="toggleShow">设置头像</a>
+	        <my-upload @crop-success="cropSuccess" @crop-upload-success="cropUploadSuccess" @crop-upload-fail="cropUploadFail" v-model="show" :width="300" :height="300" url="http://app.hw99lt.com/user/upload/avatar"></my-upload>
+	        <img :src="imgDataUrl"> -->
           <PanThumb :image='image'>
           </PanThumb>
           <el-button type="primary" icon="upload" style="position: absolute;bottom: 15px;margin-left: 40px;" @click="imagecropperShow=true">修改头像
           </el-button>
-          <ImageCropper :width="300" :height="300" url="https://httpbin.org/post" @crop-upload-success="cropSuccess" :key="imagecropperKey" v-show="imagecropperShow"></ImageCropper>
+          <ImageCropper :width="300" :height="300" url="http://app.hw99lt.com/user/upload/avatar" @crop-upload-success="cropSuccess" :key="imagecropperKey" v-show="imagecropperShow"></ImageCropper>
         </div>
       </el-collapse-item>
   
@@ -153,12 +158,19 @@ import md5 from 'js-md5'
 import ImageCropper from '../../components/ImageCropper'
 import PanThumb from '../../components/PanThumb'
 import Image from '../../assets/images/avater/1.jpg'
-// import { getCookie } from 'utils/auth'
+import VueCoreImageUpload from 'vue-core-image-upload'
+import myUpload from 'vue-image-crop-upload'
 import { isEmail, isPhone } from 'utils/validate'
 import { userInfo, changeUserInfo, changeNickname, getVerifyCode, getEmailVerifyCode, getPhoneVerifyCode, checkVerifyCode, uniqueCheck } from 'api/acount'
 
 export default {
-  components: { ImageCropper, PanThumb },
+  //components: { ImageCropper, PanThumb },
+  //components: { 'vue-core-image-upload': VueCoreImageUpload },
+  components: { 
+    'my-upload': myUpload,
+    'vue-core-image-upload': VueCoreImageUpload,
+    ImageCropper, PanThumb
+  },
   data() {
     var validatePhone = (rule, value, callback) => {
       console.log(value);
@@ -205,6 +217,15 @@ export default {
       }
     };
     return {
+      show: true,
+			params: {
+				token: '123456798',
+				name: 'avatar'
+			},
+			headers: {
+				smail: '*_~'
+			},
+			imgDataUrl: '', // the datebase64 url of created image
       phoneOrEmail: false,
       newNickname: null,
       newEmail: null,
@@ -240,10 +261,33 @@ export default {
       },
       imagecropperShow: false,
       imagecropperKey: 0,
-      image: Image
+      image: Image,
+      src: Image,
     }
   },
   methods: {
+    toggleShow() {
+				this.show = !this.show;
+      },
+      cropSuccess(imgDataUrl, field){
+				console.log('-------- crop success --------');
+				this.imgDataUrl = imgDataUrl;
+      },
+      cropUploadSuccess(jsonData, field){
+				console.log('-------- upload success --------');
+				console.log(jsonData);
+				console.log('field: ' + field);
+      },
+      cropUploadFail(status, field){
+				console.log('-------- upload fail --------');
+				console.log(status);
+				console.log('field: ' + field);
+			},
+    imageuploaded(res) {
+      if (res.errcode == 0) {
+        this.src = 'http://img1.vued.vanthink.cn/vued751d13a9cb5376b89cb6719e86f591f3.png';
+      }
+    },
     changeNickname() {
       this.userInfo.nickname = this.newNickname.trim()
       changeNickname(this.userInfo).then(res => {
@@ -783,11 +827,11 @@ export default {
     handlePreview(file) {
       console.log(file);
     },
-    cropSuccess(resData) {
-      this.imagecropperShow = false;
-      this.imagecropperKey = this.imagecropperKey + 1;
-      this.image = resData.files.avatar;
-    }
+    // cropSuccess(resData) {
+    //   this.imagecropperShow = false;
+    //   this.imagecropperKey = this.imagecropperKey + 1;
+    //   this.image = resData.files.avatar;
+    // }
   },
   created() {
     userInfo().then(res => {
@@ -798,6 +842,7 @@ export default {
       this.newNickname = this.user.nickname
       this.newEmail = this.user.email
       this.newPhone = this.user.phone
+      this.image = userData.faceUri
     })
   }
 }
@@ -908,6 +953,7 @@ export default {
       height: 80px;
       img {
         width: 65px;
+        height: 65px;
         margin-top: 15px;
         border-radius: 50%;
       }

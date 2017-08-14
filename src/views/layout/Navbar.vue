@@ -8,7 +8,7 @@
   
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
-        <img class="user-avatar" src='../..//assets/images/avater/1.jpg'>
+        <img class="user-avatar" :src='faceUrl'>
         <i class="el-icon-caret-bottom" style="color:white;"></i>
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
@@ -27,6 +27,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { getCookie } from 'utils/cookie'
 import spreadLogo from '../../components/SpreadLogo'
 
 export default {
@@ -35,7 +36,8 @@ export default {
   },
   data() {
     return {
-      welcome: '欢迎使用汉王蓝天空感后台管理系统'
+      welcome: '欢迎使用汉王蓝天空感后台管理系统',
+      faceUrl: ''
     }
   },
   computed: {
@@ -50,6 +52,9 @@ export default {
         location.reload();
       })
     }
+  },
+  mounted(){
+    this.faceUrl = getCookie('faceUrl')
   }
 }
 </script>
