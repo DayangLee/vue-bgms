@@ -30,7 +30,7 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style rel="stylesheet/scss" lang="scss" scoped>
 .title1 {
   font-size: 20px;
   height: 100%;

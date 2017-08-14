@@ -43,21 +43,6 @@ setTimeout(function() {
 | 修改(邮箱必验证，手机已验证)|&radic;||&radic;|&radic;|phone或email(用户选择)|
 | 修改(邮箱必验证，手机未验证)|&times;||&radic;|&radic;|email|
 
-##### 流程图：
-```flow
-  st=>start: Start
-  e=>end: End
-  c1=>condition: A
-  c2=>condition: B
-  c3=>condition: C
-  io=>inputoutput: D
-
-  st->c1(no)->e
-  c2(no)->e
-  c3(no)->e
-  c1(yes,right)->c2(yes,right)->c3(yes,right)->io
-  io->e
-```
 
 #### 2. 手机：
 | 操作 | phoneVerified | phone | emailVerified | email | 验证码发送至 |
@@ -73,3 +58,25 @@ setTimeout(function() {
   * 更新用户信息: PUT /user，在request header里添加Authorization
 * check验证码
   * 只能check验证过的邮箱或手机
+
+
+## webpack打包
+``` text
+1. 关于重新打包后浏览器加载过慢：
+    主要是 vendor.js 加载过慢。
+    vendor.js 是包含第三方依赖的打包后js文件，相对来说文件较大，但一般情况下较少更新。但在项目中，发现一旦更改了 app.js 内的代码，vendor.js 的 hash 也会改变，所以再次打包后，浏览器总是要重新加载 vendor.js ，此为 webpack 的一个 bug 。
+    解决方法： HashedModuleIdsPlugin 插件使用
+    {
+      test: /\.scss$/,
+      exclude: /node_modules/,
+      loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
+    }
+
+2. 关于打包后 css 异常的问题。
+    目前原因尚不明确， 尝试 css 分离打包
+    {
+      test: /\.scss$/,
+      exclude: /node_modules/,
+      loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
+    }
+```

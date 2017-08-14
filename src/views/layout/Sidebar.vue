@@ -31,7 +31,7 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style rel="stylesheet/scss" lang="scss" scoped>
 .logo1 {
   width: 40px;
   margin-top: 10px;

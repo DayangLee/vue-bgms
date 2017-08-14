@@ -2,7 +2,7 @@
     <div class="dashboard-agent-container">
         <div class='title'>主页</div>
         <el-row :gutter='50'>
-            <el-col :xs="24" :sm="12" :md="12" :lg="7">
+            <el-col :xs="12" :sm="12" :md="12" :lg="7">
                 <div class="card">
                     <div class='card-top'>
                         <p>
@@ -23,7 +23,7 @@
                 </div>
             </el-col>
     
-            <el-col :xs="24" :sm="12" :md="12" :lg="7">
+            <el-col :xs="12" :sm="12" :md="12" :lg="7">
                 <div class="card">
                     <div class='card-top'>
                         <p>
@@ -121,87 +121,7 @@ export default {
         offlineCount1: 888,
         onlineCount2: 666,
         offlineCount2: 666,
-        allCount: null,
-        device_input: '',
-        device_list_currentPage: 1,
-        deviceData: [{
-            name: '2016-05-01',
-            id: 'KG-123456789',
-            user: 'admin',
-            status: '运行中',
-            pm25: 10,
-            co2: 233,
-            cho: 0.012,
-            temp: 16,
-            wet: 48,
-            address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-            name: '2016-05-03',
-            id: 'KG-123456789',
-            user: 'admin',
-            status: '离线',
-            pm25: 15,
-            cho: 0.002,
-            co2: 133,
-            temp: 26,
-            wet: 43,
-            address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-            name: '2016-05-02',
-            id: 'KG-123456789',
-            user: 'admin',
-            status: '离线',
-            pm25: 100,
-            cho: 0.032,
-            co2: 23,
-            temp: 36,
-            wet: 22,
-            address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-            name: '2016-05-08',
-            id: 'KG-123456789',
-            user: 'admin',
-            status: '运行中',
-            pm25: 5,
-            cho: 0.08,
-            co2: 453,
-            temp: 10,
-            wet: 55,
-            address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-            name: '2016-05-04',
-            id: 'KG-123456789',
-            user: 'admin',
-            status: '运行中',
-            pm25: 2,
-            cho: 0.072,
-            co2: 600,
-            temp: -16,
-            wet: 46,
-            address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-            name: '2016-05-06',
-            id: 'KG-123456789',
-            user: 'admin',
-            status: '运行中',
-            pm25: 55,
-            cho: 0.12,
-            co2: 813,
-            temp: 22,
-            wet: 83,
-            address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-            name: '2016-05-10',
-            id: 'KG-123456789',
-            user: 'admin',
-            status: '运行中',
-            pm25: 80,
-            cho: 0.042,
-            co2: 188,
-            temp: -6,
-            wet: 43,
-            address: '上海市普陀区金沙江路 1518 弄'
-        }]
+        allCount: null
     }),
     methods: {
         handleChange(val) {
@@ -268,7 +188,9 @@ export default {
 * {
     margin: 0;
 }
-
+.clear {
+  clear: both;
+}
 .dashboard-agent-container {
     padding: 30px 50px;
 }
@@ -372,72 +294,22 @@ export default {
     }
 }
 
-.pictures {
-  a {
-    width: 100%;
-    margin-top: 5px;
+.pictures { 
+    a {
+        width: 100%;
+        margin-top: 5px;
 
-    img {
-      width: 100%;
-      -webkit-transition: all .2s linear;
-      transition: all .2s linear;
-      &:hover {
-        margin-top: -5px;
-        -moz-box-shadow: 2px 2px 15px rgba(136, 136, 136, 0.5);
-        -webkit-box-shadow: 2px 2px 15px rgba(136, 136, 136, 0.5);
-        box-shadow: 2px 2px 15px rgba(136, 136, 136, 0.5);
-      }
+        img {
+            width: 100%;
+            // -webkit-transition: all .2s linear;
+            // transition: all .2s linear;
+            // &:hover {
+            //     margin-top: -5px;
+            //     -moz-box-shadow: 2px 2px 15px rgba(136, 136, 136, 0.5);
+            //     -webkit-box-shadow: 2px 2px 15px rgba(136, 136, 136, 0.5);
+            //     box-shadow: 2px 2px 15px rgba(136, 136, 136, 0.5);
+            // }
+        }
     }
-  }
 }
-
-
-// @media screen and (min-width: 1200px) {
-//     .text1 {
-//         font-size: 14px;
-//     }
-//     .text2 {
-//         font-size: 22px;
-//     }
-//     .card3 {
-//         width: 100%;
-//         height: 450px;
-//     }
-// }
-// @media screen and (min-width: 992px) and (max-width: 1200px) {
-//     .text1 {
-//         font-size: 14px;
-//     }
-//     .text2 {
-//         font-size: 22px;
-//     }
-//     .card3 {
-//         width: 100%;
-//         height: 500px;
-//     }
-// }
-// @media screen and (min-width: 768px) and (max-width: 992px) {
-//     .text1 {
-//         font-size: 14px;
-//     }
-//     .text2 {
-//         font-size: 24px;
-//     }
-//     .card3 {
-//         width: 100%;
-//         height: 500px;
-//     }
-// }
-// @media screen and (max-width: 768px) {
-//     .text1 {
-//         font-size: 14px;
-//     }
-//     .text2 {
-//         font-size: 28px;
-//     }
-//     .card3 {
-//         width: 100%;
-//         height: 500px;
-//     }
-// }
 </style>

@@ -28,12 +28,13 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import '../../assets/style/mixin.scss';
+
 .app-wrapper {
   @include clearfix;
   position: relative;
   height: 100%;
   width: 100%;
-  min-width: 960px;
+  min-width: 1160px;
 
   &.hideSidebar {
     .sidebar-container {

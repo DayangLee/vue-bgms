@@ -1,22 +1,38 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
-import Login from '../views/login/index'
-import Err404 from '../views/error404/index'
-import testPage from 'views/testPage/index'
-
-import Layout from '../views/layout/Layout'
-import Dashboard from '../views/dashboard/index'
-import DeviceData from '../views/deviceData/index'
-import DeviceManage from '../views/deviceManage/index'
-import DeviceGroupManage from '../views/deviceGroupManage/index'
-import UserManage from '../views/userManage/index'
-import UserGroupManage from '../views/userGroupManage/index'
-import AuthManage from '../views/authManage/index'
-import AcountManage from '../views/acountManage/index'
-import PersonalCenter from '../views/PersonalCenter/index'
+const _import = require('./_import_' + process.env.NODE_ENV);
 
 Vue.use(Router)
+import Layout from '../views/layout/Layout'
+
+const Login = _import('login/index')
+const Err404 = _import('error404/index')
+const testPage = _import('testPage/index')
+
+const Dashboard = _import('dashboard/index')
+const DeviceData = _import('deviceData/index')
+const DeviceManage = _import('deviceManage/index')
+const DeviceGroupManage = _import('deviceGroupManage/index')
+const UserManage = _import('userManage/index')
+const UserGroupManage = _import('userGroupManage/index')
+const AuthManage = _import('authManage/index')
+const AcountManage = _import('acountManage/index')
+const PersonalCenter = _import('PersonalCenter/index')
+
+
+// import Login from '../views/login/index'
+// import Err404 from '../views/error404/index'
+// import testPage from 'views/testPage/index'
+// import Dashboard from '../views/dashboard/index'
+// import DeviceData from '../views/deviceData/index'
+// import DeviceManage from '../views/deviceManage/index'
+// import DeviceGroupManage from '../views/deviceGroupManage/index'
+// import UserManage from '../views/userManage/index'
+// import UserGroupManage from '../views/userGroupManage/index'
+// import AuthManage from '../views/authManage/index'
+// import AcountManage from '../views/acountManage/index'
+// import PersonalCenter from '../views/PersonalCenter/index'
+
 
 
 /**
