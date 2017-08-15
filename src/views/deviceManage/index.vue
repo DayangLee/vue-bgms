@@ -5,165 +5,148 @@
       设备 / 设备管理
     </div>
   
-    <span class="tagsTitle">已选条件</span>
+    <p class="tagsTitle">已选条件</p>
     <el-tag class="tags" v-for="tag in tags" :key="tag.name" :closable="true" :type="tag.type" @close="handleClose(tag)">
       {{tag.name}}
     </el-tag>
   
-    <div class="filters">
-      <div class="filterItem">
-        <span class="filterItem-title">设备类型</span>
-        <el-checkbox-group class="filterItem-content" v-model="filterDeviceType" size="small">
-          <el-checkbox-button v-for="item in deviceTypeList" :label="item" :key="item">{{item}}</el-checkbox-button>
-        </el-checkbox-group>
-      </div>
+    <el-tabs type="border-card" class="filtersTabs">
+      <el-tab-pane label="设备类型">设备类型</el-tab-pane>
+      <el-tab-pane label="数值">数值</el-tab-pane>
+      <el-tab-pane label="状态">状态</el-tab-pane>
+      <el-tab-pane label="位置">位置</el-tab-pane>
+      <el-tab-pane label="分组">分组</el-tab-pane>
+      <el-tab-pane label="序列号区间">序列号区间</el-tab-pane>
+      <el-tab-pane label="在线时间">在线时间</el-tab-pane>
+    </el-tabs>
   
-      <div class="filterItem">
-        <span class="filterItem-title">数据</span>
-        <div class="filterItem-content">
-          <p class="dataItem" id="dataItem1">
-            <span>PM2.5</span>
-            <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
-            <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
-            <el-button type="success" size="small" v-show="focus0">确定</el-button>
-          </p>
-          <p class="dataItem" id="dataItem2">
-            <span>温度</span>
-            <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
-            <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
-            <el-button type="success" size="small" v-show="focus[1]">确定</el-button>
-          </p>
-          <p class="dataItem" id="dataItem3">
-            <span>湿度</span>
-            <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
-            <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
-            <el-button type="success" size="small" v-show="focus3">确定</el-button>
-          </p>
-          <p class="dataItem" id="dataItem4">
-            <span>CO2</span>
-            <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
-            <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
-            <el-button type="success" size="small" v-show="focus4">确定</el-button>
-          </p>
-          <p class="dataItem" id="dataItem5">
-            <span>甲醛</span>
-            <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
-            <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
-            <el-button type="success" size="small" v-show="focus5">确定</el-button>
-          </p>
-          <p class="dataItem" id="dataItem6">
-            <span>TVOC</span>
-            <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
-            <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
-            <el-button type="success" size="small" v-show="focus6">确定</el-button>
-          </p>
-          <p class="dataItem" id="dataItem7">
-            <span>臭氧</span>
-            <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
-            <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
-            <el-button type="success" size="small" v-show="focus7">确定</el-button>
-          </p>
-          <p class="dataItem" id="dataItem8">
-            <span>氧气</span>
-            <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
-            <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
-            <el-button type="success" size="small" v-show="focus8">确定</el-button>
-          </p>
-        </div>
-      </div>
-  
-      <div class="filterItem">
-        <span class="filterItem-title">状态</span>
-        <el-checkbox-group class="filterItem-content" v-model="filterDeviceStatus" size="small">
-          <el-checkbox-button v-for="item in deviceStatusList" :label="item" :key="item">{{item}}</el-checkbox-button>
-        </el-checkbox-group>
-      </div>
-  
-      <div class="filterItem">
-        <span class="filterItem-title">位置</span>
-        <el-cascader class="filterItem-content" :options="chinaArea" v-model="filterLocation" @change="filterLocationMethod">
-        </el-cascader>
-      </div>
-  
-      <div class="filterItem">
-        <span class="filterItem-title">分组</span>
-        <el-select class="filterItem-content" v-model="filterGroupList" filterable multiple placeholder="请选择">
-          <el-option v-for="item in groupList" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
-      </div>
-  
-      <div class="filterItem filterItem6">
-        <span class="filterItem-title">序列号区间</span>
-        <div class="filterItem-content">
-          <el-input></el-input> -
-          <el-input></el-input>
-        </div>
-      </div>
-  
-      <div class="filterItem">
-        <span class="filterItem-title">在线时间</span>
-        <div class="filterItem-content">
-          <el-date-picker v-model="filterTimeRange" type="datetimerange" placeholder="选择时间范围">
-          </el-date-picker>
-        </div>
-      </div>
-  
-    </div>
+    <!-- <div class="filters">
+                    <div class="filterItem">
+                      <span class="filterItem-title">设备类型</span>
+                      <el-checkbox-group class="filterItem-content" v-model="filterDeviceType" size="small">
+                        <el-checkbox-button v-for="item in deviceTypeList" :label="item" :key="item">{{item}}</el-checkbox-button>
+                      </el-checkbox-group>
+                    </div>
+                
+                    <div class="filterItem">
+                      <span class="filterItem-title">数据</span>
+                      <div class="filterItem-content">
+                        <p class="dataItem" id="dataItem1">
+                          <span>PM2.5</span>
+                          <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
+                          <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
+                          <el-button type="success" size="small" v-show="focus0">确定</el-button>
+                        </p>
+                        <p class="dataItem" id="dataItem2">
+                          <span>温度</span>
+                          <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
+                          <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
+                          <el-button type="success" size="small" v-show="focus[1]">确定</el-button>
+                        </p>
+                        <p class="dataItem" id="dataItem3">
+                          <span>湿度</span>
+                          <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
+                          <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
+                          <el-button type="success" size="small" v-show="focus3">确定</el-button>
+                        </p>
+                        <p class="dataItem" id="dataItem4">
+                          <span>CO2</span>
+                          <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
+                          <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
+                          <el-button type="success" size="small" v-show="focus4">确定</el-button>
+                        </p>
+                        <p class="dataItem" id="dataItem5">
+                          <span>甲醛</span>
+                          <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
+                          <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
+                          <el-button type="success" size="small" v-show="focus5">确定</el-button>
+                        </p>
+                        <p class="dataItem" id="dataItem6">
+                          <span>TVOC</span>
+                          <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
+                          <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
+                          <el-button type="success" size="small" v-show="focus6">确定</el-button>
+                        </p>
+                        <p class="dataItem" id="dataItem7">
+                          <span>臭氧</span>
+                          <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
+                          <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
+                          <el-button type="success" size="small" v-show="focus7">确定</el-button>
+                        </p>
+                        <p class="dataItem" id="dataItem8">
+                          <span>氧气</span>
+                          <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
+                          <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
+                          <el-button type="success" size="small" v-show="focus8">确定</el-button>
+                        </p>
+                      </div>
+                    </div>
+                
+                    <div class="filterItem">
+                      <span class="filterItem-title">状态</span>
+                      <el-checkbox-group class="filterItem-content" v-model="filterDeviceStatus" size="small">
+                        <el-checkbox-button v-for="item in deviceStatusList" :label="item" :key="item">{{item}}</el-checkbox-button>
+                      </el-checkbox-group>
+                    </div>
+                
+                    <div class="filterItem">
+                      <span class="filterItem-title">位置</span>
+                      <el-cascader class="filterItem-content" :options="chinaArea" v-model="filterLocation" @change="filterLocationMethod">
+                      </el-cascader>
+                    </div>
+                
+                    <div class="filterItem">
+                      <span class="filterItem-title">分组</span>
+                      <el-select class="filterItem-content" v-model="filterGroupList" filterable multiple placeholder="请选择">
+                        <el-option v-for="item in groupList" :key="item.value" :label="item.label" :value="item.value">
+                        </el-option>
+                      </el-select>
+                    </div>
+                
+                    <div class="filterItem filterItem6">
+                      <span class="filterItem-title">序列号区间</span>
+                      <div class="filterItem-content">
+                        <el-input></el-input> -
+                        <el-input></el-input>
+                      </div>
+                    </div>
+                
+                    <div class="filterItem">
+                      <span class="filterItem-title">在线时间</span>
+                      <div class="filterItem-content">
+                        <el-date-picker v-model="filterTimeRange" type="datetimerange" placeholder="选择时间范围">
+                        </el-date-picker>
+                      </div>
+                    </div>
+                
+                  </div> -->
   
     <el-input class='searchDevice' placeholder="搜索设备" icon="search" v-model="deviceIdSearch" :on-icon-click="handleIconClick">
     </el-input>
   
-    <el-tabs v-model="deviceManageTabs" type="card" @tab-click="handleClick">
+    <div class="table-row">
+      <el-button :plain="true" type="info" size="small" style="float:left;" @click="slide">更多操作</el-button>
+      <span style="float:right;">
+        共{{deviceCount}}个设备，{{onlineCount}}个正在运行
+      </span>
+    </div>
   
-      <el-tab-pane label="设备状态" name="first">
-  
-        <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="12" :lg="10">
-            <div class="block">
-              <span class="wrapper">
-                <el-button :plain="true" type="info" size="small">批量操作</el-button>
-                <el-button :plain="true" type="info" size="small">打开</el-button>
-                <el-button :plain="true" type="info" size="small">关闭</el-button>
-                <el-button :plain="true" type="info" size="small">更多操作</el-button>
-              </span>
-            </div>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="8">
-            <el-checkbox-group v-model="checkList" class="block" @change="handleCheckList">
-              <el-checkbox label="全部"></el-checkbox>
-              <el-checkbox label="运行中"></el-checkbox>
-              <el-checkbox label="关机"></el-checkbox>
-              <el-checkbox label="异常"></el-checkbox>
-            </el-checkbox-group>
-          </el-col>
-          <el-col :xs="24" :sm="12" :md="12" :lg="6">
-            <div class="block">
-              共{{deviceCount}}个设备，{{onlineCount}}个正在运行
-            </div>
-          </el-col>
-        </el-row>
-  
-        <el-table ref="multipleTable" :data="statusList" border tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange" stripe>
-          <el-table-column type="selection" width="55" align="center">
-          </el-table-column>
-          <el-table-column type="index" width="60" align="center">
-          </el-table-column>
-          <el-table-column prop="deviceName" label="设备名称" width="170" align="center">
-          </el-table-column>
-          <el-table-column prop="deviceId" label="设备ID" width="150" align="center">
-          </el-table-column>
-          <!-- <el-table-column label="开关" width="80" align="center">
-                                                                                                                                                            <template scope="scope">
-                                                                                                                                                              <el-switch v-model="scope.row.open" on-color="#13ce66" off-color="#ff4949" on-text="" off-text="">
-                                                                                                                                                              </el-switch>
-                                                                                                                                                            </template>
-                                                                                                                                                          </el-table-column> -->
-          <el-table-column prop="status" label="运行状态" width="100" align="center">
-            <template scope="scope">
-              <el-tag :type="scope.row.status === 1 ? 'success' : 'danger'">{{scope.row.status===1?'运行中':'关闭'}}</el-tag>
-            </template>
-          </el-table-column>
+    <div class="deviceTables" style="width: 100%">
+      <el-table ref="multipleTable" :data="statusList" border tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange" stripe id="table">
+        <el-table-column fixed="left" type="selection" width="55" align="center">
+        </el-table-column>
+        <el-table-column fixed="left" type="index" width="60" align="center">
+        </el-table-column>
+        <el-table-column fixed="left" prop="deviceName" label="设备名称" width="170" align="center">
+        </el-table-column>
+        <el-table-column fixed="left" prop="deviceId" label="设备ID" width="150" align="center">
+        </el-table-column>
+        <el-table-column fixed="left" prop="status" label="运行状态" width="100" align="center">
+          <template scope="scope">
+            <el-tag :type="scope.row.status === 1 ? 'success' : 'danger'">{{scope.row.status===1?'运行中':'关闭'}}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="设备数据" align="center" class="table1" style="left:-100px;">
           <el-table-column prop="time" label="定时" width="160" align="center">
           </el-table-column>
           <el-table-column prop="filter" label="滤网" width="110" align="center">
@@ -181,69 +164,9 @@
             <template scope="scope">
               {{scope.row.hit === 1?'内':'外'}}
             </template>
-            <!-- <template scope="scope">
-                                                                                                                                                              <el-switch v-model="scope.row.hit" on-color="#13ce66" off-color="#ff4949" on-text="" off-text="">
-                                                                                                                                                              </el-switch>
-                                                                                                                                                            </template> -->
           </el-table-column>
-          <el-table-column label="更多" align="center" min-width="150">
-            <template scope="scope">
-              <el-button type="success" size="small" @click="handleDetail(scope.$index, scope.row.deviceId)">详情</el-button>
-              <el-button size="small" type="primary" @click="handleEdit(scope.$index, scope.row.deviceId)">操作</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-  
-      </el-tab-pane>
-      <el-tab-pane label="设备信息" name="second">
-        <div class="block" style="float:right;">
-          共{{deviceCount}}个设备，{{onlineCount}}个正在运行
-        </div>
-        <div class="clear"></div>
-  
-        <el-table ref="multipleTable" :data="infoList" border tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange" stripe>
-          <el-table-column type="selection" width="55" align="center">
-          </el-table-column>
-          <el-table-column type="index" width="60" align="center">
-          </el-table-column>
-          <el-table-column prop="deviceName" label="设备名称" width="160" align="center">
-          </el-table-column>
-          <el-table-column prop="deviceId" label="设备ID" width="160" align="center">
-          </el-table-column>
-          <el-table-column prop="group" label="群组" width="150" align="center">
-          </el-table-column>
-          <el-table-column prop="location" label="位置" width="150" align="center">
-          </el-table-column>
-          <el-table-column prop="runTime" label="运行时长" width="120" align="center">
-          </el-table-column>
-          <el-table-column prop="contact" label="联系人" width="90" align="center">
-          </el-table-column>
-          <el-table-column prop="tel" label="电话" width="130" align="center">
-          </el-table-column>
-          <el-table-column label="更多" align="center" min-width="150">
-            <template scope="scope">
-              <el-button type="success" size="small" @click="handleDetail(scope.$index, scope.row.deviceId)">详情</el-button>
-              <el-button size="small" type="primary" @click="handleEdit(scope.$index, scope.row.deviceId)">操作</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-tab-pane>
-  
-      <el-tab-pane label="设备数据" name="third">
-        <div class="block" style="float:right;">
-          共{{deviceCount}}个设备，{{onlineCount}}个正在运行
-        </div>
-        <div class="clear"></div>
-  
-        <el-table ref="multipleTable" :data="dataList" border tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange" stripe>
-          <el-table-column type="selection" width="55" align="center">
-          </el-table-column>
-          <el-table-column type="index" width="50" align="center">
-          </el-table-column>
-          <el-table-column prop="deviceName" label="设备名称" width="180" align="center">
-          </el-table-column>
-          <el-table-column prop="deviceId" label="设备ID" width="180" align="center">
-          </el-table-column>
+        </el-table-column>
+        <el-table-column label="设备状态" align="center">
           <el-table-column sortable prop="pm2d5" label="PM2.5" width="100" align="center">
           </el-table-column>
           <el-table-column sortable prop="co2" label="CO2" width="90" align="center">
@@ -258,15 +181,28 @@
           </el-table-column>
           <el-table-column sortable prop="lastTime" label="最后上传时间" width="150" align="center">
           </el-table-column>
-          <el-table-column label="更多" align="center" min-width="150">
+        </el-table-column>
+        <el-table-column label="设备信息" align="center">
+          <el-table-column prop="group" label="群组" width="150" align="center">
+          </el-table-column>
+          <el-table-column prop="location" label="位置" width="150" align="center">
+          </el-table-column>
+          <el-table-column prop="runTime" label="运行时长" width="120" align="center">
+          </el-table-column>
+          <el-table-column prop="contact" label="联系人" width="90" align="center">
+          </el-table-column>
+          <el-table-column prop="tel" label="电话" width="130" align="center">
+          </el-table-column>
+        </el-table-column>
+  
+          <el-table-column label="更多" align="center" min-width="150" fixed="right">
             <template scope="scope">
               <el-button type="success" size="small" @click="handleDetail(scope.$index, scope.row.deviceId)">详情</el-button>
               <el-button size="small" type="primary" @click="handleEdit(scope.$index, scope.row.deviceId)">操作</el-button>
             </template>
           </el-table-column>
-        </el-table>
-      </el-tab-pane>
-    </el-tabs>
+      </el-table>
+    </div>
   
     <div class="pagination">
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[10, 20, 30, 40, 50]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="totalItems">
@@ -438,10 +374,7 @@
                 运行状态
               </div>
               <div class="newWindStatusData">
-                <!-- <div class='statusCircle' v-bind:style="{backgroundColor: thisDevData.status === 'true' ? '#13ce66' : '#ff4949'}"></div> -->
-                <!-- <div class="statusText"> -->
                 {{thisDevData.status === 'true' ? '运行中' : '关闭'}}
-                <!-- </div> -->
               </div>
             </div>
   
@@ -777,6 +710,12 @@ export default {
     barChart
   },
   methods: {
+    slide(){
+      
+      let table = document.getElementById('table')
+      console.log(table)
+      table.scrollLeft = 200
+    },
     handleClose(tag) {
       this.tags.splice(this.tags.indexOf(tag), 1);
     },
@@ -868,13 +807,13 @@ export default {
     }
   },
   created() {
-    this.getData()
+    //this.getData()
   }
 
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss">
+<style rel="stylesheet/scss" lang="scss" scoped>
 .clear {
   clear: both;
 }
@@ -890,163 +829,287 @@ export default {
   .tagsTitle {
     font-size: 16px;
     margin-right: 5px;
+    margin-top: 20px;
+    float: left;
   }
   .tags {
     margin-top: 20px;
     margin-right: 2px;
   }
+  .searchDevice {
+    position: absolute;
+    top: 90px;
+    width: 250px;
+    z-index: 10;
+    right: 50px;
+  }
 
-  .filters {
+  .filtersTabs {
+    margin-top: 20px;
+  }
+
+  .table-row {
+    margin-top: 50px;
+  }
+
+  .deviceTables {
+    margin-top: 100px;
+  } 
+  
+  // .filters {
+  //   margin-top: 20px;
+  //   .filterItem {
+  //     height: 45px;
+  //     height: auto;
+  //     min-height: 45px;
+  //     line-height: 45px;
+  //     overflow: hidden;
+  //     border &:after {
+  //       visibility: hidden;
+  //       display: block;
+  //       font-size: 0;
+  //       content: " ";
+  //       clear: both;
+  //       height: 0;
+  //     }
+  //     .filterItem-title {
+  //       float: left;
+  //       font-size: 14px;
+  //       width: 80px;
+  //       text-align: center;
+  //     }
+  //     .filterItem-content {
+  //       margin-left: 80px;
+  //       height: auto;
+  //       height: 40px;
+  //       min-height: 40px;
+  //       .dataItem {
+  //         float: left;
+  //         width: 150px;
+  //         margin-top: 0px;
+  //         margin-bottom: 0px;
+  //         span {
+  //           font-size: 12px;
+  //         }
+  //         .el-input {
+  //           width: 40px;
+  //           height: 20px;
+  //           .el-input__inner {
+  //             height: 20px;
+  //           }
+  //         }
+  //         .el-button {
+  //           position: absolute;
+  //           margin-left: 5px;
+  //           margin-top: 12px;
+  //           line-height: 8px;
+  //           z-index: 99;
+  //         }
+  //       }
+  //     }
+  //     .el-cascader.filterItem-content {
+  //       margin-left: 0px;
+  //       .el-cascader__label {
+  //         line-height: 45px;
+  //       }
+  //     }
+  //     .el-select.filterItem-content {
+  //       margin-left: 0px;
+  //       .el-input {
+  //         height: 30px;
+  //         line-height: 30px;
+  //         .el-input__inner {
+  //           height: 30px;
+  //         }
+  //         .el-input__icon.el-icon-caret-top {
+  //           top: 60%;
+  //         }
+  //       }
+  //     }
+  //   }
+  //   .filterItem6 {
+  //     .el-input {
+  //       width: 224px;
+  //     }
+  //   }
+  // }
+}
+
+.pagination {
+  margin: 50px auto;
+  text-align: center;
+}
+
+#detailDialog .el-dialog {
+  width: 80%;
+  margin-top: -5%;
+  margin-bottom: 5%;
+
+  .el-dialog__header {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 50px;
+  }
+  .el-dialog__title {
+    line-height: 1;
+    font-size: 28px;
+    font-weight: 500;
+    color: #1f2d3d;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .el-dialog__body {
+    border-top: 2px solid #d1dbe5;
+    width: 95%;
+    margin: 0 auto;
+    padding-top: 10px;
+  }
+
+  .el-card {
+    margin-top: 20px;
+  }
+
+  .card-header {
+    font-size: 18px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #d1dbe5;
+
+    .el-button.el-button--text {
+      float: right;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .card-body {
+    height: 300px;
     margin-top: 20px;
 
-    .filterItem {
-      height: 45px;
-      height: auto;
-      min-height: 45px;
-      line-height: 45px;
-      overflow: hidden;
-      border &:after {
-        visibility: hidden;
-        display: block;
-        font-size: 0;
-        content: " ";
-        clear: both;
-        height: 0;
-      }
-      .filterItem-title {
+    .devSummary {
+      .statusCircle {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
         float: left;
-        font-size: 14px;
-        width: 80px;
-        text-align: center;
       }
-      .filterItem-content {
-        margin-left: 80px;
-        height: auto;
-        height: 40px;
-        min-height: 40px;
-        .dataItem {
-          float: left;
-          width: 150px;
-          margin-top: 0px;
-          margin-bottom: 0px;
-          span {
-            font-size: 12px;
-          }
-          .el-input {
-            width: 40px;
-            height: 20px;
-            .el-input__inner {
-              height: 20px;
-            }
-          }
-          .el-button {
-            position: absolute;
-            margin-left: 5px;
-            margin-top: 12px;
-            line-height: 8px;
-            z-index: 99;
-          }
-        }
+      .statusText {
+        float: left;
+        margin-left: 10px;
       }
-      .el-cascader.filterItem-content {
-        margin-left: 0px;
-        .el-cascader__label {
-          line-height: 45px;
-        }
-      }
-
-      .el-select.filterItem-content {
-        margin-left: 0px;
-        .el-input {
-          height: 30px;
-          line-height: 30px;
-          .el-input__inner {
-            height: 30px;
-          }
-          .el-input__icon.el-icon-caret-top {
-            top: 60%;
-          }
-        }
-      }
-    }
-
-    .filterItem6 {
-      .el-input {
-        width: 224px;
-      }
-    }
-  }
-
-  .el-input.searchDevice {
-    position: relative;
-    top: 80px;
-    left: 80%;
-    width: 15%;
-    z-index: 10;
-  }
-
-  .el-tabs {
-    margin-top: 50px;
-    .block {
-      margin-top: 10px;
-    }
-    .el-table {
-      margin-top: 30px;
-    }
-  }
-
-  .pagination {
-    margin: 50px auto;
-    text-align: center;
-  }
-
-  #detailDialog .el-dialog {
-    width: 80%;
-    margin-top: -5%;
-    margin-bottom: 5%;
-
-    .el-dialog__header {
-      padding-top: 20px;
-      padding-bottom: 20px;
-      padding-left: 50px;
-    }
-    .el-dialog__title {
-      line-height: 1;
-      font-size: 28px;
-      font-weight: 500;
-      color: #1f2d3d;
-      padding-top: 10px;
-      padding-bottom: 10px;
-    }
-    .el-dialog__body {
-      border-top: 2px solid #d1dbe5;
-      width: 95%;
-      margin: 0 auto;
-      padding-top: 10px;
-    }
-
-    .el-card {
-      margin-top: 20px;
-    }
-
-    .card-header {
-      font-size: 18px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid #d1dbe5;
-
-      .el-button.el-button--text {
+      .devTime {
         float: right;
-        &:hover {
-          cursor: pointer;
-        }
       }
     }
 
-    .card-body {
-      height: 300px;
+    .devData {
       margin-top: 20px;
+      text-align: center;
+      .thisPm25 {
+        font-size: 60px;
+        font-weight: bold;
+      }
+      span:first-child,
+      span:last-child {
+        font-size: 16px;
+        font-weight: 400;
+      }
+    }
 
-      .devSummary {
+    .devCO2,
+    .devCho,
+    .devTemp,
+    .devWet {
+      height: 30px;
+      line-height: 30px;
+      margin: 10px auto;
+    }
+    .devCho {
+      margin-top: 50px;
+    }
+    .dataName {
+      font-size: 18px;
+      margin-left: 10%;
+      float: left;
+    }
+    .dataNum {
+      width: 48%;
+      height: 10px;
+      background-color: rgba(0, 153, 255, 0.2);
+      border-radius: 5px;
+      float: left;
+      margin-left: 8%;
+      margin-top: 10px;
+      position: relative;
+      z-index: 10;
+
+      .choData,
+      .co2Data,
+      .tempData,
+      .wetData {
+        z-index: 999;
+        height: 10px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        border-radius: 5px;
+      }
+    }
+    .dataUnit {
+      font-size: 16px;
+      margin-left: 5%;
+    }
+  }
+
+  .information {
+    .informationItem {
+      width: 90%;
+      margin: 10px 0 0 10%;
+      height: 30px;
+      line-height: 30px;
+      div {
+        float: left;
+      }
+      img {
+        width: 20px;
+        height: 20px;
+        margin-top: 5px;
+      }
+      .informationItemName {
+        width: 30%;
+        font-size: 18px;
+        margin-left: 5%;
+      }
+      .informationItemData {
+        color: rgb(153, 153, 153);
+        font-size: 18px;
+      }
+    }
+  }
+
+  .newWind {
+    height: 190px;
+
+    .left {
+      width: 15%;
+      height: 80%;
+      float: left;
+      border-right: 1px solid #d1dbe5;
+      margin-bottom: 2px;
+      img {
+        width: 80%;
+        height: 150px;
+      }
+    }
+    .right {
+      width: 85%;
+      float: left;
+
+      .rightUp {
+        width: 100%;
+        height: 80px;
+        border-bottom: 1px solid #d1dbe5;
+
         .statusCircle {
           width: 15px;
           height: 15px;
@@ -1057,360 +1120,236 @@ export default {
           float: left;
           margin-left: 10px;
         }
-        .devTime {
-          float: right;
-        }
-      }
 
-      .devData {
-        margin-top: 20px;
-        text-align: center;
-        .thisPm25 {
-          font-size: 60px;
-          font-weight: bold;
-        }
-        span:first-child,
-        span:last-child {
-          font-size: 16px;
-          font-weight: 400;
-        }
-      }
-
-      .devCO2,
-      .devCho,
-      .devTemp,
-      .devWet {
-        height: 30px;
-        line-height: 30px;
-        margin: 10px auto;
-      }
-      .devCho {
-        margin-top: 50px;
-      }
-      .dataName {
-        font-size: 18px;
-        margin-left: 10%;
-        float: left;
-      }
-      .dataNum {
-        width: 48%;
-        height: 10px;
-        background-color: rgba(0, 153, 255, 0.2);
-        border-radius: 5px;
-        float: left;
-        margin-left: 8%;
-        margin-top: 10px;
-        position: relative;
-        z-index: 10;
-
-        .choData,
-        .co2Data,
-        .tempData,
-        .wetData {
-          z-index: 999;
-          height: 10px;
-          position: absolute;
-          left: 0;
-          top: 0;
-          border-radius: 5px;
-        }
-      }
-      .dataUnit {
-        font-size: 16px;
-        margin-left: 5%;
-      }
-    }
-
-    .information {
-      .informationItem {
-        width: 90%;
-        margin: 10px 0 0 10%;
-        height: 30px;
-        line-height: 30px;
-        div {
-          float: left;
-        }
-        img {
-          width: 20px;
-          height: 20px;
-          margin-top: 5px;
-        }
-        .informationItemName {
-          width: 30%;
-          font-size: 18px;
-          margin-left: 5%;
-        }
-        .informationItemData {
-          color: rgb(153, 153, 153);
-          font-size: 18px;
-        }
-      }
-    }
-
-    .newWind {
-      height: 190px;
-
-      .left {
-        width: 15%;
-        height: 80%;
-        float: left;
-        border-right: 1px solid #d1dbe5;
-        margin-bottom: 2px;
-        img {
-          width: 80%;
-          height: 150px;
-        }
-      }
-      .right {
-        width: 85%;
-        float: left;
-
-        .rightUp {
-          width: 100%;
-          height: 80px;
-          border-bottom: 1px solid #d1dbe5;
-
-          .statusCircle {
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            float: left;
-          }
-          .statusText {
-            float: left;
-            margin-left: 10px;
-          }
-
-          .newWindItem {
-            height: 50px;
-            text-align: center;
-            font-size: 18px;
-            float: left;
-          }
-          .newWindStatusName {
-            margin-top: 10px;
-          }
-          .newWindStatusData {
-            text-align: center;
-            margin-top: 8px;
-            color: rgb(153, 153, 153);
-          }
-          .thisNewWindOpen {
-            width: 12%;
-          }
-          .thisNewWindStatus {
-            width: 12%;
-          }
-          .thisNewWindWindSpeed {
-            width: 12%;
-          }
-          .thisNewWindGear {
-            width: 12%;
-          }
-          .thisNewWindCircle {
-            width: 12%;
-          }
-          .thisNewWindHit {
-            width: 12%;
-          }
-          .thisNewWindOrdertime {
-            width: 15%;
-          }
-        }
-
-        .rightDown {
-          width: 100%;
-
-          .newWindItem {
-            height: 50px;
-            text-align: center;
-            font-size: 18px;
-            float: left;
-          }
-          .newWindStatusName {
-            margin-top: 15px;
-          }
-          .newWindStatusData {
-            text-align: center;
-            margin-top: 8px;
-            color: rgb(153, 153, 153);
-          }
-          .thisNewWindfirst,
-          .thisNewWindsecond,
-          .thisNewWindthird {
-            width: 12%;
-          }
-        }
-      }
-    }
-
-    .history {
-      .historyTitle {
-        font-size: 18px;
-        padding-bottom: 20px;
-        border-bottom: 1px solid #d1dbe5;
-
-        .el-icon-upload2 {
-          margin-left: 8px;
-          &:hover {
-            cursor: pointer;
-          }
-        }
-      }
-
-      .components-container {
-        margin: 30px auto;
-        height: 400px;
-        position: relative;
-        background-color: rgba(242, 242, 242, 1);
-
-        .chart-container {
-          position: relative;
-          width: 80%;
-          height: 100%;
-          float: left;
-        }
-        .chooseDataType {
-          position: relative;
-          width: 20%;
-          height: 100%;
-          float: left;
+        .newWindItem {
+          height: 50px;
           text-align: center;
+          font-size: 18px;
+          float: left;
+        }
+        .newWindStatusName {
+          margin-top: 10px;
+        }
+        .newWindStatusData {
+          text-align: center;
+          margin-top: 8px;
           color: rgb(153, 153, 153);
-          div:first-child {
-            font-size: 22px;
-            padding-top: 5%;
-            padding-bottom: 5%;
-          }
+        }
+        .thisNewWindOpen {
+          width: 12%;
+        }
+        .thisNewWindStatus {
+          width: 12%;
+        }
+        .thisNewWindWindSpeed {
+          width: 12%;
+        }
+        .thisNewWindGear {
+          width: 12%;
+        }
+        .thisNewWindCircle {
+          width: 12%;
+        }
+        .thisNewWindHit {
+          width: 12%;
+        }
+        .thisNewWindOrdertime {
+          width: 15%;
+        }
+      }
 
-          .el-button {
-            margin-top: 8%;
-            width: 70%;
+      .rightDown {
+        width: 100%;
 
-            img {
-              margin-left: 5%;
-              width: 50%;
-            }
-          }
+        .newWindItem {
+          height: 50px;
+          text-align: center;
+          font-size: 18px;
+          float: left;
+        }
+        .newWindStatusName {
+          margin-top: 15px;
+        }
+        .newWindStatusData {
+          text-align: center;
+          margin-top: 8px;
+          color: rgb(153, 153, 153);
+        }
+        .thisNewWindfirst,
+        .thisNewWindsecond,
+        .thisNewWindthird {
+          width: 12%;
         }
       }
     }
   }
 
-  #operateDialog .el-dialog {
-    width: 800px;
-    margin-bottom: 5%;
-    margin-top: -5%;
-    .el-dialog__header {
-      padding-top: 20px;
+  .history {
+    .historyTitle {
+      font-size: 18px;
       padding-bottom: 20px;
-      padding-left: 50px;
-    }
-    .el-dialog__title {
-      line-height: 1;
-      font-size: 28px;
-      font-weight: 500;
-      color: #1f2d3d;
-      padding-top: 10px;
-      padding-bottom: 10px;
-    }
-    .el-dialog__body {
-      border-top: 2px solid #d1dbe5;
-      width: 95%;
-      margin: 0 auto;
-      padding-top: 10px;
-    }
-    .operateItem {
-      height: 70px;
-      line-height: 70px;
-      width: 100%;
-      margin-top: 20px;
-      .operateName {
-        font-size: 18px;
-        color: rgb(153, 153, 153);
-        float: left;
-        width: 100px;
-      }
-      .operateSettings1 {
-        float: left;
-        width: 60%;
-        line-height: 20px;
-        margin-left: 10%;
+      border-bottom: 1px solid #d1dbe5;
 
-        .settingsItem {
-          width: 20%;
-          float: left;
-          border: 2px solid rgba(204, 153, 0, 1);
-          border-radius: 5px;
-          text-align: center;
-          margin-left: 5%;
-          padding-bottom: 15px;
+      .el-icon-upload2 {
+        margin-left: 8px;
+        &:hover {
+          cursor: pointer;
         }
       }
-      .operateSettings {
-        width: 60%;
-        float: left;
-        margin-left: 10%;
+    }
 
-        .el-radio-group {
-          width: 100%;
-          .el-radio {
-            padding-left: 5%;
+    .components-container {
+      margin: 30px auto;
+      height: 400px;
+      position: relative;
+      background-color: rgba(242, 242, 242, 1);
+
+      .chart-container {
+        position: relative;
+        width: 80%;
+        height: 100%;
+        float: left;
+      }
+      .chooseDataType {
+        position: relative;
+        width: 20%;
+        height: 100%;
+        float: left;
+        text-align: center;
+        color: rgb(153, 153, 153);
+        div:first-child {
+          font-size: 22px;
+          padding-top: 5%;
+          padding-bottom: 5%;
+        }
+
+        .el-button {
+          margin-top: 8%;
+          width: 70%;
+
+          img {
+            margin-left: 5%;
+            width: 50%;
           }
         }
-        .el-date-editor {
-          margin-left: 5%;
-        }
-        .el-input {
-          width: 50%;
-          margin-left: 5%;
-        }
       }
     }
+  }
+}
 
-    .operateItem3 {
-      width: 100%;
-      margin-top: 20px;
-      .operateName3 {
-        font-size: 18px;
-        color: rgb(153, 153, 153);
+#operateDialog .el-dialog {
+  width: 800px;
+  margin-bottom: 5%;
+  margin-top: -5%;
+  .el-dialog__header {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 50px;
+  }
+  .el-dialog__title {
+    line-height: 1;
+    font-size: 28px;
+    font-weight: 500;
+    color: #1f2d3d;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .el-dialog__body {
+    border-top: 2px solid #d1dbe5;
+    width: 95%;
+    margin: 0 auto;
+    padding-top: 10px;
+  }
+  .operateItem {
+    height: 70px;
+    line-height: 70px;
+    width: 100%;
+    margin-top: 20px;
+    .operateName {
+      font-size: 18px;
+      color: rgb(153, 153, 153);
+      float: left;
+      width: 100px;
+    }
+    .operateSettings1 {
+      float: left;
+      width: 60%;
+      line-height: 20px;
+      margin-left: 10%;
+
+      .settingsItem {
+        width: 20%;
         float: left;
-        width: 10%;
-      }
-      .operateSettings3 {
-        width: 60%;
-        float: left;
-        margin-left: 100px;
-        .el-date-editor {
-          width: 50%;
-          margin-left: 5%;
-        }
+        border: 2px solid rgba(204, 153, 0, 1);
+        border-radius: 5px;
+        text-align: center;
+        margin-left: 5%;
+        padding-bottom: 15px;
       }
     }
+    .operateSettings {
+      width: 60%;
+      float: left;
+      margin-left: 10%;
 
-    .operateItem5 {
-      width: 100%;
-      margin-top: 20px;
-      .operateName5 {
-        font-size: 18px;
-        color: rgb(153, 153, 153);
-        float: left;
-        width: 10%;
-      }
-      .operateSettings5 {
-        width: 60%;
-        float: left;
-        margin-left: 100px;
-        .el-select {
-          width: 50%;
-          margin-left: 5%;
-        } // .el-input {
-        //   width: 100%;
-        //   margin-left: 10%;
-        // }
-        .el-select-dropdown {
-          margin-top: -20px;
+      .el-radio-group {
+        width: 100%;
+        .el-radio {
+          padding-left: 5%;
         }
+      }
+      .el-date-editor {
+        margin-left: 5%;
+      }
+      .el-input {
+        width: 50%;
+        margin-left: 5%;
+      }
+    }
+  }
+
+  .operateItem3 {
+    width: 100%;
+    margin-top: 20px;
+    .operateName3 {
+      font-size: 18px;
+      color: rgb(153, 153, 153);
+      float: left;
+      width: 10%;
+    }
+    .operateSettings3 {
+      width: 60%;
+      float: left;
+      margin-left: 100px;
+      .el-date-editor {
+        width: 50%;
+        margin-left: 5%;
+      }
+    }
+  }
+
+  .operateItem5 {
+    width: 100%;
+    margin-top: 20px;
+    .operateName5 {
+      font-size: 18px;
+      color: rgb(153, 153, 153);
+      float: left;
+      width: 10%;
+    }
+    .operateSettings5 {
+      width: 60%;
+      float: left;
+      margin-left: 100px;
+      .el-select {
+        width: 50%;
+        margin-left: 5%;
+      } // .el-input {
+      //   width: 100%;
+      //   margin-left: 10%;
+      // }
+      .el-select-dropdown {
+        margin-top: -20px;
       }
     }
   }

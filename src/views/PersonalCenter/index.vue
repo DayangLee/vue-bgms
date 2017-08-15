@@ -18,17 +18,18 @@
           </div>
           <div class="edit">编辑</div>
         </template>
-        <div class="components-container details"> 
-          <!-- <vue-core-image-upload :class="['btn', 'btn-primary']" :crop="true" @imageuploaded="imageuploaded" :max-file-size="5242880" url="http://app.hw99lt.com/user/upload/avater" >
-          </vue-core-image-upload> -->
-          <!-- <a class="btn" @click="toggleShow">设置头像</a>
-	        <my-upload @crop-success="cropSuccess" @crop-upload-success="cropUploadSuccess" @crop-upload-fail="cropUploadFail" v-model="show" :width="300" :height="300" url="http://app.hw99lt.com/user/upload/avatar"></my-upload>
-	        <img :src="imgDataUrl"> -->
-          <PanThumb :image='image'>
-          </PanThumb>
-          <el-button type="primary" icon="upload" style="position: absolute;bottom: 15px;margin-left: 40px;" @click="imagecropperShow=true">修改头像
-          </el-button>
-          <ImageCropper :width="300" :height="300" url="http://app.hw99lt.com/user/upload/avatar" @crop-upload-success="cropSuccess" :key="imagecropperKey" v-show="imagecropperShow"></ImageCropper>
+        <div class="components-container details">
+          <div class="preview">
+            <img :src="image">
+          </div>
+          <div id="uploadForm">
+            <input id="fileId" type="file" accept="image/png,image/gif,image/jpeg,image/jpg" name="file" />
+          </div>
+          <!-- <form  enctype='multipart/form-data' action="http://app.hw99lt.com/user/upload/avatar" method="post">
+                <input type="file" accept="image/png,image/gif,image/jpeg,image/jpg" name="file" />
+              <input type="submit" value="Submit" />
+            </form> -->
+          <button @click="uploadAvatar">上传</button>
         </div>
       </el-collapse-item>
   
@@ -166,7 +167,7 @@ import { userInfo, changeUserInfo, changeNickname, getVerifyCode, getEmailVerify
 export default {
   //components: { ImageCropper, PanThumb },
   //components: { 'vue-core-image-upload': VueCoreImageUpload },
-  components: { 
+  components: {
     'my-upload': myUpload,
     'vue-core-image-upload': VueCoreImageUpload,
     ImageCropper, PanThumb
@@ -218,14 +219,14 @@ export default {
     };
     return {
       show: true,
-			params: {
-				token: '123456798',
-				name: 'avatar'
-			},
-			headers: {
-				smail: '*_~'
-			},
-			imgDataUrl: '', // the datebase64 url of created image
+      params: {
+        token: '123456798',
+        name: 'avatar'
+      },
+      headers: {
+        smail: '*_~'
+      },
+      imgDataUrl: '', // the datebase64 url of created image
       phoneOrEmail: false,
       newNickname: null,
       newEmail: null,
@@ -263,26 +264,38 @@ export default {
       imagecropperKey: 0,
       image: Image,
       src: Image,
+      imageUrl1: ''
     }
   },
   methods: {
+    uploadAvatar() {
+      let oFiles = document.getElementById("fileId").files[0]
+      let formData = new FormData()
+      formData.append('file', oFiles)
+
+      let xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+      xhr.open("POST", "http://app.hw99lt.com/user/upload/avatar", true);
+      xhr.send(formData);
+
+    },
     toggleShow() {
-				this.show = !this.show;
-      },
-      cropSuccess(imgDataUrl, field){
-				console.log('-------- crop success --------');
-				this.imgDataUrl = imgDataUrl;
-      },
-      cropUploadSuccess(jsonData, field){
-				console.log('-------- upload success --------');
-				console.log(jsonData);
-				console.log('field: ' + field);
-      },
-      cropUploadFail(status, field){
-				console.log('-------- upload fail --------');
-				console.log(status);
-				console.log('field: ' + field);
-			},
+      this.show = !this.show;
+    },
+    cropSuccess(imgDataUrl, field) {
+      console.log('-------- crop success --------');
+      this.imgDataUrl = imgDataUrl;
+    },
+    cropUploadSuccess(jsonData, field) {
+      console.log('-------- upload success --------');
+      console.log(jsonData);
+      console.log('field: ' + field);
+    },
+    cropUploadFail(status, field) {
+      console.log('-------- upload fail --------');
+      console.log(status);
+      console.log('field: ' + field);
+    },
     imageuploaded(res) {
       if (res.errcode == 0) {
         this.src = 'http://img1.vued.vanthink.cn/vued751d13a9cb5376b89cb6719e86f591f3.png';
@@ -299,17 +312,17 @@ export default {
         this.userInfo = res.data
       })
     },
-    emailSendVerifyCode(){
-      if(this.user.email && !this.user.emailVerified){
+    emailSendVerifyCode() {
+      if (this.user.email && !this.user.emailVerified) {
         console.log('1')
-        getEmailVerifyCode('email', this.user.email,this.userInfo).then(res => {
+        getEmailVerifyCode('email', this.user.email, this.userInfo).then(res => {
           this.$notify({
             title: '成功',
             message: '验证码已发送至' + this.user.email,
             type: 'success'
           });
         })
-      } else if(this.user.phoneVerified && !this.user.emailVerified && !this.user.email) {
+      } else if (this.user.phoneVerified && !this.user.emailVerified && !this.user.email) {
         console.log('2')
         getVerifyCode('phone', this.user.phone).then(res => {
           this.$notify({
@@ -318,19 +331,19 @@ export default {
             type: 'success'
           });
         })
-      } else if(this.user.phoneVerified && this.user.emailVerified){
+      } else if (this.user.phoneVerified && this.user.emailVerified) {
         console.log('3')
         this.phoneOrEmail = true
-      } else if(!this.user.phoneVerified && !this.user.emailVerified && !this.user.email){
+      } else if (!this.user.phoneVerified && !this.user.emailVerified && !this.user.email) {
         console.log('4')
         if (!isEmail(this.newEmail)) {
           this.$confirm('请输入正确的邮箱地址', '提示', {
-              confirmButtonText: '确定',
-              showCancelButton: false,
-              closeOnClickModal: true,
-              type: 'warning'
-            }).then(() => {}).catch(() => {});
-        } else {           
+            confirmButtonText: '确定',
+            showCancelButton: false,
+            closeOnClickModal: true,
+            type: 'warning'
+          }).then(() => { }).catch(() => { });
+        } else {
           // 添加的新邮箱做唯一性校验
           uniqueCheck('email', this.newEmail).then(res => {
             this.$confirm('该邮箱已被别人使用', '提示', {
@@ -338,9 +351,9 @@ export default {
               showCancelButton: false,
               closeOnClickModal: true,
               type: 'warning'
-            }).then(() => {}).catch(() => {});
+            }).then(() => { }).catch(() => { });
           }).catch(error => {
-            getEmailVerifyCode('email', this.newEmail,this.userInfo).then(res => {
+            getEmailVerifyCode('email', this.newEmail, this.userInfo).then(res => {
               this.$notify({
                 title: '成功',
                 message: '验证码已发送至' + this.newEmail,
@@ -349,9 +362,9 @@ export default {
             })
           })
         }
-      } else if(!this.user.phoneVerified && this.user.emailVerified){
+      } else if (!this.user.phoneVerified && this.user.emailVerified) {
         console.log('5')
-        getEmailVerifyCode('email', this.user.email,this.userInfo).then(res => {
+        getEmailVerifyCode('email', this.user.email, this.userInfo).then(res => {
           this.$notify({
             title: '成功',
             message: '验证码已发送至' + this.user.email,
@@ -360,33 +373,33 @@ export default {
         })
       }
     },
-    addEmail(){
+    addEmail() {
       let code = this.verifyCode1
-      if(code.length !== 6 || code == null ){
+      if (code.length !== 6 || code == null) {
         this.$confirm('验证码应为6位数字', '提示', {
           confirmButtonText: '确定',
           showCancelButton: false,
           closeOnClickModal: true,
           type: 'warning'
-        }).then(() => {}).catch(() => {})
-      } else if(!isEmail(this.newEmail)){
+        }).then(() => { }).catch(() => { })
+      } else if (!isEmail(this.newEmail)) {
         this.$confirm('请输入正确的邮箱', '提示', {
           confirmButtonText: '确定',
           showCancelButton: false,
           closeOnClickModal: true,
           type: 'warning'
-        }).then(() => {}).catch(() => {})
+        }).then(() => { }).catch(() => { })
       } else {
         uniqueCheck('email', this.newEmail).then(res => {
-            this.$confirm('该邮箱已被别人使用', '提示', {
-              confirmButtonText: '确定',
-              showCancelButton: false,
-              closeOnClickModal: true,
-              type: 'warning'
-            }).then(() => {}).catch(() => {});
-          }).catch(error => {
-            this.userInfo.email = this.newEmail.trim()
-            changeUserInfo(this.userInfo, code).then(res => {
+          this.$confirm('该邮箱已被别人使用', '提示', {
+            confirmButtonText: '确定',
+            showCancelButton: false,
+            closeOnClickModal: true,
+            type: 'warning'
+          }).then(() => { }).catch(() => { });
+        }).catch(error => {
+          this.userInfo.email = this.newEmail.trim()
+          changeUserInfo(this.userInfo, code).then(res => {
             this.$message({
               message: '邮箱添加成功！',
               type: 'success'
@@ -394,13 +407,13 @@ export default {
             this.user = res.data
             this.userInfo = res.data
             this.verifyCode1 = ''
-          }).catch(err=>{
+          }).catch(err => {
             this.$confirm('添加失败，请重试!', '提示', {
               confirmButtonText: '确定',
               showCancelButton: false,
               closeOnClickModal: true,
               type: 'error'
-            }).then(() => {}).catch(() => {})
+            }).then(() => { }).catch(() => { })
             delete this.userInfo.email
             this.user = this.userInfo
             this.verifyCode1 = ''
@@ -408,98 +421,98 @@ export default {
         })
       }
     },
-    verifyEmail(){
+    verifyEmail() {
       let code = this.verifyCode1
-      if(code.length !== 6 || code == null ){
+      if (code.length !== 6 || code == null) {
         this.$confirm('验证码应为6位数字', '提示', {
           confirmButtonText: '确定',
           showCancelButton: false,
           closeOnClickModal: true,
           type: 'warning'
-        }).then(() => {}).catch(() => {})
-      } else if(this.newEmail !== this.user.email){
+        }).then(() => { }).catch(() => { })
+      } else if (this.newEmail !== this.user.email) {
         this.$confirm('表单中邮箱与待验证的邮箱不符', '提示', {
           confirmButtonText: '确定',
           showCancelButton: false,
           closeOnClickModal: true,
           type: 'warning'
-        }).then(() => {}).catch(() => {})
+        }).then(() => { }).catch(() => { })
       } else {
         this.userInfo.email = this.newEmail.trim()
         changeUserInfo(this.userInfo, code).then(res => {
           this.$message({
             message: '邮箱验证成功！',
             type: 'success'
-          })         
+          })
           this.user = res.data
           this.userInfo = res.data
           this.verifyCode1 = ''
-        }).catch(err=>{
+        }).catch(err => {
           this.$confirm('验证邮箱失败，请重试!', '提示', {
             confirmButtonText: '确定',
             showCancelButton: false,
             closeOnClickModal: true,
             type: 'error'
-          }).then(() => {}).catch(() => {})
+          }).then(() => { }).catch(() => { })
           this.verifyCode1 = ''
         })
       }
     },
-    changeEmail(){
+    changeEmail() {
       let code = this.verifyCode1
-      if(code.length !== 6 || code == null ){
+      if (code.length !== 6 || code == null) {
         this.$confirm('验证码应为6位数字', '提示', {
           confirmButtonText: '确定',
           showCancelButton: false,
           closeOnClickModal: true,
           type: 'warning'
-        }).then(() => {}).catch(() => {})
-      } else if(this.newEmail === this.user.email){
+        }).then(() => { }).catch(() => { })
+      } else if (this.newEmail === this.user.email) {
         this.$confirm('请在表单中输入新的邮箱', '提示', {
           confirmButtonText: '确定',
           showCancelButton: false,
           closeOnClickModal: true,
           type: 'warning'
-        }).then(() => {}).catch(() => {})
-      } else if(!isEmail(this.newEmail)){
+        }).then(() => { }).catch(() => { })
+      } else if (!isEmail(this.newEmail)) {
         this.$confirm('请输入正确的邮箱', '提示', {
           confirmButtonText: '确定',
           showCancelButton: false,
           closeOnClickModal: true,
           type: 'warning'
-        }).then(() => {}).catch(() => {})
+        }).then(() => { }).catch(() => { })
       } else {
-         uniqueCheck('email', this.newEmail).then(res => {
-            this.$confirm('该邮箱已被别人使用', '提示', {
+        uniqueCheck('email', this.newEmail).then(res => {
+          this.$confirm('该邮箱已被别人使用', '提示', {
+            confirmButtonText: '确定',
+            showCancelButton: false,
+            closeOnClickModal: true,
+            type: 'warning'
+          }).then(() => { }).catch(() => { });
+        }).catch(error => {
+          this.userInfo.email = this.newEmail.trim()
+          changeUserInfo(this.userInfo, code).then(res => {
+            this.$message({
+              message: '邮箱添加成功！',
+              type: 'success'
+            })
+            this.user = res.data
+            this.userInfo = res.data
+            this.verifyCode1 = ''
+          }).catch(err => {
+            this.$confirm('修改邮箱失败，请重试!', '提示', {
               confirmButtonText: '确定',
               showCancelButton: false,
               closeOnClickModal: true,
-              type: 'warning'
-            }).then(() => {}).catch(() => {});
-          }).catch(error => {
-            this.userInfo.email = this.newEmail.trim()
-            changeUserInfo(this.userInfo, code).then(res => {
-              this.$message({
-                message: '邮箱添加成功！',
-                type: 'success'
-              })
-              this.user = res.data
-              this.userInfo = res.data
-              this.verifyCode1 = ''
-            }).catch(err=>{
-              this.$confirm('修改邮箱失败，请重试!', '提示', {
-                confirmButtonText: '确定',
-                showCancelButton: false,
-                closeOnClickModal: true,
-                type: 'error'
-              }).then(() => {}).catch(() => {})
-              this.verifyCode1 = ''
-            })
+              type: 'error'
+            }).then(() => { }).catch(() => { })
+            this.verifyCode1 = ''
           })
+        })
       }
     },
-    phoneSendVerifyCode(){
-      if(this.user.phone && !this.user.phoneVerified){
+    phoneSendVerifyCode() {
+      if (this.user.phone && !this.user.phoneVerified) {
         console.log('1')
         getVerifyCode('phone', this.user.phone).then(res => {
           this.$notify({
@@ -508,28 +521,28 @@ export default {
             type: 'success'
           });
         })
-      } else if(this.user.emailVerified && !this.user.phoneVerified && !this.user.phone) {
+      } else if (this.user.emailVerified && !this.user.phoneVerified && !this.user.phone) {
         console.log('2')
-        getEmailVerifyCode('email', this.user.email,this.userInfo).then(res => {
+        getEmailVerifyCode('email', this.user.email, this.userInfo).then(res => {
           this.$notify({
             title: '成功',
             message: '验证码已发送至' + this.user.email,
             type: 'success'
           });
         })
-      } else if(this.user.phoneVerified && this.user.emailVerified){
+      } else if (this.user.phoneVerified && this.user.emailVerified) {
         console.log('3')
         this.phoneOrEmail = true
-      } else if(!this.user.emailVerified && !this.user.phoneVerified && !this.user.phone){
+      } else if (!this.user.emailVerified && !this.user.phoneVerified && !this.user.phone) {
         console.log('4')
         if (!isPhone(this.newPhone)) {
           this.$confirm('请输入正确的手机号码', '提示', {
-              confirmButtonText: '确定',
-              showCancelButton: false,
-              closeOnClickModal: true,
-              type: 'warning'
-            }).then(() => {}).catch(() => {});
-        } else {           
+            confirmButtonText: '确定',
+            showCancelButton: false,
+            closeOnClickModal: true,
+            type: 'warning'
+          }).then(() => { }).catch(() => { });
+        } else {
           // 添加的新邮箱做唯一性校验
           uniqueCheck('phone', this.newPhone).then(res => {
             this.$confirm('该手机已被别人使用', '提示', {
@@ -537,7 +550,7 @@ export default {
               showCancelButton: false,
               closeOnClickModal: true,
               type: 'warning'
-            }).then(() => {}).catch(() => {});
+            }).then(() => { }).catch(() => { });
           }).catch(error => {
             getPhoneVerifyCode('phone', this.newPhone, this.userInfo).then(res => {
               this.$notify({
@@ -548,7 +561,7 @@ export default {
             })
           })
         }
-      } else if(!this.user.emailVerified && this.user.phoneVerified){
+      } else if (!this.user.emailVerified && this.user.phoneVerified) {
         console.log('5')
         getVerifyCode('phone', this.user.phone).then(res => {
           this.$notify({
@@ -559,22 +572,22 @@ export default {
         })
       }
     },
-    addPhone(){
+    addPhone() {
       let code = this.verifyCode2
-      if(code.length !== 6 || code == null ){
+      if (code.length !== 6 || code == null) {
         this.$confirm('验证码应为6位数字', '提示', {
           confirmButtonText: '确定',
           showCancelButton: false,
           closeOnClickModal: true,
           type: 'warning'
-        }).then(() => {}).catch(() => {})
-      } else if(!isPhone(this.newPhone)){
+        }).then(() => { }).catch(() => { })
+      } else if (!isPhone(this.newPhone)) {
         this.$confirm('请输入正确的手机号码', '提示', {
           confirmButtonText: '确定',
           showCancelButton: false,
           closeOnClickModal: true,
           type: 'warning'
-        }).then(() => {}).catch(() => {})
+        }).then(() => { }).catch(() => { })
       } else {
         this.userInfo.phone = this.newPhone.trim()
         changeUserInfo(this.userInfo, code).then(res => {
@@ -585,79 +598,79 @@ export default {
           this.user = res.data
           this.userInfo = res.data
           this.verifyCode2 = ''
-        }).catch(err=>{
+        }).catch(err => {
           this.$confirm('添加失败，请重试!', '提示', {
             confirmButtonText: '确定',
             showCancelButton: false,
             closeOnClickModal: true,
             type: 'error'
-          }).then(() => {}).catch(() => {})
+          }).then(() => { }).catch(() => { })
           delete this.userInfo.phone
           this.user = this.userInfo
           this.verifyCode2 = ''
         })
       }
     },
-    verifyPhone(){
+    verifyPhone() {
       let code = this.verifyCode2
-      if(code.length !== 6 || code == null ){
+      if (code.length !== 6 || code == null) {
         this.$confirm('验证码应为6位数字', '提示', {
           confirmButtonText: '确定',
           showCancelButton: false,
           closeOnClickModal: true,
           type: 'warning'
-        }).then(() => {}).catch(() => {})
-      } else if(this.newPhone !== this.user.phone){
+        }).then(() => { }).catch(() => { })
+      } else if (this.newPhone !== this.user.phone) {
         this.$confirm('表单中手机号码与待验证的手机号码不符', '提示', {
           confirmButtonText: '确定',
           showCancelButton: false,
           closeOnClickModal: true,
           type: 'warning'
-        }).then(() => {}).catch(() => {})
+        }).then(() => { }).catch(() => { })
       } else {
         this.userInfo.phone = this.newPhone.trim()
         changeUserInfo(this.userInfo, code).then(res => {
           this.$message({
             message: '手机验证成功！',
             type: 'success'
-          })         
+          })
           this.user = res.data
           this.userInfo = res.data
           this.verifyCode2 = ''
-        }).catch(err=>{
+        }).catch(err => {
           this.$confirm('验证手机失败，请重试!', '提示', {
             confirmButtonText: '确定',
             showCancelButton: false,
             closeOnClickModal: true,
             type: 'error'
-          }).then(() => {}).catch(() => {})
+          }).then(() => { }).catch(() => { })
           this.verifyCode2 = ''
         })
       }
     },
-    changePhone(){
+    changePhone() {
       let code = this.verifyCode2
-      if(code.length !== 6 || code == null ){
+      if (code.length !== 6 || code == null) {
         this.$confirm('验证码应为6位数字', '提示', {
           confirmButtonText: '确定',
           showCancelButton: false,
           closeOnClickModal: true,
           type: 'warning'
-        }).then(() => {}).catch(() => {})
-      } else if(this.newPhone === this.user.phone){
+        }).then(() => { }).catch(() => { })
+      } else if (this.newPhone === this.user.phone) {
         this.$confirm('请在表单中输入新的手机号码', '提示', {
           confirmButtonText: '确定',
           showCancelButton: false,
           closeOnClickModal: true,
           type: 'warning'
-        }).then(() => {}).catch(() => {})
-      } else if(!isPhone(this.newPhone)){
+        }).then(() => { }).catch(() => { })
+      } else if (!isPhone(this.newPhone)) {
         this.$confirm('请输入正确的手机号码', '提示', {
           confirmButtonText: '确定',
           showCancelButton: false,
           closeOnClickModal: true,
           type: 'warning'
-        }).then(() => {}).catch(() => {})
+        }).then(() => { }).catch(() => { })
       } else {
         uniqueCheck('email', this.newPhone).then(res => {
           this.$confirm('该手机已被别人使用', '提示', {
@@ -665,118 +678,39 @@ export default {
             showCancelButton: false,
             closeOnClickModal: true,
             type: 'warning'
-          }).then(() => {}).catch(() => {});
+          }).then(() => { }).catch(() => { });
         }).catch(error => {
           this.userInfo.phone = this.newPhone.trim()
           changeUserInfo(this.userInfo, code).then(res => {
             this.$message({
               message: '更换手机成功！',
               type: 'success'
-            })           
+            })
             this.user = res.data
             this.userInfo = res.data
             this.verifyCode2 = ''
-          }).catch(err=>{
+          }).catch(err => {
             this.$confirm('更换手机失败，请重试!', '提示', {
               confirmButtonText: '确定',
               showCancelButton: false,
               closeOnClickModal: true,
               type: 'error'
-            }).then(() => {}).catch(() => {})
+            }).then(() => { }).catch(() => { })
             this.verifyCode2 = ''
           })
         })
       }
     },
-    passwordSendVerifyCode(){
-      if(!this.user.emailVerified && !this.user.phoneVerified) {
+    passwordSendVerifyCode() {
+      if (!this.user.emailVerified && !this.user.phoneVerified) {
         this.$confirm('请先验证邮箱或手机', '提示', {
           confirmButtonText: '确定',
           showCancelButton: false,
           closeOnClickModal: true,
           type: 'info'
-        }).then(() => {}).catch(() => {});
-      } else if(this.user.emailVerified && !this.user.phoneVerified){
-          getVerifyCode('email', this.user.email).then(res => {
-            console.log(res.data)
-            this.$notify({
-              title: '成功',
-              message: '验证码已发送至' + this.user.email,
-              type: 'success'
-            });
-          })
-        } else if(!this.user.emailVerified && this.user.phoneVerified){
-          getVerifyCode('phone', this.user.phone).then(res => {
-            this.$notify({
-              title: '成功',
-              message: '验证码已发送至' + this.user.phone,
-              type: 'success'
-            });
-          })
-        } else if(this.user.emailVerified && this.user.phoneVerified){
-          this.phoneOrEmail = true
-        }
-    },
-    changePassWord(){
-      if(this.newPassword1.trim() !== this.newPassword2.trim()){
-        this.$confirm('两次输入的密码不同', '提示', {
-          confirmButtonText: '确定',
-          showCancelButton: false,
-          closeOnClickModal: true,
-          type: 'warning'
-        }).then(() => {}).catch(() => {});
-      } else if(this.newPassword1.trim().length < 6){
-        this.$confirm('密码不能少于6位字符', '提示', {
-          confirmButtonText: '确定',
-          showCancelButton: false,
-          closeOnClickModal: true,
-          type: 'warning'
-        }).then(() => {}).catch(() => {});
-      } else if(this.verifyCode3.trim().length !== 6){
-        this.$confirm('验证码应为6位数字', '提示', {
-          confirmButtonText: '确定',
-          showCancelButton: false,
-          closeOnClickModal: true,
-          type: 'warning'
-        }).then(() => {}).catch(() => {})
-      } else {
-        let code = this.verifyCode3.trim()
-        this.userInfo.password = md5(this.newPassword1)
-        changeUserInfo(this.userInfo, code).then(res => {
-            this.$message({
-              message: '密码修改成功！',
-              type: 'success'
-            })           
-            this.user = res.data
-            this.userInfo = res.data
-            this.verifyCode3 = ''
-            this.newPassword1 = ''
-            this.newPassword2 = ''
-          }).catch(err=>{
-            this.$confirm('密码修改失败，请重试!', '提示', {
-              confirmButtonText: '确定',
-              showCancelButton: false,
-              closeOnClickModal: true,
-              type: 'error'
-            }).then(() => {}).catch(() => {})
-            this.verifyCode3 = ''
-          })
-      }
-    },
-    sendVerifyCodeToPhone(){
-      this.phoneOrEmail = false
-      getVerifyCode('phone', this.user.phone).then(res => {
-          console.log(res.data)
-          this.$notify({
-            title: '成功',
-            message: '验证码已发送至' + this.user.phone,
-            type: 'success'
-          });
-        })
-    },
-    sendVerifyCodeToEmail(){
-      this.phoneOrEmail = false
-      getVerifyCode('email', this.user.email).then(res => {
+        }).then(() => { }).catch(() => { });
+      } else if (this.user.emailVerified && !this.user.phoneVerified) {
+        getVerifyCode('email', this.user.email).then(res => {
           console.log(res.data)
           this.$notify({
             title: '成功',
@@ -784,6 +718,85 @@ export default {
             type: 'success'
           });
         })
+      } else if (!this.user.emailVerified && this.user.phoneVerified) {
+        getVerifyCode('phone', this.user.phone).then(res => {
+          this.$notify({
+            title: '成功',
+            message: '验证码已发送至' + this.user.phone,
+            type: 'success'
+          });
+        })
+      } else if (this.user.emailVerified && this.user.phoneVerified) {
+        this.phoneOrEmail = true
+      }
+    },
+    changePassWord() {
+      if (this.newPassword1.trim() !== this.newPassword2.trim()) {
+        this.$confirm('两次输入的密码不同', '提示', {
+          confirmButtonText: '确定',
+          showCancelButton: false,
+          closeOnClickModal: true,
+          type: 'warning'
+        }).then(() => { }).catch(() => { });
+      } else if (this.newPassword1.trim().length < 6) {
+        this.$confirm('密码不能少于6位字符', '提示', {
+          confirmButtonText: '确定',
+          showCancelButton: false,
+          closeOnClickModal: true,
+          type: 'warning'
+        }).then(() => { }).catch(() => { });
+      } else if (this.verifyCode3.trim().length !== 6) {
+        this.$confirm('验证码应为6位数字', '提示', {
+          confirmButtonText: '确定',
+          showCancelButton: false,
+          closeOnClickModal: true,
+          type: 'warning'
+        }).then(() => { }).catch(() => { })
+      } else {
+        let code = this.verifyCode3.trim()
+        this.userInfo.password = md5(this.newPassword1)
+        changeUserInfo(this.userInfo, code).then(res => {
+          this.$message({
+            message: '密码修改成功！',
+            type: 'success'
+          })
+          this.user = res.data
+          this.userInfo = res.data
+          this.verifyCode3 = ''
+          this.newPassword1 = ''
+          this.newPassword2 = ''
+        }).catch(err => {
+          this.$confirm('密码修改失败，请重试!', '提示', {
+            confirmButtonText: '确定',
+            showCancelButton: false,
+            closeOnClickModal: true,
+            type: 'error'
+          }).then(() => { }).catch(() => { })
+          this.verifyCode3 = ''
+        })
+      }
+    },
+    sendVerifyCodeToPhone() {
+      this.phoneOrEmail = false
+      getVerifyCode('phone', this.user.phone).then(res => {
+        console.log(res.data)
+        this.$notify({
+          title: '成功',
+          message: '验证码已发送至' + this.user.phone,
+          type: 'success'
+        });
+      })
+    },
+    sendVerifyCodeToEmail() {
+      this.phoneOrEmail = false
+      getVerifyCode('email', this.user.email).then(res => {
+        console.log(res.data)
+        this.$notify({
+          title: '成功',
+          message: '验证码已发送至' + this.user.email,
+          type: 'success'
+        });
+      })
       // getEmailVerifyCode('email', this.user.email,this.userInfo).then(res => {
       //   this.$notify({
       //     title: '成功',
@@ -932,7 +945,9 @@ export default {
       }
       .el-button {
         margin-top: 20px;
-      }
+      } // #uploadForm {
+      //   position
+      // }
     }
     .details4 {
       width: 350px;
