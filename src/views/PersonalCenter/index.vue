@@ -23,13 +23,8 @@
             <img :src="image">
           </div>
           <div id="uploadForm">
-            <input id="fileId" type="file" accept="image/png,image/gif,image/jpeg,image/jpg" name="file" />
+            <input id="fileId" type="file" accept="image/png,image/gif,image/jpeg,image/jpg" @change="uploadAvatar" />选择图片
           </div>
-          <!-- <form  enctype='multipart/form-data' action="http://app.hw99lt.com/user/upload/avatar" method="post">
-                <input type="file" accept="image/png,image/gif,image/jpeg,image/jpg" name="file" />
-              <input type="submit" value="Submit" />
-            </form> -->
-          <button @click="uploadAvatar">上传</button>
         </div>
       </el-collapse-item>
   
@@ -156,22 +151,12 @@
 
 <script>
 import md5 from 'js-md5'
-import ImageCropper from '../../components/ImageCropper'
-import PanThumb from '../../components/PanThumb'
 import Image from '../../assets/images/avater/1.jpg'
-import VueCoreImageUpload from 'vue-core-image-upload'
-import myUpload from 'vue-image-crop-upload'
-import { isEmail, isPhone } from 'utils/validate'
-import { userInfo, changeUserInfo, changeNickname, getVerifyCode, getEmailVerifyCode, getPhoneVerifyCode, checkVerifyCode, uniqueCheck } from 'api/acount'
+import { setCookie } from 'utils/cookie'
+import { isEmail, isPhone, isChinese } from 'utils/validate'
+import { userInfo, changeUserInfo, changeNickname, getVerifyCode, getEmailVerifyCode, getPhoneVerifyCode, checkVerifyCode, uniqueCheck, postAvatar } from 'api/acount'
 
 export default {
-  //components: { ImageCropper, PanThumb },
-  //components: { 'vue-core-image-upload': VueCoreImageUpload },
-  components: {
-    'my-upload': myUpload,
-    'vue-core-image-upload': VueCoreImageUpload,
-    ImageCropper, PanThumb
-  },
   data() {
     var validatePhone = (rule, value, callback) => {
       console.log(value);
@@ -272,33 +257,61 @@ export default {
       let oFiles = document.getElementById("fileId").files[0]
       let formData = new FormData()
       formData.append('file', oFiles)
-
-      let xhr = new XMLHttpRequest();
-      xhr.withCredentials = true;
-      xhr.open("POST", "http://app.hw99lt.com/user/upload/avatar", true);
-      xhr.send(formData);
-
-    },
-    toggleShow() {
-      this.show = !this.show;
-    },
-    cropSuccess(imgDataUrl, field) {
-      console.log('-------- crop success --------');
-      this.imgDataUrl = imgDataUrl;
-    },
-    cropUploadSuccess(jsonData, field) {
-      console.log('-------- upload success --------');
-      console.log(jsonData);
-      console.log('field: ' + field);
-    },
-    cropUploadFail(status, field) {
-      console.log('-------- upload fail --------');
-      console.log(status);
-      console.log('field: ' + field);
-    },
-    imageuploaded(res) {
-      if (res.errcode == 0) {
-        this.src = 'http://img1.vued.vanthink.cn/vued751d13a9cb5376b89cb6719e86f591f3.png';
+      if (isChinese(oFiles.name)) {
+        this.$message({
+          showClose: true,
+          message: '图片名称不能包含中文字符哦',
+          type: 'error',
+          duration: 5000
+        })
+      } else {
+        postAvatar(formData).then(res => {
+          console.log(res)
+          this.$message({
+            message: '头像更换成功！',
+            type: 'success'
+          })
+          //window.location.reload()
+          userInfo().then(res => {
+            console.log(res.data)
+            const userData = res.data
+            this.user = userData
+            this.userInfo = userData
+            this.image = userData.faceUri
+            setCookie('faceUrl', this.image)
+          })
+        }).catch(err => {
+          let status = err.response.status
+          if (status === 400) {
+            this.$message({
+              showClose: true,
+              message: '错了哦，上传的不是图片文件',
+              type: 'error',
+              duration: 5000
+            })
+          } else if (status === 401) {
+            this.$message({
+              showClose: true,
+              message: '身份失效，请重新登录',
+              type: 'error',
+              duration: 5000
+            })
+          } else if (status === 406) {
+            this.$message({
+              showClose: true,
+              message: '头像上传失败，请重新上传',
+              type: 'error',
+              duration: 5000
+            })
+          } else if (status === 409) {
+            this.$message({
+              showClose: true,
+              message: '图片过大，请重新上传小于5M的图片',
+              type: 'error',
+              duration: 5000
+            })
+          }
+        })
       }
     },
     changeNickname() {
@@ -839,12 +852,7 @@ export default {
     },
     handlePreview(file) {
       console.log(file);
-    },
-    // cropSuccess(resData) {
-    //   this.imagecropperShow = false;
-    //   this.imagecropperKey = this.imagecropperKey + 1;
-    //   this.image = resData.files.avatar;
-    // }
+    }
   },
   created() {
     userInfo().then(res => {
@@ -945,9 +953,47 @@ export default {
       }
       .el-button {
         margin-top: 20px;
-      } // #uploadForm {
-      //   position
-      // }
+      }
+
+      .preview {
+        width: 100%;
+        height: 150px;
+        img {
+          width: 150px;
+          height: 150px;
+          margin-left: 30px;
+          border-radius: 50%;
+        }
+      }
+      #uploadForm {
+        position: relative;
+        display: inline-block;
+        background: #50bfff;
+        border: 1px solid #99D3F5;
+        border-radius: 4px;
+        padding: 8px 12px;
+        overflow: hidden;
+        color: white;
+        text-decoration: none;
+        text-indent: 0;
+        line-height: 20px;
+        font-size: 14px;
+        margin-top: 30px;
+        margin-left: 60px;
+        input {
+          position: absolute;
+          right: 0;
+          top: 0;
+          opacity: 0;
+        }
+        input:hover {
+          background: #50bfff;
+          border-color: #78C3F3;
+          color: white;
+          text-decoration: none;
+          cursor: pointer;
+        }
+      }
     }
     .details4 {
       width: 350px;

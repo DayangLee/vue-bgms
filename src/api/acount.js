@@ -69,10 +69,11 @@ export function uniqueCheck(type,num){
   })
 }
 
-export function postAvatar(){
+export function postAvatar(data){
   return axios_service({
     url: '/user/upload/avatar',
-    method: 'post'
+    method: 'post',
+    data: data
   })
 }
 
