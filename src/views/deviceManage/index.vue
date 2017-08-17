@@ -44,120 +44,114 @@
           <div class="data-left">
             <p class="dataItem" id="dataItem1">
               <span>PM2.5</span>
-              <el-input></el-input> -
-              <el-input></el-input>
+              <el-input style="margin-left:10px;" class="dataItem-input1" v-model="dataItem.pm2d5[0]"></el-input> -
+              <el-input class="dataItem-input2" v-model="dataItem.pm2d5[1]"></el-input>
+            </p>
+            <p class="dataItem" id="dataItem2">
+              <span>CO2</span>
+              <el-input style="margin-left:10px;" class="dataItem-input1" v-model="dataItem.co2[0]"></el-input> -
+              <el-input class="dataItem-input2" v-model="dataItem.co2[1]"></el-input>
+            </p>
+            <p class="dataItem" id="dataItem3">
+              <span>臭氧</span>
+              <el-input style="margin-left:10px;" class="dataItem-input1" v-model="dataItem.o3[0]"></el-input> -
+              <el-input class="dataItem-input2" v-model="dataItem.o3[1]"></el-input>
+            </p>
+            <p class="dataItem" id="dataItem4">
+              <span>温度</span>
+              <el-input style="margin-left:10px;" class="dataItem-input1" v-model="dataItem.temp[0]"></el-input> -
+              <el-input class="dataItem-input2" v-model="dataItem.temp[1]"></el-input>
+            </p>
+            <p class="dataItem" id="dataItem5">
+              <span>噪音</span>
+              <el-input style="margin-left:10px;" class="dataItem-input1" v-model="dataItem.noise[0]"></el-input> -
+              <el-input class="dataItem-input2" v-model="dataItem.noise[1]"></el-input>
+            </p>
+            <p class="dataItem" id="dataItem6">
+              <span>甲醛</span>
+              <el-input style="margin-left:10px;" class="dataItem-input1" v-model="dataItem.cho[0]"></el-input> -
+              <el-input class="dataItem-input2" v-model="dataItem.cho[1]"></el-input>
+            </p>
+            <p class="dataItem" id="dataItem7">
+              <span>氧气</span>
+              <el-input style="margin-left:10px;" class="dataItem-input1" v-model="dataItem.o2[0]"></el-input> -
+              <el-input class="dataItem-input2" v-model="dataItem.o2[1]"></el-input>
+            </p>
+            <p class="dataItem" id="dataItem8">
+              <span>湿度</span>
+              <el-input style="margin-left:10px;" class="dataItem-input1" v-model="dataItem.hum[0]"></el-input> -
+              <el-input class="dataItem-input2" v-model="dataItem.hum[1]"></el-input>
+            </p>
+            <p class="dataItem" id="dataItem9">
+              <span>TVOC</span>
+              <el-input style="margin-left:10px;" class="dataItem-input1" v-model="dataItem.tvoc[0]"></el-input> -
+              <el-input class="dataItem-input2" v-model="dataItem.tvoc[1]"></el-input>
+            </p>
+            <p class="dataItem" id="dataItem10">
+              <span>气压</span>
+              <el-input style="margin-left:10px;" class="dataItem-input1" v-model="dataItem.pre[0]"></el-input> -
+              <el-input class="dataItem-input2" v-model="dataItem.pre[1]"></el-input>
             </p>
           </div>
-          <div class="data-right"></div>
+          <el-button class="data-save" type="primary" size="small" @click="saveDataItem">保存</el-button>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="状态">状态</el-tab-pane>
-      <el-tab-pane label="位置">位置</el-tab-pane>
-      <el-tab-pane label="分组">分组</el-tab-pane>
+      <el-tab-pane label="状态" name="status">
+        <div class="status-tab">
+          <div class="status-tab-left">
+            <el-button :plain="true" type="info" size="large" @click="addOpen">开机</el-button>
+          </div>
+          <div class="status-tab-right">
+            <el-button :plain="true" type="info" size="large" @click="addClose">关机</el-button>
+          </div>
+          <div class="clear"></div>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="位置" name="location">
+        <div class="location-tab">
+          <el-cascader class="filterItem-content" :options="chinaArea" v-model="filterLocation" @change="filterLocationMethod">
+          </el-cascader>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="分组" name="group">
+        <div class="group-tab">
+          <el-button :plain="true" type="info" v-for='item in groupTabList' size="large" style="width:100px;margin-right:20px;" @click="addGroup(item)">{{item}}</el-button>
+        </div>
+      </el-tab-pane>
       <el-tab-pane label="序列号区间">序列号区间</el-tab-pane>
       <el-tab-pane label="在线时间">在线时间</el-tab-pane>
     </el-tabs>
   
     <!-- <div class="filters">
-                                                                                            <div class="filterItem">
-                                                                                              <span class="filterItem-title">设备类型</span>
-                                                                                              <el-checkbox-group class="filterItem-content" v-model="filterDeviceType" size="small">
-                                                                                                <el-checkbox-button v-for="item in deviceTypeList" :label="item" :key="item">{{item}}</el-checkbox-button>
-                                                                                              </el-checkbox-group>
-                                                                                            </div>
-                                                                                        
-                                                                                            <div class="filterItem">
-                                                                                              <span class="filterItem-title">数据</span>
-                                                                                              <div class="filterItem-content">
-                                                                                                <p class="dataItem" id="dataItem1">
-                                                                                                  <span>PM2.5</span>
-                                                                                                  <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
-                                                                                                  <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
-                                                                                                  <el-button type="success" size="small" v-show="focus0">确定</el-button>
-                                                                                                </p>
-                                                                                                <p class="dataItem" id="dataItem2">
-                                                                                                  <span>温度</span>
-                                                                                                  <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
-                                                                                                  <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
-                                                                                                  <el-button type="success" size="small" v-show="focus[1]">确定</el-button>
-                                                                                                </p>
-                                                                                                <p class="dataItem" id="dataItem3">
-                                                                                                  <span>湿度</span>
-                                                                                                  <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
-                                                                                                  <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
-                                                                                                  <el-button type="success" size="small" v-show="focus3">确定</el-button>
-                                                                                                </p>
-                                                                                                <p class="dataItem" id="dataItem4">
-                                                                                                  <span>CO2</span>
-                                                                                                  <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
-                                                                                                  <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
-                                                                                                  <el-button type="success" size="small" v-show="focus4">确定</el-button>
-                                                                                                </p>
-                                                                                                <p class="dataItem" id="dataItem5">
-                                                                                                  <span>甲醛</span>
-                                                                                                  <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
-                                                                                                  <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
-                                                                                                  <el-button type="success" size="small" v-show="focus5">确定</el-button>
-                                                                                                </p>
-                                                                                                <p class="dataItem" id="dataItem6">
-                                                                                                  <span>TVOC</span>
-                                                                                                  <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
-                                                                                                  <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
-                                                                                                  <el-button type="success" size="small" v-show="focus6">确定</el-button>
-                                                                                                </p>
-                                                                                                <p class="dataItem" id="dataItem7">
-                                                                                                  <span>臭氧</span>
-                                                                                                  <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
-                                                                                                  <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
-                                                                                                  <el-button type="success" size="small" v-show="focus7">确定</el-button>
-                                                                                                </p>
-                                                                                                <p class="dataItem" id="dataItem8">
-                                                                                                  <span>氧气</span>
-                                                                                                  <el-input @focus="inputFocus" @blur="inputBlur"></el-input> -
-                                                                                                  <el-input @focus="inputFocus" @blur="inputBlur"></el-input>
-                                                                                                  <el-button type="success" size="small" v-show="focus8">确定</el-button>
-                                                                                                </p>
-                                                                                              </div>
-                                                                                            </div>
-                                                                                        
-                                                                                            <div class="filterItem">
-                                                                                              <span class="filterItem-title">状态</span>
-                                                                                              <el-checkbox-group class="filterItem-content" v-model="filterDeviceStatus" size="small">
-                                                                                                <el-checkbox-button v-for="item in deviceStatusList" :label="item" :key="item">{{item}}</el-checkbox-button>
-                                                                                              </el-checkbox-group>
-                                                                                            </div>
-                                                                                        
-                                                                                            <div class="filterItem">
-                                                                                              <span class="filterItem-title">位置</span>
-                                                                                              <el-cascader class="filterItem-content" :options="chinaArea" v-model="filterLocation" @change="filterLocationMethod">
-                                                                                              </el-cascader>
-                                                                                            </div>
-                                                                                        
-                                                                                            <div class="filterItem">
-                                                                                              <span class="filterItem-title">分组</span>
-                                                                                              <el-select class="filterItem-content" v-model="filterGroupList" filterable multiple placeholder="请选择">
-                                                                                                <el-option v-for="item in groupList" :key="item.value" :label="item.label" :value="item.value">
-                                                                                                </el-option>
-                                                                                              </el-select>
-                                                                                            </div>
-                                                                                        
-                                                                                            <div class="filterItem filterItem6">
-                                                                                              <span class="filterItem-title">序列号区间</span>
-                                                                                              <div class="filterItem-content">
-                                                                                                <el-input></el-input> -
-                                                                                                <el-input></el-input>
-                                                                                              </div>
-                                                                                            </div>
-                                                                                        
-                                                                                            <div class="filterItem">
-                                                                                              <span class="filterItem-title">在线时间</span>
-                                                                                              <div class="filterItem-content">
-                                                                                                <el-date-picker v-model="filterTimeRange" type="datetimerange" placeholder="选择时间范围">
-                                                                                                </el-date-picker>
-                                                                                              </div>
-                                                                                            </div>
-                                                                                        
-                                                                                          </div> -->
+                       
+                          
+                                                                                                                                                             
+                                                                                                                                                          
+                                                                                                                                                              <div class="filterItem">
+                                                                                                                                                                <span class="filterItem-title">分组</span>
+                                                                                                                                                                <el-select class="filterItem-content" v-model="filterGroupList" filterable multiple placeholder="请选择">
+                                                                                                                                                                  <el-option v-for="item in groupList" :key="item.value" :label="item.label" :value="item.value">
+                                                                                                                                                                  </el-option>
+                                                                                                                                                                </el-select>
+                                                                                                                                                              </div>
+                                                                                                                                                          
+                                                                                                                                                              <div class="filterItem filterItem6">
+                                                                                                                                                                <span class="filterItem-title">序列号区间</span>
+                                                                                                                                                                <div class="filterItem-content">
+                                                                                                                                                                  <el-input></el-input> -
+                                                                                                                                                                  <el-input></el-input>
+                                                                                                                                                                </div>
+                                                                                                                                                              </div>
+                                                                                                                                                          
+                                                                                                                                                              <div class="filterItem">
+                                                                                                                                                                <span class="filterItem-title">在线时间</span>
+                                                                                                                                                                <div class="filterItem-content">
+                                                                                                                                                                  <el-date-picker v-model="filterTimeRange" type="datetimerange" placeholder="选择时间范围">
+                                                                                                                                                                  </el-date-picker>
+                                                                                                                                                                </div>
+                                                                                                                                                              </div>
+                                                                                                                                                          
+                                                                                                                                                            </div> -->
   
     <div class="table-row">
       <el-button :plain="true" type="info" size="small" style="float:left;" @click="slide">更多操作</el-button>
@@ -661,7 +655,21 @@ export default {
       label: '广州'
     }],
     thisfilter: '',
-    activeTab: 'data',
+    activeTab: 'status',
+    dataItem: {
+      pm2d5: ['', ''],
+      co2: ['', ''],
+      o3: ['', ''],
+      temp: ['', ''],
+      noise: ['', ''],
+      cho: ['', ''],
+      o2: ['', ''],
+      hum: ['', ''],
+      tvoc: ['', ''],
+      pre: ['', '']
+    },
+    filterStatus: '',
+    groupTabList: ['分组一', '分组二', '分组三', '分组四'],
     deviceTypeList: deviceTypeList,
     filterDeviceType: [],
     deviceStatusList: ['开机', '关机'],
@@ -803,16 +811,95 @@ export default {
         })
       }
     },
-    slide() {
-      let table = document.getElementById('table')
-      console.log(table)
-      table.scrollLeft = 200
+    addOpen() {
+      let num = 0;
+      this.tags.forEach(item => {
+        if (item.name !== '开机') {
+          num++;
+        }
+      })
+      if (num === this.tags.length) {
+        this.tags.push({
+          name: '开机',
+          color: 'black'
+        })
+      }
+    },
+    addClose() {
+      let num = 0;
+      this.tags.forEach(item => {
+        if (item.name !== '关机') {
+          num++;
+        }
+      })
+      if (num === this.tags.length) {
+        this.tags.push({
+          name: '关机',
+          color: 'black'
+        })
+      }
+    },
+    addGroup(e) {
+      console.log(e)
+      let num = 0;
+      this.tags.forEach(item => {
+        if (item.name !== e) {
+          num++;
+        }
+      })
+      if (num === this.tags.length) {
+        this.tags.push({
+          name: e,
+          color: 'black'
+        })
+      }
     },
     filterLocationMethod(value) {
       console.log(value)
       console.log(CodeToText[this.filterLocation[0]])
       console.log(CodeToText[this.filterLocation[1]])
       console.log(CodeToText[this.filterLocation[2]])
+    },
+    saveDataItem() {
+      this.addDataItemTags('pm2d5', 'PM2.5', 'blue')
+      this.addDataItemTags('co2', '二氧化碳', 'pink')
+      this.addDataItemTags('o3', '臭氧', 'green')
+      this.addDataItemTags('temp', '温度', 'green')
+      this.addDataItemTags('noise', '噪音', 'green')
+      this.addDataItemTags('cho', '甲醛', 'green')
+      this.addDataItemTags('o2', '氧气', 'green')
+      this.addDataItemTags('hum', '湿度', 'green')
+      this.addDataItemTags('tvoc', 'TVOC', 'green')
+      this.addDataItemTags('pre', '气压', 'green')
+    },
+    addDataItemTags(type, name, color) {
+      if (this.dataItem[type][0] !== '' && this.dataItem[type][1] !== '') {
+        if (isNaN(this.dataItem[type][0]) || isNaN(this.dataItem[type][1])) {
+          this.showWarningMessage(name)
+        } else {
+          if (this.dataItem[type][0] <= this.dataItem[type][1]) {
+            let num = 0;
+            this.tags.forEach(item => {
+              if (item.name !== name + ' ' + this.dataItem[type][0] + '-' + this.dataItem[type][1]) {
+                num++;
+              }
+            })
+            if (num === this.tags.length) {
+              this.tags.push({
+                name: name + ' ' + this.dataItem[type][0] + '-' + this.dataItem[type][1],
+                color: color
+              })
+            }
+          } else {
+            this.showWarningMessage(name)
+          }
+        }
+      }
+    },
+    slide() {
+      let table = document.getElementById('table')
+      console.log(table)
+      table.scrollLeft = 200
     },
     handleClick(tab, event) {
       console.log(tab, event);
@@ -864,6 +951,14 @@ export default {
         this.saveIcon = 'none';
       }
     },
+    showWarningMessage(val) {
+      this.$message({
+        showClose: true,
+        message: '警告哦，' + val + '数据范围有误，请重新输入',
+        type: 'warning',
+        duration: 5000
+      })
+    },
     getData() {
       getDeviceStatus().then(res => {
         this.statusList = res.data
@@ -883,7 +978,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style rel="stylesheet/scss" lang="scss">
 .clear {
   clear: both;
 }
@@ -984,29 +1079,61 @@ export default {
     .data-tab {
       width: 100%;
       .data-left {
-        width: 80%;
+        width: 95%;
+        margin-left: 1%;
         float: left;
         .dataItem {
           float: left;
-          width: 150px;
-          margin-top: 0px;
+          width: 190px;
+          margin-top: 10px;
           margin-bottom: 0px;
           span {
             font-size: 12px;
+            width: 30px;
+            display: inline-block;
           }
           .el-input {
-            width: 40px;
+            width: 60px;
             height: 20px;
             .el-input__inner {
               height: 20px;
+              font-size: 12px;
             }
           }
         }
       }
-      .data-right {
-        width: 20%;
-        float: right;
+      .data-save {
+        position: absolute;
+        bottom: 15px;
+        right: 30px;
       }
+    }
+
+    .status-tab {
+      width: 100%;
+      margin: 20px auto;
+      .status-tab-left {
+        width: 45%;
+        float: left;
+        text-align: right;
+      }
+      .status-tab-right {
+        width: 45%;
+        float: right;
+        text-align: left;
+      }
+    }
+
+    .location-tab {
+      width: 100%;
+      margin: 20px auto;
+      text-align: center;
+    }
+
+    .group-tab {
+      width: 96%;
+      margin: 20px auto;
+      text-align: center;
     }
   }
 
