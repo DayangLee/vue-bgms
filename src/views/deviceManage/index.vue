@@ -644,7 +644,7 @@ export default {
       label: '广州'
     }],
     thisfilter: '',
-    activeTab: 'time',
+    activeTab: 'deviceType',
     dataItem: {
       pm2d5: ['', ''],
       co2: ['', ''],
@@ -806,7 +806,7 @@ export default {
       if (num === this.tags.length) {
         this.tags.push({
           name: '空感一代',
-          color: 'gray'
+          color: '#D8BFD8'
         })
       }
     },
@@ -820,7 +820,7 @@ export default {
       if (num === this.tags.length) {
         this.tags.push({
           name: '空感二代',
-          color: 'black'
+          color: '#483D8B'
         })
       }
     },
@@ -834,7 +834,7 @@ export default {
       if (num === this.tags.length) {
         this.tags.push({
           name: '开机',
-          color: 'black'
+          color: '#1E90FF'
         })
       }
     },
@@ -848,7 +848,7 @@ export default {
       if (num === this.tags.length) {
         this.tags.push({
           name: '关机',
-          color: 'black'
+          color: '#FFA500'
         })
       }
     },
@@ -863,7 +863,7 @@ export default {
       if (num === this.tags.length) {
         this.tags.push({
           name: e,
-          color: 'black'
+          color: '#228B22'
         })
       }
     },
@@ -895,7 +895,7 @@ export default {
       if (num === this.tags.length) {
         this.tags.push({
           name: city,
-          color: 'black'
+          color: '#FFD700'
         })
       }
     },
@@ -914,7 +914,7 @@ export default {
             if (num === this.tags.length) {
               this.tags.push({
                 name: this.series[0] + ' -- ' + this.series[1],
-                color: 'black'
+                color: '#F4A460'
               })
             }
           } else {
@@ -937,21 +937,21 @@ export default {
       if (num === this.tags.length) {
         this.tags.push({
           name: time1 + ' -- ' + time2,
-          color: 'black'
+          color: '#696969'
         })
       }
     },
     saveDataItem() {
-      this.addDataItemTags('pm2d5', 'PM2.5', 'blue')
-      this.addDataItemTags('co2', '二氧化碳', 'pink')
-      this.addDataItemTags('o3', '臭氧', 'green')
-      this.addDataItemTags('temp', '温度', 'green')
-      this.addDataItemTags('noise', '噪音', 'green')
-      this.addDataItemTags('cho', '甲醛', 'green')
-      this.addDataItemTags('o2', '氧气', 'green')
-      this.addDataItemTags('hum', '湿度', 'green')
-      this.addDataItemTags('tvoc', 'TVOC', 'green')
-      this.addDataItemTags('pre', '气压', 'green')
+      this.addDataItemTags('pm2d5', 'PM2.5', '#5F9EA0')
+      this.addDataItemTags('co2', '二氧化碳', '#FF00FF')
+      this.addDataItemTags('o3', '臭氧', '#8A2BE2')
+      this.addDataItemTags('temp', '温度', '#4682B4')
+      this.addDataItemTags('noise', '噪音', '#B22222')
+      this.addDataItemTags('cho', '甲醛', '#00FF7F')
+      this.addDataItemTags('o2', '氧气', '#FF69B4')
+      this.addDataItemTags('hum', '湿度', '#9400D3')
+      this.addDataItemTags('tvoc', 'TVOC', '#B0E0E6')
+      this.addDataItemTags('pre', '气压', '#FF4500')
     },
     addDataItemTags(type, name, color) {
       if (this.dataItem[type][0] !== '' && this.dataItem[type][1] !== '') {
