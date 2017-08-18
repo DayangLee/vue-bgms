@@ -149,7 +149,7 @@
     </div>
   
     <div class="deviceTables" style="width: 100%">
-      <el-table ref="multipleTable" :data="statusList" border tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange" stripe id="table">
+      <el-table ref="multipleTable" :data="tableList" border tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange" stripe id="table">
         <el-table-column fixed="left" type="selection" width="55" align="center">
         </el-table-column>
         <el-table-column fixed="left" type="index" width="60" align="center">
@@ -603,7 +603,7 @@
 import { getDeviceStatus, getDeviceInfo, getDeviceData } from '../../api/deviceManage'
 import barChart from '../../components/BarChart/index'
 import { timeFormat } from 'utils/format'
-import { regionDataPlus, CodeToText, TextToCode } from 'element-china-area-data'
+import { provinceAndCityData, CodeToText, TextToCode } from 'element-china-area-data'
 const deviceTypeList = ['空感一代', '空感二代', '新风控制板']
 const groupList = [{
   value: '选项1',
@@ -664,11 +664,16 @@ export default {
     filterDeviceType: [],
     deviceStatusList: ['开机', '关机'],
     filterDeviceStatus: [],
-    chinaArea: regionDataPlus,
+    chinaArea: provinceAndCityData,
     filterLocation: [],
     groupList: groupList,
     filterGroupList: [],
     filterTimeRange: [new Date(2017, 7, 1, 10, 10), new Date(2017, 8, 1, 10, 10)],
+    tableList: [{
+      deviceName: '空感一代',
+      deviceId: 'KG-12345678',
+      status: 1
+    }],
     deviceIdSearch: '',
     deviceManageTabs: 'first',
     currentPage: 1,
@@ -1255,83 +1260,7 @@ export default {
 
   .deviceTables {
     margin-top: 100px;
-  } // .filters {
-  //   margin-top: 20px;
-  //   .filterItem {
-  //     height: 45px;
-  //     height: auto;
-  //     min-height: 45px;
-  //     line-height: 45px;
-  //     overflow: hidden;
-  //     border &:after {
-  //       visibility: hidden;
-  //       display: block;
-  //       font-size: 0;
-  //       content: " ";
-  //       clear: both;
-  //       height: 0;
-  //     }
-  //     .filterItem-title {
-  //       float: left;
-  //       font-size: 14px;
-  //       width: 80px;
-  //       text-align: center;
-  //     }
-  //     .filterItem-content {
-  //       margin-left: 80px;
-  //       height: auto;
-  //       height: 40px;
-  //       min-height: 40px;
-  //       .dataItem {
-  //         float: left;
-  //         width: 150px;
-  //         margin-top: 0px;
-  //         margin-bottom: 0px;
-  //         span {
-  //           font-size: 12px;
-  //         }
-  //         .el-input {
-  //           width: 40px;
-  //           height: 20px;
-  //           .el-input__inner {
-  //             height: 20px;
-  //           }
-  //         }
-  //         .el-button {
-  //           position: absolute;
-  //           margin-left: 5px;
-  //           margin-top: 12px;
-  //           line-height: 8px;
-  //           z-index: 99;
-  //         }
-  //       }
-  //     }
-  //     .el-cascader.filterItem-content {
-  //       margin-left: 0px;
-  //       .el-cascader__label {
-  //         line-height: 45px;
-  //       }
-  //     }
-  //     .el-select.filterItem-content {
-  //       margin-left: 0px;
-  //       .el-input {
-  //         height: 30px;
-  //         line-height: 30px;
-  //         .el-input__inner {
-  //           height: 30px;
-  //         }
-  //         .el-input__icon.el-icon-caret-top {
-  //           top: 60%;
-  //         }
-  //       }
-  //     }
-  //   }
-  //   .filterItem6 {
-  //     .el-input {
-  //       width: 224px;
-  //     }
-  //   }
-  // }
+  }
 }
 
 .pagination {
@@ -1340,6 +1269,7 @@ export default {
 }
 
 #detailDialog .el-dialog {
+  z-index: 9999;
   width: 80%;
   margin-top: -5%;
   margin-bottom: 5%;

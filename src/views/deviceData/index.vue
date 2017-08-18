@@ -356,7 +356,7 @@ export default {
   computed: {
   },
   created() {
-    this.getData()
+    //this.getData()
   },
   mounted: function () {
   },

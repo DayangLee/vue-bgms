@@ -53,7 +53,7 @@ export default {
     top: 0;
     bottom: 0;
     left: 0;
-    z-index: 9999;
+    z-index: 1000;
     background: #324157;
     overflow-y: auto;
     &::-webkit-scrollbar {

@@ -47,7 +47,12 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test')]
+        exclude: [/node_modules/],
+        include: [resolve('src'), resolve('test')],
+        use: [{
+          loader: 'babel-loader',
+          options: { presets: ['es2015'], plugins: ['transform-vue-jsx'] }
+        }]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -89,7 +94,7 @@ module.exports = {
         test: /\.scss$/,
         exclude: /node_modules/,
         loader: ExtractTextPlugin.extract({
-          fallback: "style-loader", 
+          fallback: "style-loader",
           use: "css-loader!sass-loader"
         })
       }

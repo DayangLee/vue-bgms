@@ -63,7 +63,7 @@ export const constantRouterMap = [
     children: [
       { path: 'index', component: DeviceData, name: '设备总览', icon: 'shebeishuju' },
       { path: 'manage', component: DeviceManage, name: '设备管理', icon: 'shebeiguanli' },
-      { path: 'group-manage', component: DeviceGroupManage, name: '设备分组管理', icon: 'fenpeishebeizu' }
+      { path: 'group-manage', component: testPage, name: '设备分组管理', icon: 'fenpeishebeizu' }
     ]
   },
   {
