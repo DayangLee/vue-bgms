@@ -22,8 +22,8 @@
             </span>
           </el-option>
         </el-select>
-        <el-button type="primary" size="small">新建</el-button>
-        <el-button type="primary" size="small">保存</el-button>
+        <el-button type="primary" size="small" @click="newFiltersConfig">新建</el-button>
+        <el-button type="primary" size="small" @click="saveFiltersConfig">保存</el-button>
       </p>
     </div>
     <div class="clear"></div>
@@ -109,7 +109,7 @@
       </el-tab-pane>
       <el-tab-pane label="位置" name="location">
         <div class="location-tab">
-          <el-cascader class="filterItem-content" :options="chinaArea" v-model="filterLocation" @change="filterLocationMethod">
+          <el-cascader class="filterItem-content" :options="chinaArea" v-model="filterLocation" @change="addLocation">
           </el-cascader>
         </div>
       </el-tab-pane>
@@ -118,40 +118,28 @@
           <el-button :plain="true" type="info" v-for='item in groupTabList' size="large" style="width:100px;margin-right:20px;" @click="addGroup(item)">{{item}}</el-button>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="序列号区间">序列号区间</el-tab-pane>
-      <el-tab-pane label="在线时间">在线时间</el-tab-pane>
+      <el-tab-pane label="序列号区间" name="series">
+        <div class="series-tab">
+          序列号区间&nbsp;&nbsp;
+          <el-input v-model='series[0]'></el-input>
+          &nbsp;——&nbsp;
+          <el-input v-model='series[1]'></el-input>
+          <p class="series-example">
+            例： &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span>KG-1484133759908</span>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; —— &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span>KG-1484133759908</span>
+          </p>
+          <el-button class="series-save" type="primary" size="small" @click="addSeries">保存</el-button>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="在线时间" name="time">
+        <div class="time-tab">
+          <el-date-picker v-model="filterTimeRange" type="datetimerange" placeholder="选择时间范围"></el-date-picker>
+          <el-button class="timerange-save" type="primary" size="small" @click="addTimeRange">保存</el-button>
+        </div>
+      </el-tab-pane>
     </el-tabs>
-  
-    <!-- <div class="filters">
-                       
-                          
-                                                                                                                                                             
-                                                                                                                                                          
-                                                                                                                                                              <div class="filterItem">
-                                                                                                                                                                <span class="filterItem-title">分组</span>
-                                                                                                                                                                <el-select class="filterItem-content" v-model="filterGroupList" filterable multiple placeholder="请选择">
-                                                                                                                                                                  <el-option v-for="item in groupList" :key="item.value" :label="item.label" :value="item.value">
-                                                                                                                                                                  </el-option>
-                                                                                                                                                                </el-select>
-                                                                                                                                                              </div>
-                                                                                                                                                          
-                                                                                                                                                              <div class="filterItem filterItem6">
-                                                                                                                                                                <span class="filterItem-title">序列号区间</span>
-                                                                                                                                                                <div class="filterItem-content">
-                                                                                                                                                                  <el-input></el-input> -
-                                                                                                                                                                  <el-input></el-input>
-                                                                                                                                                                </div>
-                                                                                                                                                              </div>
-                                                                                                                                                          
-                                                                                                                                                              <div class="filterItem">
-                                                                                                                                                                <span class="filterItem-title">在线时间</span>
-                                                                                                                                                                <div class="filterItem-content">
-                                                                                                                                                                  <el-date-picker v-model="filterTimeRange" type="datetimerange" placeholder="选择时间范围">
-                                                                                                                                                                  </el-date-picker>
-                                                                                                                                                                </div>
-                                                                                                                                                              </div>
-                                                                                                                                                          
-                                                                                                                                                            </div> -->
   
     <div class="table-row">
       <el-button :plain="true" type="info" size="small" style="float:left;" @click="slide">更多操作</el-button>
@@ -614,6 +602,7 @@
 <script>
 import { getDeviceStatus, getDeviceInfo, getDeviceData } from '../../api/deviceManage'
 import barChart from '../../components/BarChart/index'
+import { timeFormat } from 'utils/format'
 import { regionDataPlus, CodeToText, TextToCode } from 'element-china-area-data'
 const deviceTypeList = ['空感一代', '空感二代', '新风控制板']
 const groupList = [{
@@ -655,7 +644,7 @@ export default {
       label: '广州'
     }],
     thisfilter: '',
-    activeTab: 'status',
+    activeTab: 'time',
     dataItem: {
       pm2d5: ['', ''],
       co2: ['', ''],
@@ -670,6 +659,7 @@ export default {
     },
     filterStatus: '',
     groupTabList: ['分组一', '分组二', '分组三', '分组四'],
+    series: ['', ''],
     deviceTypeList: deviceTypeList,
     filterDeviceType: [],
     deviceStatusList: ['开机', '关机'],
@@ -783,6 +773,29 @@ export default {
     chooseFilter() {
       console.log(this.thisfilter)
     },
+    newFiltersConfig() {
+      this.tags = []
+    },
+    saveFiltersConfig() {
+      this.$prompt('请输入名称', '', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+      }).then(({ value }) => {
+        this.filtersList.push({
+          value: escape(value),
+          label: value
+        })
+        this.$message({
+          type: 'success',
+          message: value + '保存成功！'
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'error',
+          message: '保存失败，请重试！'
+        });
+      });
+    },
     addkg1() {
       let num = 0;
       this.tags.forEach(item => {
@@ -854,11 +867,79 @@ export default {
         })
       }
     },
-    filterLocationMethod(value) {
+    addLocation(value) {
       console.log(value)
-      console.log(CodeToText[this.filterLocation[0]])
-      console.log(CodeToText[this.filterLocation[1]])
-      console.log(CodeToText[this.filterLocation[2]])
+      let city = CodeToText[this.filterLocation[1]]
+      let num = 0
+      if (value[0] == '110000') {
+        city = '北京市'
+      } else if (value[0] == '310000') {
+        city = '上海市'
+      } else if (value[0] == '120000') {
+        city = '天津市'
+      } else if (value[0] == '500000') {
+        city = '重庆市'
+      } else if (value[0] == '710000') {
+        city = '台湾省'
+      } else if (value[0] == '810000') {
+        city = '香港'
+      } else if (value[0] == '820000') {
+        city = '澳门'
+      }
+
+      this.tags.forEach(item => {
+        if (item.name !== city) {
+          num++;
+        }
+      })
+      if (num === this.tags.length) {
+        this.tags.push({
+          name: city,
+          color: 'black'
+        })
+      }
+    },
+    addSeries() {
+      if (this.series[0] !== '' && this.series[1] !== '') {
+        if (this.series[0].substr(0, 3) == 'KG-' && this.series[1].substr(0, 3) == 'KG-') {
+          let min = this.series[0].substr(3)
+          let max = this.series[1].substr(3)
+          let num = 0
+          if (min <= max) {
+            this.tags.forEach(item => {
+              if (item.name !== this.series[0] + ' -- ' + this.series[1]) {
+                num++;
+              }
+            })
+            if (num === this.tags.length) {
+              this.tags.push({
+                name: this.series[0] + ' -- ' + this.series[1],
+                color: 'black'
+              })
+            }
+          } else {
+            this.showWarningMessage('序列号区间')
+          }
+        } else {
+          this.showWarningMessage('序列号')
+        }
+      }
+    },
+    addTimeRange() {
+      let time1 = timeFormat(this.filterTimeRange[0])
+      let time2 = timeFormat(this.filterTimeRange[1])
+      let num = 0
+      this.tags.forEach(item => {
+        if (item.name !== time1 + ' -- ' + time2) {
+          num++;
+        }
+      })
+      if (num === this.tags.length) {
+        this.tags.push({
+          name: time1 + ' -- ' + time2,
+          color: 'black'
+        })
+      }
     },
     saveDataItem() {
       this.addDataItemTags('pm2d5', 'PM2.5', 'blue')
@@ -1134,6 +1215,37 @@ export default {
       width: 96%;
       margin: 20px auto;
       text-align: center;
+    }
+
+    .series-tab {
+      width: 100%;
+      margin: 10px auto;
+      text-align: center;
+      .el-input {
+        width: 200px;
+      }
+      .series-example {
+        margin-top: 10px;
+        span {
+          color: #8391a5
+        }
+      }
+      .series-save {
+        position: absolute;
+        bottom: 15px;
+        right: 30px;
+      }
+    }
+
+    .time-tab {
+      width: 100%;
+      margin: 20px auto;
+      text-align: center;
+      .timerange-save {
+        position: absolute;
+        bottom: 15px;
+        right: 30px;
+      }
     }
   }
 
