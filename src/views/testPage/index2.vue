@@ -1,24 +1,9 @@
-<template>
-  <div class="data-container" style="width: 100%">
-    <el-table ref="multipleTable" :data="tableList" border tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange" stripe id="table">
-      <el-table-column type="selection" width="55" align="center">
+  <template>
+  <div>
+    <el-table :data="tableList" style="width: 100%">
+      <el-table-column prop="deviceName" label="名称" width="180">
       </el-table-column>
-      <el-table-column type="index" width="60" align="center">
-      </el-table-column>
-      <el-table-column prop="deviceName" label="设备名称" width="170" align="center">
-      </el-table-column>
-      <el-table-column prop="deviceId" label="设备ID" width="150" align="center">
-      </el-table-column>
-      <el-table-column prop="status" label="运行状态" width="100" align="center">
-        <template scope="scope">
-          <el-tag :type="scope.row.status === 1 ? 'success' : 'danger'">{{scope.row.status===1?'运行中':'关闭'}}</el-tag>
-        </template>
-      </el-table-column>
-      <!-- <el-table-column v-for="col in table" :prop="col.prop" :label="col.label">
-            </el-table-column> -->
-      <el-table-column :render-header="renderHeader" align="center">
-        <el-table-column v-for="col in table" :prop="col.prop" :label="col.label">
-        </el-table-column>
+      <el-table-column v-for="col in formThead" :prop="col.prop" :label="col.label">
       </el-table-column>
       <el-table-column label="更多" align="center" min-width="150">
         <template scope="scope">
@@ -27,9 +12,13 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- <el-button @click="handleHeader1">1</el-button>
-        <el-button @click="handleHeader2">2</el-button>
-        <el-button @click="handleHeader3">3</el-button> -->
+  
+    <div @click='add'>
+      点我
+    </div>
+    <div @click='cut'>
+      再点我
+    </div>
   </div>
 </template>
 
@@ -50,11 +39,23 @@ export default {
       pm2d52: '2333',
       pm2d53: '2333'
     }],
-    table: [{ prop: 'time1', label: '时间1' },
-    { prop: 'filter1', label: '滤网1' },
-    { prop: 'pm2d51', label: 'PM2.51' }]
+    formThead: [{ prop: 'time1', label: '时间1' },
+    { prop: 'filter1', label: '滤网1' }],
+    dialogVisible: false,
+    checkList: ['apple', 'banana'],
   }),
   methods: {
+    add() {
+      this.formThead = [{ prop: 'time2', label: '时间2' },
+      { prop: 'filter2', label: '滤网2' },
+      { prop: 'pm2d52', label: 'PM2.52' }]
+    },
+    cut() {
+      this.formThead = [
+        { prop: 'time1', label: '时间1' },
+        { prop: 'filter1', label: '滤网1' }
+      ]
+    },
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
@@ -64,9 +65,6 @@ export default {
         { prop: 'time1', label: '时间1' },
         { prop: 'filter1', label: '滤网1' }
       ]
-      document.getElementById('button1').style.color = '#20a0ff'
-      document.getElementById('button2').style.color = 'black'
-      document.getElementById('button3').style.color = 'black'
     },
     handleHeader2() {
       this.table.splice(0, this.table.length)
@@ -75,9 +73,6 @@ export default {
         { prop: 'filter2', label: '滤网2' },
         { prop: 'pm2d52', label: 'PM2.52' }
       ]
-      document.getElementById('button2').style.color = '#20a0ff'
-      document.getElementById('button1').style.color = 'black'
-      document.getElementById('button3').style.color = 'black'
     },
     handleHeader3() {
       this.table.splice(0, this.table.length)
@@ -86,9 +81,6 @@ export default {
         { prop: 'filter3', label: '滤网3' },
         { prop: 'pm2d53', label: 'PM2.53' }
       ]
-      document.getElementById('button3').style.color = '#20a0ff'
-      document.getElementById('button1').style.color = 'black'
-      document.getElementById('button2').style.color = 'black'
     },
     renderHeader(createElement, { _self }) {
       return createElement(
@@ -98,17 +90,17 @@ export default {
         },
         [
           createElement('el-button', {
-            attrs: { type: 'text',id:'button1' },
+            attrs: { type: 'text' },
             on: { click: this.handleHeader1 }
           }, ['设备状态']
           ),
           createElement('el-button', {
-            attrs: { type: 'text' ,id:'button2'},
+            attrs: { type: 'text' },
             on: { click: this.handleHeader2 }
           }, ['设备数据']
           ),
           createElement('el-button', {
-            attrs: { type: 'text',id:'button3' },
+            attrs: { type: 'text' },
             on: { click: this.handleHeader3 }
           }, ['设备信息']
           )
@@ -141,18 +133,6 @@ export default {
   .renderTableHead {
     .el-button {
       font-weight: bold;
-    }
-    .el-button--text {
-      color: black;
-      &:hover {
-        color: #20a0ff;
-      }
-      &:focus {
-        color: #20a0ff;
-      }
-      &:active {
-        color: #20a0ff;
-      }
     }
   }
 }
