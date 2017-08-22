@@ -14,22 +14,17 @@
           <el-tag :type="scope.row.status === 1 ? 'success' : 'danger'">{{scope.row.status===1?'运行中':'关闭'}}</el-tag>
         </template>
       </el-table-column>
-      <!-- <el-table-column v-for="col in table" :prop="col.prop" :label="col.label">
-            </el-table-column> -->
       <el-table-column :render-header="renderHeader" align="center">
-        <el-table-column v-for="col in table" :prop="col.prop" :label="col.label">
+        <el-table-column v-for="col in table" :prop="col.prop" :label="col.label" width="130" align="center">
         </el-table-column>
       </el-table-column>
-      <el-table-column label="更多" align="center" min-width="150">
+      <el-table-column label="更多" align="center" min-width="110">
         <template scope="scope">
-          <el-button type="success" size="small">详情</el-button>
-          <el-button size="small" type="primary">操作</el-button>
+          <el-button type="text" size="small" style="color:#13ce66;" @click="handleDetail(scope.$index, scope.row.deviceId)">详情</el-button>
+          <el-button type="text" size="small" @click="handleEdit(scope.$index, scope.row.deviceId)">操作</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <!-- <el-button @click="handleHeader1">1</el-button>
-        <el-button @click="handleHeader2">2</el-button>
-        <el-button @click="handleHeader3">3</el-button> -->
   </div>
 </template>
 
@@ -40,40 +35,81 @@ export default {
       deviceName: '空感一代',
       deviceId: 'KG-12345678',
       status: 1,
-      time1: '1111',
-      filter1: '1111',
-      time2: '2222',
-      filter2: '2222',
-      time3: '3333',
-      filter3: '3333',
-      pm2d51: '2333',
-      pm2d52: '2333',
-      pm2d53: '2333'
+      pm2d5: 233,
+      co2: 233,
+      temp: 23,
+      hum: 33,
+      cho: 233,
+      tvoc: 233,
+      uploadtime: 233,
+      timing: '06:00 - 15:00',
+      filter: '128/60/52',
+      wind: '3档',
+      gear: '手动',
+      circle: '内',
+      hot: '开',
+      group: '汉王科技大厦',
+      address: '北京市昌平区沙河镇',
+      runtime: '12h+30min',
+      contact: '李大洋',
+      tel: '13521347060'
+    }, {
+      deviceName: '空感一代',
+      deviceId: 'KG-12345678',
+      status: 0,
+      pm2d5: 233,
+      co2: 233,
+      temp: 23,
+      hum: 33,
+      cho: 233,
+      tvoc: 233,
+      uploadtime: 233,
+      timing: '06:00 - 15:00',
+      filter: '128/60/52',
+      wind: '3档',
+      gear: '自动',
+      circle: '内',
+      hot: '开',
+      group: '汉王科技大厦',
+      address: '北京市昌平区沙河镇',
+      runtime: '12h+30min',
+      contact: '李大洋',
+      tel: '13521347060'
     }],
-    table: [{ prop: 'time1', label: '时间1' },
-    { prop: 'filter1', label: '滤网1' },
-    { prop: 'pm2d51', label: 'PM2.51' }]
+    table: [
+      { prop: 'pm2d5', label: 'PM2.5' },
+      { prop: 'co2', label: 'CO2' },
+      { prop: 'temp', label: '温度' },
+      { prop: 'hum', label: '湿度' },
+      { prop: 'cho', label: '甲醛' },
+      { prop: 'tvoc', label: 'TVOC' }
+    ]
   }),
   methods: {
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
     handleHeader1() {
-      this.table.splice(0, this.table.length)
       this.table = [
-        { prop: 'time1', label: '时间1' },
-        { prop: 'filter1', label: '滤网1' }
+        { prop: 'pm2d5', label: 'PM2.5' },
+        { prop: 'co2', label: 'CO2' },
+        { prop: 'temp', label: '温度' },
+        { prop: 'hum', label: '湿度' },
+        { prop: 'cho', label: '甲醛' },
+        { prop: 'tvoc', label: 'TVOC' }
       ]
       document.getElementById('button1').style.color = '#20a0ff'
       document.getElementById('button2').style.color = 'black'
       document.getElementById('button3').style.color = 'black'
     },
     handleHeader2() {
-      this.table.splice(0, this.table.length)
       this.table = [
-        { prop: 'time2', label: '时间2' },
-        { prop: 'filter2', label: '滤网2' },
-        { prop: 'pm2d52', label: 'PM2.52' }
+        { prop: 'timing', label: '定时' },
+        { prop: 'filter', label: '滤网' },
+        { prop: 'wind', label: '风速' },
+        { prop: 'gear', label: '档位' },
+        { prop: 'circle', label: '循环' },
+        { prop: 'hot', label: '热交换' }
       ]
       document.getElementById('button2').style.color = '#20a0ff'
       document.getElementById('button1').style.color = 'black'
@@ -82,9 +118,12 @@ export default {
     handleHeader3() {
       this.table.splice(0, this.table.length)
       this.table = [
-        { prop: 'time3', label: '时间3' },
-        { prop: 'filter3', label: '滤网3' },
-        { prop: 'pm2d53', label: 'PM2.53' }
+        { prop: 'group', label: '群组' },
+        { prop: 'address', label: '位置' },
+        { prop: 'runtime', label: '运行时长' },
+        { prop: 'contact', label: '联系人' },
+        { prop: 'tel', label: '电话' },
+        { prop: 'uploadtime', label: '最后上传时间' }
       ]
       document.getElementById('button3').style.color = '#20a0ff'
       document.getElementById('button1').style.color = 'black'
@@ -98,17 +137,17 @@ export default {
         },
         [
           createElement('el-button', {
-            attrs: { type: 'text',id:'button1' },
+            attrs: { type: 'text', id: 'button1' },
             on: { click: this.handleHeader1 }
-          }, ['设备状态']
-          ),
-          createElement('el-button', {
-            attrs: { type: 'text' ,id:'button2'},
-            on: { click: this.handleHeader2 }
           }, ['设备数据']
           ),
           createElement('el-button', {
-            attrs: { type: 'text',id:'button3' },
+            attrs: { type: 'text', id: 'button2' },
+            on: { click: this.handleHeader2 }
+          }, ['设备状态']
+          ),
+          createElement('el-button', {
+            attrs: { type: 'text', id: 'button3' },
             on: { click: this.handleHeader3 }
           }, ['设备信息']
           )
@@ -118,9 +157,9 @@ export default {
     // renderHeader(h) {
     //   return (
     //     <div>
-    //       <el-button type="text" on-click="this.tab=1">设备状态</el-button>
-    //       <el-button type="text" on-click="this.tab=2">设备数据</el-button>
-    //       <el-button type="text" on-click="this.tab=1">设备信息</el-button>
+    //       <el-button type="text" onClick={this.handleHeader1}>设备状态</el-button>
+    //       <el-button type="text" onClick={this.handleHeader2}>设备数据</el-button>
+    //       <el-button type="text" onClick={this.handleHeader3}>设备信息</el-button>
     //     </div>
     //   )
     // }
@@ -153,6 +192,20 @@ export default {
       &:active {
         color: #20a0ff;
       }
+    }
+
+    #button1 {
+      color: #20a0ff;
+      float: left;
+      width: 30%;
+    }
+    #button2 {
+      float: left;
+      width: 30%;
+    }
+    #button3 {
+      float: left;
+      width: 30%;
     }
   }
 }
