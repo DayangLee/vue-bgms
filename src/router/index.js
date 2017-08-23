@@ -18,6 +18,7 @@ const UserGroupManage = _import('userGroupManage/index')
 const AuthManage = _import('authManage/index')
 const AcountManage = _import('acountManage/index')
 const PersonalCenter = _import('PersonalCenter/index')
+const LogicalRule = _import('logicalRule/index')
 
 
 // import Login from '../views/login/index'
@@ -62,8 +63,7 @@ export const constantRouterMap = [
     icon: 'xiala',
     children: [
       { path: 'index', component: DeviceData, name: '设备总览', icon: 'shebeishuju' },
-      { path: 'manage', component: DeviceManage, name: '设备管理', icon: 'shebeiguanli' },
-      { path: 'group-manage', component: DeviceGroupManage, name: '设备分组管理', icon: 'fenpeishebeizu' }
+      { path: 'manage', component: DeviceManage, name: '设备管理', icon: 'shebeiguanli' }
     ]
   },
   {
@@ -87,6 +87,14 @@ export const constantRouterMap = [
     noDropdown: true,
     icon: 'gerenzhongxinicon',
     children: [{ path: 'index', component: PersonalCenter, name: '个人中心' }]
+  },
+  {
+    path: '/liandong',
+    component: Layout,
+    redirect: '/liandong',
+    noDropdown: true,
+    icon: 'biaojianluojiguanxi',
+    children: [{ path: 'index', component: LogicalRule, name: '联动规则' }]
   },
   { path: '*', redirect: '/404', hidden: true }
 ]

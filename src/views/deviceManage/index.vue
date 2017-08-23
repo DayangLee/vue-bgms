@@ -142,7 +142,7 @@
     </el-tabs>
 
     <div class="table-row">
-      <el-button :plain="true" type="info" size="small" style="float:left;" @click="slide">更多操作</el-button>
+      <el-button :plain="true" type="info" size="small" style="float:left;">更多操作</el-button>
       <span style="float:right;">
         共{{deviceCount}}个设备，{{onlineCount}}个正在运行
       </span>
