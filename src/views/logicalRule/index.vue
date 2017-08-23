@@ -111,8 +111,6 @@ export default {
   clear: both;
 }
 
-
-
 .data-container {
   padding: 30px 50px;
   width: 100%;
@@ -138,6 +136,7 @@ export default {
         margin-bottom: 40px;
         text-align: center;
         .small-card {
+          margin-top: 20px;
           div {
             height: 40px;
             line-height: 40px;

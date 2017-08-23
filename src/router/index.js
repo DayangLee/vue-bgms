@@ -19,6 +19,7 @@ const AuthManage = _import('authManage/index')
 const AcountManage = _import('acountManage/index')
 const PersonalCenter = _import('PersonalCenter/index')
 const LogicalRule = _import('logicalRule/index')
+const BigScreen = _import('bigScreen/index')
 
 
 // import Login from '../views/login/index'
@@ -81,20 +82,28 @@ export const constantRouterMap = [
     ]
   },
   {
-    path: '/person',
-    component: Layout,
-    redirect: '/person',
-    noDropdown: true,
-    icon: 'gerenzhongxinicon',
-    children: [{ path: 'index', component: PersonalCenter, name: '个人中心' }]
-  },
-  {
     path: '/liandong',
     component: Layout,
     redirect: '/liandong',
     noDropdown: true,
     icon: 'biaojianluojiguanxi',
     children: [{ path: 'index', component: LogicalRule, name: '联动规则' }]
+  },
+  {
+    path: '/daping',
+    component: Layout,
+    redirect: '/daping',
+    noDropdown: true,
+    icon: 'dapingyemian',
+    children: [{ path: 'index', component: BigScreen, name: '大屏页面' }]
+  },
+  {
+    path: '/person',
+    component: Layout,
+    redirect: '/person',
+    noDropdown: true,
+    icon: 'gerenzhongxinicon',
+    children: [{ path: 'index', component: PersonalCenter, name: '个人中心' }]
   },
   { path: '*', redirect: '/404', hidden: true }
 ]
