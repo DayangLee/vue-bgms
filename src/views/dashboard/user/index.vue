@@ -111,7 +111,7 @@
 </template>
 
 <script>
-import { getBaseData } from 'api/acount'
+import { getBaseData } from 'api/device'
 export default {
     data: () => ({
         notRead1: true,

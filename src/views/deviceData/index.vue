@@ -3,9 +3,9 @@
     <div class="title">
       设备 / 设备总览
     </div>
-  
+
     <el-tabs v-model="deviceInfoTabs" type="border-card" @tab-click="handleClick">
-  
+
       <el-tab-pane label="空感一代" name="1">
         <div class="box box1">
           <el-card>
@@ -14,9 +14,9 @@
             </div>
             <div style="width:100%;">
               <div class="echarts1">
-                <circleChart></circleChart>
+                <circleChart :circleOption="circleOption1"></circleChart>
               </div>
-              <div class="text">共{{allcount}}台设备</div>
+              <div class="text">共{{allKG1Count}}台设备</div>
             </div>
           </el-card>
         </div>
@@ -26,7 +26,7 @@
               <span style="line-height: 36px;font-size:26px;">污染分布</span>
             </div>
             <div class="echarts2">
-              <ringChart></ringChart>
+              <ringChart :ringOption="ringOption1"></ringChart>
             </div>
           </el-card>
         </div>
@@ -67,7 +67,7 @@
           </el-card>
         </div>
         <div class="clear"></div>
-  
+
         <div class="dataTable">
           <el-card>
             <div slot="header" class="clearfix">
@@ -75,25 +75,25 @@
               <el-input class='searchDevice1' placeholder="搜索设备" icon="search" v-model="deviceIdSearch" :on-icon-click="handleSearch">
               </el-input>
               <div class="block">
-                共{{KG1Count}}个设备，{{KG1OnlineCount}}个正在运行
+                共{{allKG1Count}}个设备，{{onlineKG1Count}}个正在运行
               </div>
             </div>
             <div class="KG1CardBody">
               <el-table ref="multipleTable" :data="KG1List" border tooltip-effect="dark" style="width: 100%" stripe>
                 <el-table-column type="index" width="120" min-width="80" align="center">
                 </el-table-column>
-                <el-table-column prop="deviceName" label="设备名称" width="180" min-width="120" align="center">
+                <el-table-column prop="name" label="设备名称" width="180" min-width="120" align="center">
                 </el-table-column>
-                <el-table-column prop="deviceId" label="设备ID" width="180" min-width="120" align="center">
+                <el-table-column prop="device.id" label="设备ID" width="180" min-width="120" align="center">
                 </el-table-column>
                 <el-table-column prop="status" label="运行状态" width="140" min-width="120" align="center">
                   <template scope="scope">
                     <img v-if="scope.row.status===1" src="../../assets/images/device/online.png" class="statusIcon">
                     <img v-else src="../../assets/images/device/offline.png" class="statusIcon">
-                    <span style="margin-left:10px;">{{scope.row.status===1?'运行中':'关闭'}}</span>
+                    <span style="margin-left:10px;">{{scope.row.status===1?'运行中':scope.row.status===0?'离线':'已失效'}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column prop="location" label="位置" width="380" min-width="210" align="center">
+                <el-table-column prop="device.geolocation.formatted_address" label="位置" width="380" min-width="210" align="center">
                 </el-table-column>
                 <el-table-column prop="user" label="用户" align="center">
                 </el-table-column>
@@ -105,9 +105,9 @@
             </div>
           </el-card>
         </div>
-  
+
       </el-tab-pane>
-  
+
       <el-tab-pane label="空感二代" name="2">
         <div class="box box1">
           <el-card>
@@ -116,9 +116,9 @@
             </div>
             <div style="width:100%;">
               <div class="echarts1">
-                <circleChart></circleChart>
+                <circleChart :circleOption="circleOption2"></circleChart>
               </div>
-              <div class="text">共{{allcount}}台设备</div>
+              <div class="text">共{{allKG2Count}}台设备</div>
             </div>
           </el-card>
         </div>
@@ -128,7 +128,7 @@
               <span style="line-height: 36px;font-size:26px;">污染分布</span>
             </div>
             <div class="echarts2">
-              <ringChart></ringChart>
+              <ringChart :ringOption="ringOption2"></ringChart>
             </div>
           </el-card>
         </div>
@@ -169,7 +169,7 @@
           </el-card>
         </div>
         <div class="clear"></div>
-  
+
         <div class="dataTable">
           <el-card>
             <div slot="header" class="clearfix">
@@ -208,7 +208,7 @@
           </el-card>
         </div>
       </el-tab-pane>
-  
+
       <el-tab-pane label="新风" name="3">
         <div class="box box1">
           <el-card>
@@ -217,9 +217,9 @@
             </div>
             <div style="width:100%;">
               <div class="echarts1">
-                <circleChart></circleChart>
+                <circleChart :circleOption="circleOption3"></circleChart>
               </div>
-              <div class="text">共{{allcount}}台设备</div>
+              <div class="text">共{{allNWCount}}台设备</div>
             </div>
           </el-card>
         </div>
@@ -229,7 +229,7 @@
               <span style="line-height: 36px;font-size:26px;">污染分布</span>
             </div>
             <div class="echarts2">
-              <ringChart></ringChart>
+              <ringChart :ringOption="ringOption3"></ringChart>
             </div>
           </el-card>
         </div>
@@ -270,7 +270,7 @@
           </el-card>
         </div>
         <div class="clear"></div>
-  
+
         <div class="dataTable">
           <el-card>
             <div slot="header" class="clearfix">
@@ -310,21 +310,26 @@
         </div>
       </el-tab-pane>
     </el-tabs>
-  
+
   </div>
 </template>
 
 <script>
 import circleChart from '../../components/CircleChart/index'
 import ringChart from '../../components/RingChart/index'
-import { getDeviceDataList } from '../../api/deviceDataList'
+import { getBaseData, getDeviceDetail } from 'api/device'
+import { circleOption, ringOption } from 'utils/echarts'
 export default {
   components: {
     circleChart, ringChart
   },
   data: () => ({
     deviceInfoTabs: '1',
-    allcount: 233,
+    allKG1Count: 233,
+    allKG2Count: 233,
+    allNWCount: 233,
+    onlineKG1Count: 233,
+    KG1circleCount: [0, 0],
     deviceIdSearch: '',
     KG1Count: 0,
     KG1OnlineCount: 0,
@@ -351,14 +356,49 @@ export default {
       group: '北京汉王蓝天',
       location: '北京市昌平区沙河镇沙河路97号新元科技园C座401汉王蓝天',
       user: '小拳拳捶你胸口大坏蛋嘤嘤嘤'
-    }]
+    }],
+    circleOption1: circleOption,
+    ringOption1: ringOption,
+    circleOption2: circleOption,
+    ringOption2: ringOption,
+    circleOption3: circleOption,
+    ringOption3: ringOption
   }),
   computed: {
   },
   created() {
-    //this.getData()
+    getBaseData().then(res => {
+      //console.log(res.data)
+      const KGtable = []
+      let online = 5
+      let offline = 0
+      for (let i = 0; i < res.data.length; i++) {
+        if (res.data[i].device.serial == 'KG') {
+          getDeviceDetail(res.data[i].id).then(data => {
+            console.log(data.data)
+            res.data[i].status = 0
+            offline++
+          }).catch(err1 => {
+            const status = err1.response.status
+            if (status == 500) {
+              res.data[i].status = -1
+              offline++
+            }
+          })
+          KGtable.push(res.data[i])
+        }
+      }
+
+      this.KG1List = res.data
+      this.allCount = this.KG1List.length
+      this.circleOption1.series[0].data[0].value = online
+      this.circleOption1.series[0].data[1].value = offline
+    }).catch(err => {
+      this.$message.error('啊哦，出了点儿问题，稍等一会儿再试一下！');
+    })
   },
-  mounted: function () {
+  mounted: function() {
+
   },
   methods: {
     handleClick(tab, ev) {
@@ -371,29 +411,6 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-    },
-    getData() {
-      getDeviceDataList('KG1').then(res => {
-        this.KG1List = res.data
-        for (let i = 0; i < res.data.length; i++) {
-          this.KG1Count++;
-          if (res.data[i].status == 1) this.KG1OnlineCount++
-        }
-      })
-      getDeviceDataList('KG2').then(res => {
-        this.KG2List = res.data
-        for (let i = 0; i < res.data.length; i++) {
-          this.KG2Count++;
-          if (res.data[i].status == 1) this.KG2OnlineCount++
-        }
-      })
-      getDeviceDataList('newWind').then(res => {
-        this.newwindList = res.data
-        for (let i = 0; i < res.data.length; i++) {
-          this.NWCount++;
-          if (res.data[i].status == 1) this.NWOnlineCount++
-        }
-      })
     }
   }
 }
