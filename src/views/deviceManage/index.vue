@@ -164,7 +164,7 @@
           </template>
         </el-table-column>
         <el-table-column :render-header="renderHeader" align="center">
-          <el-table-column v-for="col in checkTable" :prop="col.prop" :label="col.label" width="130" align="center">
+          <el-table-column v-for="col in checkTable" :prop="col.prop" :label="col.label" width="130" align="center" sortable>
           </el-table-column>
         </el-table-column>
         <el-table-column label="更多" align="center" min-width="100">
@@ -1062,6 +1062,7 @@ export default {
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
+      console.log(val)
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);

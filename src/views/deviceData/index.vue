@@ -318,7 +318,8 @@
 import circleChart from '../../components/CircleChart/index'
 import ringChart from '../../components/RingChart/index'
 import { getBaseData, getDeviceDetail } from 'api/device'
-import { circleOption, ringOption } from 'utils/echarts'
+import { circleOption1, circleOption2, circleOption3, ringOption1, ringOption2, ringOption3 } from 'utils/echarts'
+
 export default {
   components: {
     circleChart, ringChart
@@ -357,25 +358,25 @@ export default {
       location: '北京市昌平区沙河镇沙河路97号新元科技园C座401汉王蓝天',
       user: '小拳拳捶你胸口大坏蛋嘤嘤嘤'
     }],
-    circleOption1: circleOption,
-    ringOption1: ringOption,
-    circleOption2: circleOption,
-    ringOption2: ringOption,
-    circleOption3: circleOption,
-    ringOption3: ringOption
+    circleOption1: circleOption1,
+    ringOption1: ringOption1,
+    circleOption2: circleOption2,
+    ringOption2: ringOption2,
+    circleOption3: circleOption3,
+    ringOption3: ringOption3
   }),
   computed: {
   },
   created() {
+  },
+  mounted: function() {
     getBaseData().then(res => {
-      //console.log(res.data)
       const KGtable = []
       let online = 5
       let offline = 0
       for (let i = 0; i < res.data.length; i++) {
         if (res.data[i].device.serial == 'KG') {
           getDeviceDetail(res.data[i].id).then(data => {
-            console.log(data.data)
             res.data[i].status = 0
             offline++
           }).catch(err1 => {
@@ -388,17 +389,14 @@ export default {
           KGtable.push(res.data[i])
         }
       }
-
       this.KG1List = res.data
-      this.allCount = this.KG1List.length
+      this.allKG1Count = this.KG1List.length
+      console.log(this.circleOption1.series[0].data[0].value)
       this.circleOption1.series[0].data[0].value = online
       this.circleOption1.series[0].data[1].value = offline
     }).catch(err => {
       this.$message.error('啊哦，出了点儿问题，稍等一会儿再试一下！');
     })
-  },
-  mounted: function() {
-
   },
   methods: {
     handleClick(tab, ev) {
