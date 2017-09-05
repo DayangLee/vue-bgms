@@ -15,5 +15,7 @@ export default {
 .data-container {
   padding: 30px 50px;
   width: 100%;
+  height: 100px;
+  position: relative;
 }
 </style>

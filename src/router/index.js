@@ -105,6 +105,14 @@ export const constantRouterMap = [
     icon: 'gerenzhongxinicon',
     children: [{ path: 'index', component: PersonalCenter, name: '个人中心' }]
   },
+  {
+    path: '/test',
+    component: Layout,
+    redirect: '/test',
+    noDropdown: true,
+    icon: 'gerenzhongxinicon',
+    children: [{ path: 'index', component: testPage, name: '页面测试' }]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 

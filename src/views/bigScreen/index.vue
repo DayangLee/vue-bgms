@@ -115,7 +115,31 @@
               <el-radio label="rank">污染等级</el-radio>
             </el-radio-group>
           </div>
-          <div class="box3"></div>
+          <div class="box3">
+            <div class="item">
+              <p class="name">背景色</p>
+              <div class="item_right">
+                <span class="nobgColor" @click="noBgColor" style="margin-left:20px;">
+                  <img src="../../assets/images/editor/forbidden.png" />
+                </span>
+                <colorPicker v-model="color" style="margin-top:5px;margin-left:15px;"></colorPicker>
+              </div>
+            </div>
+            <div class="item">
+              <p class="name">圆角</p>
+              <div class="item_right">
+                <el-slider v-model="radius" show-input :show-input-controls="false">
+                </el-slider>
+              </div>
+            </div>
+            <div class="item">
+              <p class="name">透明</p>
+              <div class="item_right">
+                <el-slider v-model="opacity" show-input :show-input-controls="false">
+                </el-slider>
+              </div>
+            </div>
+          </div>
           <div class="box4"></div>
           <div class="box5"></div>
           <div class="box6"></div>
@@ -182,7 +206,7 @@ export default {
   components: { colorPicker },
   data: () => ({
     activeName: 'first',
-    color: '#324157',
+    color: 'red',
     radius: 0,
     opacity: 0,
     out_text: '',
@@ -279,6 +303,7 @@ export default {
   .header {
     width: 100%;
     margin-top: 20px;
+
     .el-tabs__content {
       height: 198px;
     }
@@ -298,7 +323,6 @@ export default {
       float: left;
       width: 78%;
       height: 100%;
-      display: block;
 
       .nobgColor:hover {
         cursor: pointer;
@@ -409,6 +433,22 @@ export default {
       .el-radio {
         margin-left: 0;
         margin-right: 8px;
+      }
+    }
+    .box3 {
+      width: 20%;
+      height: 168px;
+      padding-left: 15px;
+      border-right: 1px solid #d1dbe5;
+      font-weight: bold;
+      .name {
+        width: 25%;
+      }
+      .item_right {
+        width: 70%;
+        .el-slider__runway.show-input {
+          width: 60%;
+        }
       }
     }
   }

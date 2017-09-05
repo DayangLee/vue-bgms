@@ -15,14 +15,14 @@
     <div class="box" v-bind:class="{ open: openStatus }">
       <div class="hd">
         <div class="colorView" v-bind:style="`background-color: ${showPanelColor}`"></div>
-        <div class="defaultColor"
+        <!-- <div class="defaultColor"
           v-on:click="handleDefaultColor"
           v-on:mouseover="hoveColor = defaultColor"
           v-on:mouseout="hoveColor = null"
-        >默认颜色</div>
+        >默认颜色</div> -->
       </div>
       <div class="bd">
-        <h3>主题颜色</h3>
+        <!-- <h3>主题颜色</h3>
         <ul class="tColor">
           <li
             v-for="color of tColor"
@@ -44,8 +44,8 @@
               ></li>
             </ul>
           </li>
-        </ul>
-        <h3>标准颜色</h3>
+        </ul> -->
+        <!-- <h3>标准颜色</h3> -->
         <ul class="tColor">
           <li
             v-for="color of bColor"
@@ -55,7 +55,8 @@
             v-on:click="updataValue(color)"
           ></li>
         </ul>
-        <h3 v-on:click="triggerHtml5Color">更多颜色...</h3>
+        <el-button v-on:click="triggerHtml5Color" style="margin-top:-20px;">更多颜色...</el-button>
+        <!-- <h3 v-on:click="triggerHtml5Color">更多颜色...</h3> -->
       </div>
     </div>
   </div>
@@ -81,7 +82,7 @@ export default {
       default: false
     }
   },
-  data () {
+  data() {
     return {
       // 面板打开状态
       openStatus: false,
@@ -103,13 +104,13 @@ export default {
         ['#99490f', '#fee9da']
       ],
       // 标准颜色
-      bColor: ['#c21401', '#ff1e02', '#ffc12a', '#ffff3a', '#90cf5b', '#00af57', '#00afee', '#0071be', '#00215f', '#72349d'],
+      bColor: ['#c21401', '#ff1e02', '#ffc12a', '#ffff3a', '#90cf5b', '#00af57', '#00afee', '#0071be','#72349d'],
       html5Color: this.value
     }
   },
   computed: {
     // 显示面板颜色
-    showPanelColor () {
+    showPanelColor() {
       if (this.hoveColor) {
         return this.hoveColor
       } else {
@@ -117,7 +118,7 @@ export default {
       }
     },
     // 显示颜色
-    showColor () {
+    showColor() {
       if (this.value) {
         return this.value
       } else {
@@ -125,7 +126,7 @@ export default {
       }
     },
     // 颜色面板
-    colorPanel () {
+    colorPanel() {
       let colorArr = []
       for (let color of this.colorConfig) {
         colorArr.push(this.gradient(color[1], color[0], 5))
@@ -134,21 +135,21 @@ export default {
     }
   },
   methods: {
-    triggerHtml5Color () {
+    triggerHtml5Color() {
       this.$refs.html5Color.click()
     },
     // 更新组件的值 value
-    updataValue (value) {
+    updataValue(value) {
       this.$emit('input', value)
       this.$emit('change', value)
       this.openStatus = false
     },
     // 设置默认颜色
-    handleDefaultColor () {
+    handleDefaultColor() {
       this.updataValue(this.defaultColor)
     },
     // 格式化 hex 颜色值
-    parseColor (hexStr) {
+    parseColor(hexStr) {
       if (hexStr.length === 4) {
         hexStr = '#' + hexStr[1] + hexStr[1] + hexStr[2] + hexStr[2] + hexStr[3] + hexStr[3]
       } else {
@@ -156,12 +157,12 @@ export default {
       }
     },
     // RGB 颜色 转 HEX 颜色
-    rgbToHex (r, g, b) {
+    rgbToHex(r, g, b) {
       let hex = ((r << 16) | (g << 8) | b).toString(16)
       return '#' + new Array(Math.abs(hex.length - 7)).join('0') + hex
     },
     // HEX 转 RGB 颜色
-    hexToRgb (hex) {
+    hexToRgb(hex) {
       hex = this.parseColor(hex)
       let rgb = []
       for (let i = 1; i < 7; i += 2) {
@@ -170,7 +171,7 @@ export default {
       return rgb
     },
     // 计算渐变过渡颜色
-    gradient (startColor, endColor, step) {
+    gradient(startColor, endColor, step) {
       // 讲 hex 转换为 rgb
       let sColor = this.hexToRgb(startColor)
       let eColor = this.hexToRgb(endColor)
@@ -188,7 +189,7 @@ export default {
       return gradientColorArr
     }
   },
-  mounted () {
+  mounted() {
     // 点击页面上其他地方，关闭弹窗
     document.onclick = (e) => {
       this.openStatus = false
@@ -198,34 +199,106 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.m-colorPicker{
-  position: relative; text-align: left; font-size: 14px; display: inline-block;
-  ul,li,ol{ list-style: none; margin: 0; padding: 0; }
-  input{ display: none; }
-  .colorBtn{ width: 30px; height: 30px; border-radius: 50%;}
+.m-colorPicker {
+  position: relative;
+  text-align: left;
+  font-size: 14px;
+  display: inline-block;
+  ul,
+  li,
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  input {
+    display: none;
+  }
+  .colorBtn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
   .colorBtn:hover {
     cursor: pointer;
   }
-  .colorBtn.disabled{ cursor: no-drop; }
-  .box{
-    position: absolute; width: 210px; background: #fff; border: 1px solid #ddd; visibility: hidden; border-radius: 2px; margin-top: 2px; padding: 10px; padding-bottom: 5px; box-shadow: 0 0 5px rgba(0,0,0,.15); opacity: 0; transition: all .3s ease;
-    h3{ margin: 0; font-size: 14px; font-weight: normal; margin-top: 10px; margin-bottom: 5px; line-height: 1;}
+  .colorBtn.disabled {
+    cursor: no-drop;
   }
-  .box.open{ visibility: visible; opacity: 1;z-index:10000; }
-  .hd{
-    overflow: hidden; line-height: 29px;
-    .colorView{ width: 100px; height: 30px; float: left; transition: background-color .3s ease; }
-    .defaultColor{ width: 80px; float: right; text-align: center; border: 1px solid #ddd; cursor: pointer; }
+  .box {
+    position: absolute;
+    width: 210px;
+    background: #fff;
+    border: 1px solid #ddd;
+    visibility: hidden;
+    border-radius: 2px;
+    margin-top: 2px;
+    padding: 10px;
+    padding-bottom: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .15);
+    opacity: 0;
+    transition: all .3s ease;
+    h3 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: normal;
+      margin-top: 10px;
+      margin-bottom: 5px;
+      line-height: 1;
+    }
   }
-  .tColor{
-    li{ width: 15px; height: 15px; display: inline-block; margin: 0 2px; transition: all .3s ease; }
-    li:hover{ box-shadow: 0 0 5px rgba(0,0,0,.4); transform: scale(1.3); }
+  .box.open {
+    visibility: visible;
+    opacity: 1;
+    z-index: 10000;
   }
-  .bColor{
-    li{
-      width: 15px; display: inline-block; margin: 0 2px;
-      li{ display: block; width: 15px; height: 15px; transition: all .3s ease; margin: 0; }
-      li:hover{ box-shadow: 0 0 5px rgba(0,0,0,.4); transform: scale(1.3); }
+  .hd {
+    overflow: hidden;
+    line-height: 29px;
+    .colorView {
+      width: 100px;
+      height: 30px;
+      float: left;
+      transition: background-color .3s ease;
+    }
+    .defaultColor {
+      width: 80px;
+      float: right;
+      text-align: center;
+      border: 1px solid #ddd;
+      cursor: pointer;
+    }
+  }
+  .tColor {
+    margin-bottom: -10px;
+    li {
+      width: 15px;
+      height: 15px;
+      display: inline-block;
+      margin: 0 2px;
+      transition: all .3s ease;
+    }
+    li:hover {
+      box-shadow: 0 0 5px rgba(0, 0, 0, .4);
+      transform: scale(1.3);
+    }
+  }
+  .bColor {
+    li {
+      width: 15px;
+      display: inline-block;
+      margin: 0 2px;
+      li {
+        display: block;
+        width: 15px;
+        height: 15px;
+        transition: all .3s ease;
+        margin: 0;
+      }
+      li:hover {
+        box-shadow: 0 0 5px rgba(0, 0, 0, .4);
+        transform: scale(1.3);
+      }
     }
   }
 }
