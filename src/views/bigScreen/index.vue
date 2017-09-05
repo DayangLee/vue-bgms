@@ -89,6 +89,266 @@
         </span>
         <div class="text_ele">
           <div class="box1">
+            <el-input type="textarea" :rows="7" placeholder="请输入内容" v-model="textarea">
+            </el-input>
+          </div>
+          <div class="box2">
+            <div class="item">
+              <p class="name">背景色</p>
+              <div class="item_right">
+                <span class="nobgColor" @click="noBgColor" style="margin-left:20px;">
+                  <img src="../../assets/images/editor/forbidden.png" />
+                </span>
+                <colorPicker v-model="color" style="margin-top:5px;margin-left:15px;"></colorPicker>
+              </div>
+            </div>
+            <div class="item">
+              <p class="name">圆角</p>
+              <div class="item_right">
+                <el-slider v-model="radius" show-input :show-input-controls="false">
+                </el-slider>
+              </div>
+            </div>
+            <div class="item">
+              <p class="name">透明</p>
+              <div class="item_right">
+                <el-slider v-model="opacity" show-input :show-input-controls="false">
+                </el-slider>
+              </div>
+            </div>
+          </div>
+          <div class="box3">
+            <div class="item">
+              <p class="name">字号</p>
+              <div class="item_right">
+                <el-slider v-model="radius" show-input :show-input-controls="false">
+                </el-slider>
+              </div>
+            </div>
+            <div class="item">
+              <p class="name">字体</p>
+              <div class="item_right">
+                <el-select v-model="fontFamily" placeholder="请选择">
+                  <el-option v-for="item in fontFamilyList" :key="item.value" :label="item.label" :value="item.value">
+                  </el-option>
+                </el-select>
+              </div>
+            </div>
+            <div class="item">
+              <p class="name">加粗</p>
+              <div class="item_right">
+                <el-select v-model="boldStyle" placeholder="请选择">
+                  <el-option v-for="item in boldStyleList" :key="item.value" :label="item.label" :value="item.value">
+                  </el-option>
+                </el-select>
+              </div>
+            </div>
+            <div class="item">
+              <p class="name">对齐</p>
+              <div class="item_right">
+                <el-select v-model="textAlign" placeholder="请选择">
+                  <el-option v-for="item in textAlignList" :key="item.value" :label="item.label" :value="item.value">
+                  </el-option>
+                </el-select>
+              </div>
+            </div>
+          </div>
+          <div class="box4">
+            <p>位置</p>
+            <div class="item">
+              <p class="name">X轴</p>
+              <div class="item_right">
+                <el-slider v-model="radius" show-input :show-input-controls="false">
+                </el-slider>
+              </div>
+            </div>
+            <div class="item">
+              <p class="name">Y轴</p>
+              <div class="item_right">
+                <el-slider v-model="opacity" show-input :show-input-controls="false">
+                </el-slider>
+              </div>
+            </div>
+            <div class="item">
+              <p class="name">层级</p>
+              <div class="item_right">
+                <el-slider v-model="opacity" show-input :show-input-controls="false">
+                </el-slider>
+              </div>
+            </div>
+          </div>
+          <div class="box5">
+            <p>大小</p>
+            <div class="item">
+              <p class="name">宽</p>
+              <div class="item_right">
+                <el-slider v-model="radius" show-input :show-input-controls="false">
+                </el-slider>
+              </div>
+            </div>
+            <div class="item">
+              <p class="name">高</p>
+              <div class="item_right">
+                <el-slider v-model="opacity" show-input :show-input-controls="false">
+                </el-slider>
+              </div>
+            </div>
+          </div>
+        </div>
+      </el-tab-pane>
+
+      <el-tab-pane>
+        <span slot="label">
+          <icon-svg icon-class="shebei"></icon-svg>
+          设备数据
+        </span>
+        <div class="device_ele">
+          <div class="box1">
+            <div class="item">
+              <p class="name">设备名称</p>
+              <div class="item_right">
+                <el-input v-model="out_text" placeholder="请输入内容"></el-input>
+              </div>
+            </div>
+            <div class="item">
+              <p class="name">设备选择</p>
+              <div class="item_right">
+                <el-select v-model="city" filterable remote placeholder="请输入关键词" :remote-method="remoteMethod" :loading="loading">
+                  <el-option v-for="item in cityOption" :key="item.value" :label="item.label" :value="item.value">
+                  </el-option>
+                </el-select>
+              </div>
+            </div>
+          </div>
+          <div class="box2">
+            <p>数据类型</p>
+            <el-radio-group v-model="device_type" style="margin-top:10px;width:98%;line-height:30px;">
+              <el-radio label="pm2d5">PM2.5</el-radio>
+              <el-radio label="temp">温度</el-radio>
+              <el-radio label="hum">湿度</el-radio>
+              <el-radio label="ch2o">甲醛</el-radio>
+              <el-radio label="co2">CO2</el-radio>
+              <el-radio label="tvoc">TVOC</el-radio>
+              <el-radio label="o3">臭氧</el-radio>
+              <el-radio label="o2">氧气</el-radio>
+              <el-radio label="noise">噪音</el-radio>
+              <el-radio label="pressure">气压</el-radio>
+              <el-radio label="updateTime">更新时间</el-radio>
+              <el-radio label="rank">污染等级</el-radio>
+            </el-radio-group>
+          </div>
+          <div class="box3">
+            <div class="item">
+              <p class="name">背景色</p>
+              <div class="item_right">
+                <span class="nobgColor" @click="noBgColor" style="margin-left:20px;">
+                  <img src="../../assets/images/editor/forbidden.png" />
+                </span>
+                <colorPicker v-model="color" style="margin-top:5px;margin-left:15px;"></colorPicker>
+              </div>
+            </div>
+            <div class="item">
+              <p class="name">圆角</p>
+              <div class="item_right">
+                <el-slider v-model="radius" show-input :show-input-controls="false">
+                </el-slider>
+              </div>
+            </div>
+            <div class="item">
+              <p class="name">透明</p>
+              <div class="item_right">
+                <el-slider v-model="opacity" show-input :show-input-controls="false">
+                </el-slider>
+              </div>
+            </div>
+          </div>
+          <div class="box4">
+            <div class="item">
+              <p class="name">字号</p>
+              <div class="item_right">
+                <el-slider v-model="radius" show-input :show-input-controls="false">
+                </el-slider>
+              </div>
+            </div>
+            <div class="item">
+              <p class="name">字体</p>
+              <div class="item_right">
+                <el-select v-model="fontFamily" placeholder="请选择">
+                  <el-option v-for="item in fontFamilyList" :key="item.value" :label="item.label" :value="item.value">
+                  </el-option>
+                </el-select>
+              </div>
+            </div>
+            <div class="item">
+              <p class="name">加粗</p>
+              <div class="item_right">
+                <el-select v-model="boldStyle" placeholder="请选择">
+                  <el-option v-for="item in boldStyleList" :key="item.value" :label="item.label" :value="item.value">
+                  </el-option>
+                </el-select>
+              </div>
+            </div>
+            <div class="item">
+              <p class="name">对齐</p>
+              <div class="item_right">
+                <el-select v-model="textAlign" placeholder="请选择">
+                  <el-option v-for="item in textAlignList" :key="item.value" :label="item.label" :value="item.value">
+                  </el-option>
+                </el-select>
+              </div>
+            </div>
+          </div>
+          <div class="box5">
+            <p>位置</p>
+            <div class="item">
+              <p class="name">X轴</p>
+              <div class="item_right">
+                <el-slider v-model="radius" show-input :show-input-controls="false">
+                </el-slider>
+              </div>
+            </div>
+            <div class="item">
+              <p class="name">Y轴</p>
+              <div class="item_right">
+                <el-slider v-model="opacity" show-input :show-input-controls="false">
+                </el-slider>
+              </div>
+            </div>
+            <div class="item">
+              <p class="name">层级</p>
+              <div class="item_right">
+                <el-slider v-model="opacity" show-input :show-input-controls="false">
+                </el-slider>
+              </div>
+            </div>
+          </div>
+          <div class="box6">
+            <p>大小</p>
+            <div class="item">
+              <p class="name">宽</p>
+              <div class="item_right">
+                <el-slider v-model="radius" show-input :show-input-controls="false">
+                </el-slider>
+              </div>
+            </div>
+            <div class="item">
+              <p class="name">高</p>
+              <div class="item_right">
+                <el-slider v-model="opacity" show-input :show-input-controls="false">
+                </el-slider>
+              </div>
+            </div>
+          </div>
+        </div>
+      </el-tab-pane>
+
+      <el-tab-pane>
+        <span slot="label">
+          <icon-svg icon-class="tianqi"></icon-svg>
+          室外天气
+        </span>
+        <div class="weather_ele">
+          <div class="box1">
             <div class="item">
               <p class="name">室外名称</p>
               <div class="item_right">
@@ -107,7 +367,7 @@
           </div>
           <div class="box2">
             <p>数据类型</p>
-            <el-radio-group v-model="text_type" style="margin-top:10px;width:98%;line-height:30px;">
+            <el-radio-group v-model="weather_type" style="margin-top:10px;width:98%;line-height:30px;">
               <el-radio label="pm2d5">PM2.5</el-radio>
               <el-radio label="temp">温度</el-radio>
               <el-radio label="hum">湿度</el-radio>
@@ -140,24 +400,84 @@
               </div>
             </div>
           </div>
-          <div class="box4"></div>
-          <div class="box5"></div>
-          <div class="box6"></div>
+          <div class="box4">
+            <div class="item">
+              <p class="name">字号</p>
+              <div class="item_right">
+                <el-slider v-model="radius" show-input :show-input-controls="false">
+                </el-slider>
+              </div>
+            </div>
+            <div class="item">
+              <p class="name">字体</p>
+              <div class="item_right">
+                <el-select v-model="fontFamily" placeholder="请选择">
+                  <el-option v-for="item in fontFamilyList" :key="item.value" :label="item.label" :value="item.value">
+                  </el-option>
+                </el-select>
+              </div>
+            </div>
+            <div class="item">
+              <p class="name">加粗</p>
+              <div class="item_right">
+                <el-select v-model="boldStyle" placeholder="请选择">
+                  <el-option v-for="item in boldStyleList" :key="item.value" :label="item.label" :value="item.value">
+                  </el-option>
+                </el-select>
+              </div>
+            </div>
+            <div class="item">
+              <p class="name">对齐</p>
+              <div class="item_right">
+                <el-select v-model="textAlign" placeholder="请选择">
+                  <el-option v-for="item in textAlignList" :key="item.value" :label="item.label" :value="item.value">
+                  </el-option>
+                </el-select>
+              </div>
+            </div>
+          </div>
+          <div class="box5">
+            <p>位置</p>
+            <div class="item">
+              <p class="name">X轴</p>
+              <div class="item_right">
+                <el-slider v-model="radius" show-input :show-input-controls="false">
+                </el-slider>
+              </div>
+            </div>
+            <div class="item">
+              <p class="name">Y轴</p>
+              <div class="item_right">
+                <el-slider v-model="opacity" show-input :show-input-controls="false">
+                </el-slider>
+              </div>
+            </div>
+            <div class="item">
+              <p class="name">层级</p>
+              <div class="item_right">
+                <el-slider v-model="opacity" show-input :show-input-controls="false">
+                </el-slider>
+              </div>
+            </div>
+          </div>
+          <div class="box6">
+            <p>大小</p>
+            <div class="item">
+              <p class="name">宽</p>
+              <div class="item_right">
+                <el-slider v-model="radius" show-input :show-input-controls="false">
+                </el-slider>
+              </div>
+            </div>
+            <div class="item">
+              <p class="name">高</p>
+              <div class="item_right">
+                <el-slider v-model="opacity" show-input :show-input-controls="false">
+                </el-slider>
+              </div>
+            </div>
+          </div>
         </div>
-      </el-tab-pane>
-      <el-tab-pane>
-        <span slot="label">
-          <icon-svg icon-class="shebei"></icon-svg>
-          设备数据
-        </span>
-        设备数据元素
-      </el-tab-pane>
-      <el-tab-pane>
-        <span slot="label">
-          <icon-svg icon-class="tianqi"></icon-svg>
-          室外天气
-        </span>
-        室外天气元素
       </el-tab-pane>
       <el-tab-pane>
         <span slot="label">
@@ -170,7 +490,7 @@
 
     <div class="body">
       <div class="left">
-        <el-tabs v-model="activeName" type="border-card" @tab-remove="removeTab" style="height:600px;">
+        <el-tabs v-model="activeName" type="border-card" @tab-remove="removeTab">
           <el-tab-pane label="页面模板" name="first">
             <el-button @click="addTab('modela')">modela</el-button>
             <el-button @click="addTab('modelb')">modelb</el-button>
@@ -190,7 +510,7 @@
 
         <div class="right_body">
 
-        </div>
+          </div>
       </div>
 
     </div>
@@ -202,6 +522,9 @@
 <script>
 import colorPicker from '../../components/vue-color-picker/colorPicker'
 const cityList = ['北京', '上海', '广州', '深圳', '南京']
+const fontFamilyList = [{ value: '宋体', label: '宋体' }, { value: '楷体', label: '楷体' }, { value: '黑体', label: '黑体' }]
+const boldStyleList = [{ value: 'false', label: '不加粗' }, { value: '200', label: '200' }, { value: '300', label: '300' }, { value: '400', label: '400' }, { value: '500', label: '500' }, { value: '600', label: '600' }, { value: '700', label: '700' }, { value: '800', label: '800' }, { value: '900', label: '900' }]
+const textAlignList = [{ value: 'left', label: '左对齐' }, { value: 'right', label: '右对齐' }, { value: 'center', label: '居中' }]
 export default {
   components: { colorPicker },
   data: () => ({
@@ -215,7 +538,15 @@ export default {
     list: [],
     cityOption: [],
     loading: false,
-    text_type: '',
+    weather_type: '',
+    device_type: '',
+    fontFamily: '',
+    boldStyle: '',
+    textAlign: '',
+    fontFamilyList: fontFamilyList,
+    boldStyleList: boldStyleList,
+    textAlignList: textAlignList,
+    textarea: '',
     model: {
       name: null,
       content: null
@@ -411,44 +742,132 @@ export default {
   }
 
   .text_ele {
-    .box1 {
-      width: 15%;
+    .box1,
+    .box2,
+    .box3,
+    .box4,
+    .box5 {
       height: 168px;
+      padding-left: 15px;
+      padding-right: 15px;
       border-right: 1px solid #d1dbe5;
       font-weight: bold;
+    }
+    .box1 {
+      width: 20%;
+      font-size: 30px;
+    }
+    .box2 {
+      width: 20%;
+      .name {
+        width: 20%;
+      }
+      .item_right {
+        width: 76%;
+        .el-slider__runway.show-input {
+          width: 60%;
+        }
+      }
+    }
+    .box3 {
+      width: 20%;
+      .item {
+        height: 45px;
+        line-height: 45px;
+      }
+      .name {
+        width: 20%;
+      }
+      .item_right {
+        width: 76%;
+        .el-slider__runway.show-input {
+          width: 60%;
+        }
+      }
+    }
+    .box4 {
+      width: 20%;
+    }
+    .box5 {
+      width: 18%;
+      border-right: none;
+    }
+  }
+
+  .device_ele,
+  .weather_ele {
+    .box1,
+    .box2,
+    .box3,
+    .box4,
+    .box5,
+    .box6 {
+      height: 168px;
+      padding-left: 15px;
+      border-right: 1px solid #d1dbe5;
+      font-weight: bold;
+    }
+    .box1 {
+      width: 15%;
+      padding-left: 0px;
       .name {
         font-weight: bold;
         width: 40%;
       }
       .item_right {
         width: 56%;
+        .el-select .el-input__inner {
+          padding-right: 5px;
+        }
       }
     }
     .box2 {
       width: 15%;
-      height: 168px;
-      padding-left: 20px;
-      border-right: 1px solid #d1dbe5;
-      font-weight: bold;
       .el-radio {
         margin-left: 0;
         margin-right: 8px;
       }
     }
     .box3 {
-      width: 20%;
-      height: 168px;
-      padding-left: 15px;
-      border-right: 1px solid #d1dbe5;
-      font-weight: bold;
+      width: 18%;
       .name {
-        width: 25%;
+        width: 23%;
       }
       .item_right {
         width: 70%;
         .el-slider__runway.show-input {
           width: 60%;
         }
+      }
+    }
+    .box4 {
+      width: 17%;
+      .item {
+        height: 45px;
+        line-height: 45px;
+      }
+      .name {
+        width: 22%;
+      }
+      .item_right {
+        width: 70%;
+        .el-slider__runway.show-input {
+          width: 60%;
+        }
+      }
+    }
+    .box5 {
+      width: 18%;
+      .el-slider__runway.show-input {
+        width: 60%;
+        margin-left: 5%;
+      }
+    }
+    .box6 {
+      width: 17%;
+      border-right: none;
+      .el-slider__runway.show-input {
+        width: 60%;
       }
     }
   }
@@ -461,10 +880,13 @@ export default {
     width: 100%;
   }
   .left {
-    width: 300px;
+    width: 250px;
     float: left;
+    .el-tabs {
+      min-height: 500px;
+    }
     .el-button {
-      width: 250px;
+      width: 200px;
       margin: 10px 10px;
     }
   }
@@ -481,7 +903,25 @@ export default {
       margin-left: 20%; // margin-top: 20px;
       padding-bottom: 48%;
     }
-  } // .right {
+  }
+  // .right {
+  //   float: right;
+  //   // background-color: rgb(204, 204, 204);
+  //   // width: 1050px;
+  //   // height: 590.625px;
+
+  //   // overflow: hidden;
+   
+  //   // padding-bottom: 48%;
+  //   .right_body {
+  //     background-color: rgb(204, 204, 204);
+  //     width: 80%;
+  //     height: 0px;
+  //     overflow: hidden;
+  //     margin-left: 20%; // margin-top: 20px;
+  //     padding-bottom: 48%;
+  //   }
+  // } // .right {
   //   width: 240px;
   //   height: 200px;
   //   float: right;

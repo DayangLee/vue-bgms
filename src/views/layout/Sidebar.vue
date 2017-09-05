@@ -5,6 +5,10 @@
     <el-menu mode="vertical" theme="dark" :default-active="$route.path" @select="handleSelect" :collapse="isCollapse" @open="handleOpen" @close="handleClose" unique-opened>
       <SidebarItem :routes='permission_routers'></SidebarItem>
     </el-menu>
+    <el-button type="text" class="daping_btn" @click="goLayout">
+        <icon-svg icon-class="dapingyemian" class="icon1"></icon-svg>
+        <span>大屏页面</span>
+    </el-button>
   </div>
 </template>
 <script>
@@ -27,6 +31,9 @@ export default {
     },
     handleClose(key, keyPath) {
       console.log(key, keyPath);
+    },
+    goLayout(){
+      window.open('http://www.baidu.com')
     }
   }
 }
@@ -47,4 +54,16 @@ export default {
 .el-menu {
   min-height: 100%;
 }
+
+.daping_btn {
+  padding-left: 20px;
+  position: absolute;
+  bottom: 20px;
+  color: #bfcbd9;
+  font-size: 20px;
+  &:hover {
+    color: #20a0ff;
+  }
+}
+
 </style>

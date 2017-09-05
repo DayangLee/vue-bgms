@@ -1,13 +1,13 @@
 <template>
   <div class="data-container" style="width: 100%">
-    <basicEditor></basicEditor>
+    测试专用
   </div>
 </template>
 
 <script>
-import basicEditor from '../../components/Editors/basic'
+
 export default {
-  components: { basicEditor }
+
 }
 </script>
 
