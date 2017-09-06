@@ -42,6 +42,7 @@ const BigScreen = _import('bigScreen/index')
  * hidden : if hidden:true will not show in the sidebar
  * noDropdown : if noDropdown:true will not has submenu
  * meta : { role: ['admin'] }  will control the page role
+ * jump: if jump:true, when it be clicked, the window will open another page
  **/
 
 export const constantRouterMap = [
@@ -91,11 +92,13 @@ export const constantRouterMap = [
   },
   {
     path: '/daping',
-    component: Layout,
-    redirect: '/daping',
-    noDropdown: true,
+    // component: Layout,
+    // redirect: '/daping',
+    // noDropdown: true,
     icon: 'dapingyemian',
-    children: [{ path: 'index', component: BigScreen, name: '大屏页面' }]
+    jump: true,
+    name: '大屏页面'
+    // children: [{ path: 'index', component: BigScreen, name: '大屏页面' }]
   },
   {
     path: '/person',
